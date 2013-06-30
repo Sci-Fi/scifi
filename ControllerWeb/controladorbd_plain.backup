@@ -1,0 +1,500 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.2.4
+-- Dumped by pg_dump version 9.2.4
+-- Started on 2013-06-28 12:08:02 BRT
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- TOC entry 176 (class 3079 OID 12595)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 2856 (class 0 OID 0)
+-- Dependencies: 176
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 168 (class 1259 OID 27299)
+-- Name: APInfo; Type: TABLE; Schema: public; Owner: controlador; Tablespace: 
+--
+
+CREATE TABLE "APInfo" (
+    "MAC" text NOT NULL,
+    "IP" text NOT NULL,
+    "Channel" integer DEFAULT 1,
+    "Location" text,
+    "TxPowerList" integer[] NOT NULL,
+    "CurrentTxPower" integer DEFAULT 17,
+    "LoadStatus" integer,
+    "UnderloadLimit" integer DEFAULT 10 NOT NULL,
+    "OverloadLimit" integer DEFAULT 25 NOT NULL,
+    "Enabled" integer DEFAULT 1 NOT NULL,
+    "Region" bigint,
+    "Reachable" integer DEFAULT 1
+);
+
+
+ALTER TABLE public."APInfo" OWNER TO controlador;
+
+--
+-- TOC entry 2857 (class 0 OID 0)
+-- Dependencies: 168
+-- Name: TABLE "APInfo"; Type: COMMENT; Schema: public; Owner: controlador
+--
+
+COMMENT ON TABLE "APInfo" IS 'Tabela com as informações dos pontos de acesso da rede administrada.';
+
+
+--
+-- TOC entry 169 (class 1259 OID 27311)
+-- Name: APInfo_CellInfo; Type: TABLE; Schema: public; Owner: controlador; Tablespace: 
+--
+
+CREATE TABLE "APInfo_CellInfo" (
+    "MAC_AP" text NOT NULL,
+    "MAC_CellInfo" text NOT NULL,
+    "SignalLevel" double precision NOT NULL,
+    "Quality" integer NOT NULL
+);
+
+
+ALTER TABLE public."APInfo_CellInfo" OWNER TO controlador;
+
+--
+-- TOC entry 170 (class 1259 OID 27317)
+-- Name: APInfo_STAInfo; Type: TABLE; Schema: public; Owner: controlador; Tablespace: 
+--
+
+CREATE TABLE "APInfo_STAInfo" (
+    "MAC_AP" text NOT NULL,
+    "MAC_STA" text NOT NULL
+);
+
+
+ALTER TABLE public."APInfo_STAInfo" OWNER TO controlador;
+
+--
+-- TOC entry 2858 (class 0 OID 0)
+-- Dependencies: 170
+-- Name: TABLE "APInfo_STAInfo"; Type: COMMENT; Schema: public; Owner: controlador
+--
+
+COMMENT ON TABLE "APInfo_STAInfo" IS 'Tabela que relaciona os pontos de acesso administrados aos seus clientes.';
+
+
+--
+-- TOC entry 171 (class 1259 OID 27323)
+-- Name: CellInfo; Type: TABLE; Schema: public; Owner: controlador; Tablespace: 
+--
+
+CREATE TABLE "CellInfo" (
+    "MAC" text NOT NULL,
+    "Channel" integer NOT NULL,
+    "ESSID" text NOT NULL
+);
+
+
+ALTER TABLE public."CellInfo" OWNER TO controlador;
+
+--
+-- TOC entry 172 (class 1259 OID 27329)
+-- Name: Config; Type: TABLE; Schema: public; Owner: controlador; Tablespace: 
+--
+
+CREATE TABLE "Config" (
+    "Property" text NOT NULL,
+    "Value" text NOT NULL,
+    "Description" text NOT NULL,
+    "Type" text NOT NULL
+);
+
+
+ALTER TABLE public."Config" OWNER TO controlador;
+
+--
+-- TOC entry 173 (class 1259 OID 27335)
+-- Name: Region; Type: TABLE; Schema: public; Owner: controlador; Tablespace: 
+--
+
+CREATE TABLE "Region" (
+    "ID" bigint NOT NULL,
+    "Description" text NOT NULL
+);
+
+
+ALTER TABLE public."Region" OWNER TO controlador;
+
+--
+-- TOC entry 174 (class 1259 OID 27341)
+-- Name: Region_ID_seq; Type: SEQUENCE; Schema: public; Owner: controlador
+--
+
+CREATE SEQUENCE "Region_ID_seq"
+    START WITH 1
+    INCREMENT BY 1
+    MINVALUE 0
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."Region_ID_seq" OWNER TO controlador;
+
+--
+-- TOC entry 2859 (class 0 OID 0)
+-- Dependencies: 174
+-- Name: Region_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: controlador
+--
+
+ALTER SEQUENCE "Region_ID_seq" OWNED BY "Region"."ID";
+
+
+--
+-- TOC entry 175 (class 1259 OID 27343)
+-- Name: STAInfo; Type: TABLE; Schema: public; Owner: controlador; Tablespace: 
+--
+
+CREATE TABLE "STAInfo" (
+    "MAC" text NOT NULL
+);
+
+
+ALTER TABLE public."STAInfo" OWNER TO controlador;
+
+--
+-- TOC entry 2860 (class 0 OID 0)
+-- Dependencies: 175
+-- Name: TABLE "STAInfo"; Type: COMMENT; Schema: public; Owner: controlador
+--
+
+COMMENT ON TABLE "STAInfo" IS 'Tabela que contém as informações sobre os clientes associados aos pontos de acesso administrados.';
+
+
+--
+-- TOC entry 2819 (class 2604 OID 27349)
+-- Name: ID; Type: DEFAULT; Schema: public; Owner: controlador
+--
+
+ALTER TABLE ONLY "Region" ALTER COLUMN "ID" SET DEFAULT nextval('"Region_ID_seq"'::regclass);
+
+
+--
+-- TOC entry 2841 (class 0 OID 27299)
+-- Dependencies: 168
+-- Data for Name: APInfo; Type: TABLE DATA; Schema: public; Owner: controlador
+--
+
+COPY "APInfo" ("MAC", "IP", "Channel", "Location", "TxPowerList", "CurrentTxPower", "LoadStatus", "UnderloadLimit", "OverloadLimit", "Enabled", "Region", "Reachable") FROM stdin;
+\.
+
+
+--
+-- TOC entry 2842 (class 0 OID 27311)
+-- Dependencies: 169
+-- Data for Name: APInfo_CellInfo; Type: TABLE DATA; Schema: public; Owner: controlador
+--
+
+COPY "APInfo_CellInfo" ("MAC_AP", "MAC_CellInfo", "SignalLevel", "Quality") FROM stdin;
+\.
+
+
+--
+-- TOC entry 2843 (class 0 OID 27317)
+-- Dependencies: 170
+-- Data for Name: APInfo_STAInfo; Type: TABLE DATA; Schema: public; Owner: controlador
+--
+
+COPY "APInfo_STAInfo" ("MAC_AP", "MAC_STA") FROM stdin;
+\.
+
+
+--
+-- TOC entry 2844 (class 0 OID 27323)
+-- Dependencies: 171
+-- Data for Name: CellInfo; Type: TABLE DATA; Schema: public; Owner: controlador
+--
+
+COPY "CellInfo" ("MAC", "Channel", "ESSID") FROM stdin;
+00:09:5B:95:ED:48	6	LER
+00:14:BF:20:AA:23	6	eduroam-MidiaCom
+7C:03:4C:EC:D1:F8	11	GVT-D1F9
+00:1F:5B:88:9D:F4	11	LMTA Network
+02:2D:6D:D2:CA:D1	6	HPJ610a.29C51A
+00:21:91:5F:42:55	6	IC_RedeSemFio
+00:22:6B:7C:9B:54	6	Celio_N
+00:23:69:8D:15:78	6	sala301
+7C:4F:B5:EA:93:F9	11	GVT-93FA
+54:E6:FC:CF:03:FA	11	PredialNet 03 FB
+00:26:5A:A6:14:90	6	LATERMO
+00:15:6D:3A:0F:D1	1	GT_SciFi_07
+6C:2E:85:F2:01:B3	11	GVT-01AF
+00:1E:2A:03:4F:1E	1	LABPROP
+A2:4B:D1:88:E6:A8	10	HP7A022F
+00:22:B0:B7:AF:1F	9	aise
+1C:AF:F7:5A:87:5E	6	dlink
+00:15:6D:3A:33:22	11	GT_SciFi_10
+00:15:6D:3A:34:FF	11	GT_SciFi_09
+4C:17:EB:D3:AE:9F	6	GVT-AE9B
+6C:2E:85:EE:5F:EB	11	GVT-5FE7
+6C:2E:85:FA:30:A7	11	GVT-30A3
+00:15:6D:F2:14:A4	1	eduroam
+00:15:6D:80:94:AD	1	Mesh_Midiacom_Externa_1
+00:27:22:28:F1:FD	1	eduroam
+00:21:91:5E:BA:17	6	AMOR
+00:21:29:A0:36:0E	1	IC-sala 302
+02:20:70:41:A8:3C	10	HP8B13F9
+46:BD:B9:F9:9F:A1	1	GVT
+00:15:6D:F2:14:98	11	eduroam
+00:21:91:5F:3C:7D	6	IC_RedeSemFio
+94:FE:F4:FC:F0:5D	1	GVT-F05E
+00:1D:0F:CB:40:AC	4	PGCA
+6C:2E:85:F2:B9:CF	1	GVT-B9CB
+00:1B:11:89:28:1C	1	sala_schara
+00:27:22:28:F2:6F	11	eduroam
+74:EA:3A:E1:84:98	4	Telemetria
+00:27:22:28:F1:E8	1	eduroam
+00:22:6B:7C:9C:E0	1	MIDIACOM
+00:15:6D:80:94:AE	1	Mesh_Midiacom_Externa_0
+6C:2E:85:EC:27:1F	1	GVT-271B
+00:25:9C:FE:97:1F	9	tpc01
+00:22:3F:72:85:90	11	CAMILA
+34:08:04:8E:0E:76	6	Oi_Velox
+6C:2E:85:ED:38:03	6	GVT-37FF
+00:25:9C:AE:A5:23	11	MediaLab
+00:15:6D:3A:0F:91	11	GT_SciFi_08
+6C:2E:85:EE:3E:BB	11	GVT-3EB7
+00:27:22:28:F1:E9	11	eduroam
+00:1A:3F:4C:8F:DE	11	Pri&Ri
+00:1E:58:13:CE:94	1	JPMnet
+00:19:5B:B3:59:6B	1	Labmobil
+00:21:91:71:07:28	6	LACOP
+00:13:46:C8:BF:90	6	Meta Consultoria
+00:12:0E:49:27:E1	6	LMDC_SALA110B
+00:27:22:28:F1:E7	6	eduroam
+00:21:91:6A:63:1C	6	dlink
+00:24:01:FD:17:3C	11	RECAT02
+98:FC:11:D4:F7:D4	9	couto
+00:1A:3F:49:28:B2	11	UCHOA
+00:1A:3F:6B:FB:CC	11	REDE AC
+02:21:61:1B:AA:16	10	HP78BECB
+\.
+
+
+--
+-- TOC entry 2845 (class 0 OID 27329)
+-- Dependencies: 172
+-- Data for Name: Config; Type: TABLE DATA; Schema: public; Owner: controlador
+--
+
+COPY "Config" ("Property", "Value", "Description", "Type") FROM stdin;
+ServerPort	5000	Porta do Controlador	UINT
+ChannelSelectionInterval	21600	Intervalo entre as execuções do algoritmo de seleção de canal	SECONDS
+Alfa	0	Porcentagem da qualidade do último scan a ser utilizada na média ponderada do próximo	PERCENTAGE
+ScanInterval	600	Intervalo entre a execução de scans	SECONDS
+PowerControlInterval	800	Intervalo entre as execuções do algoritmo de controle de potência	SECONDS
+ConfigCheckInterval	400	Intervalo entre as análises de configurações	SECONDS
+STADumpInterval	180	Intervalo entre a obtenção de dados sobre os usuários de cada AP	SECONDS
+ServerIP	127.0.0.1	IP para comunicação entre interface Web e núcleo do Controlador	IP
+\.
+
+
+--
+-- TOC entry 2846 (class 0 OID 27335)
+-- Dependencies: 173
+-- Data for Name: Region; Type: TABLE DATA; Schema: public; Owner: controlador
+--
+
+COPY "Region" ("ID", "Description") FROM stdin;
+\.
+
+
+--
+-- TOC entry 2861 (class 0 OID 0)
+-- Dependencies: 174
+-- Name: Region_ID_seq; Type: SEQUENCE SET; Schema: public; Owner: controlador
+--
+
+SELECT pg_catalog.setval('"Region_ID_seq"', 0, true);
+
+
+--
+-- TOC entry 2848 (class 0 OID 27343)
+-- Dependencies: 175
+-- Data for Name: STAInfo; Type: TABLE DATA; Schema: public; Owner: controlador
+--
+
+COPY "STAInfo" ("MAC") FROM stdin;
+40:5F:BE:01:22:8B
+00:24:D6:53:41:32
+78:DD:08:C9:9D:B7
+C4:17:FE:2C:FC:C3
+50:CC:F8:62:31:98
+00:1C:BF:88:54:C3
+00:1F:E1:32:F1:72
+44:A7:CF:CF:81:08
+CC:52:AF:0E:90:6A
+B0:D0:9C:96:FC:16
+00:26:5E:76:23:28
+90:4C:E5:8C:36:41
+00:26:5E:7C:97:F9
+1C:4B:D6:CE:C5:3F
+44:A7:CF:30:E6:F3
+\.
+
+
+--
+-- TOC entry 2829 (class 2606 OID 27351)
+-- Name: Config_PK; Type: CONSTRAINT; Schema: public; Owner: controlador; Tablespace: 
+--
+
+ALTER TABLE ONLY "Config"
+    ADD CONSTRAINT "Config_PK" PRIMARY KEY ("Property");
+
+
+--
+-- TOC entry 2821 (class 2606 OID 27353)
+-- Name: PK_AP; Type: CONSTRAINT; Schema: public; Owner: controlador; Tablespace: 
+--
+
+ALTER TABLE ONLY "APInfo"
+    ADD CONSTRAINT "PK_AP" PRIMARY KEY ("MAC");
+
+
+--
+-- TOC entry 2825 (class 2606 OID 27355)
+-- Name: PK_APINFO_STAINFO; Type: CONSTRAINT; Schema: public; Owner: controlador; Tablespace: 
+--
+
+ALTER TABLE ONLY "APInfo_STAInfo"
+    ADD CONSTRAINT "PK_APINFO_STAINFO" PRIMARY KEY ("MAC_STA");
+
+
+--
+-- TOC entry 2823 (class 2606 OID 27357)
+-- Name: PK_APInfo_CellInfo; Type: CONSTRAINT; Schema: public; Owner: controlador; Tablespace: 
+--
+
+ALTER TABLE ONLY "APInfo_CellInfo"
+    ADD CONSTRAINT "PK_APInfo_CellInfo" PRIMARY KEY ("MAC_AP", "MAC_CellInfo");
+
+
+--
+-- TOC entry 2827 (class 2606 OID 27359)
+-- Name: PK_CellInfo; Type: CONSTRAINT; Schema: public; Owner: controlador; Tablespace: 
+--
+
+ALTER TABLE ONLY "CellInfo"
+    ADD CONSTRAINT "PK_CellInfo" PRIMARY KEY ("MAC");
+
+
+--
+-- TOC entry 2831 (class 2606 OID 27361)
+-- Name: PK_Region; Type: CONSTRAINT; Schema: public; Owner: controlador; Tablespace: 
+--
+
+ALTER TABLE ONLY "Region"
+    ADD CONSTRAINT "PK_Region" PRIMARY KEY ("ID");
+
+
+--
+-- TOC entry 2835 (class 2606 OID 27363)
+-- Name: PK_STA; Type: CONSTRAINT; Schema: public; Owner: controlador; Tablespace: 
+--
+
+ALTER TABLE ONLY "STAInfo"
+    ADD CONSTRAINT "PK_STA" PRIMARY KEY ("MAC");
+
+
+--
+-- TOC entry 2833 (class 2606 OID 27365)
+-- Name: UNIQUE_Description; Type: CONSTRAINT; Schema: public; Owner: controlador; Tablespace: 
+--
+
+ALTER TABLE ONLY "Region"
+    ADD CONSTRAINT "UNIQUE_Description" UNIQUE ("Description");
+
+
+--
+-- TOC entry 2839 (class 2606 OID 27366)
+-- Name: FK_AP; Type: FK CONSTRAINT; Schema: public; Owner: controlador
+--
+
+ALTER TABLE ONLY "APInfo_STAInfo"
+    ADD CONSTRAINT "FK_AP" FOREIGN KEY ("MAC_AP") REFERENCES "APInfo"("MAC");
+
+
+--
+-- TOC entry 2837 (class 2606 OID 27371)
+-- Name: FK_AP_APInfo_CellInfo; Type: FK CONSTRAINT; Schema: public; Owner: controlador
+--
+
+ALTER TABLE ONLY "APInfo_CellInfo"
+    ADD CONSTRAINT "FK_AP_APInfo_CellInfo" FOREIGN KEY ("MAC_AP") REFERENCES "APInfo"("MAC");
+
+
+--
+-- TOC entry 2838 (class 2606 OID 27376)
+-- Name: FK_Cell_APInfo_CellInfo; Type: FK CONSTRAINT; Schema: public; Owner: controlador
+--
+
+ALTER TABLE ONLY "APInfo_CellInfo"
+    ADD CONSTRAINT "FK_Cell_APInfo_CellInfo" FOREIGN KEY ("MAC_CellInfo") REFERENCES "CellInfo"("MAC");
+
+
+--
+-- TOC entry 2836 (class 2606 OID 27381)
+-- Name: FK_Region; Type: FK CONSTRAINT; Schema: public; Owner: controlador
+--
+
+ALTER TABLE ONLY "APInfo"
+    ADD CONSTRAINT "FK_Region" FOREIGN KEY ("Region") REFERENCES "Region"("ID");
+
+
+--
+-- TOC entry 2840 (class 2606 OID 27386)
+-- Name: FK_STA; Type: FK CONSTRAINT; Schema: public; Owner: controlador
+--
+
+ALTER TABLE ONLY "APInfo_STAInfo"
+    ADD CONSTRAINT "FK_STA" FOREIGN KEY ("MAC_STA") REFERENCES "STAInfo"("MAC");
+
+
+--
+-- TOC entry 2855 (class 0 OID 0)
+-- Dependencies: 6
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+-- Completed on 2013-06-28 12:08:02 BRT
+
+--
+-- PostgreSQL database dump complete
+--
+

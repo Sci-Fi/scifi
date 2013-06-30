@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : faces-config.xml
+    Created on : April 8, 2011, 1:51 PM
+    Author     : Felipe Rolim
+    Description:
+        Purpose of the document follows.
+-->
+
+<root>
+<managed-bean>
+   <managed-bean-name>JAPListBean</managed-bean-name>
+   <managed-bean-class>beans.JAPListBean</managed-bean-class>
+   <managed-bean-scope>session</managed-bean-scope>
+</managed-bean>
+
+<managed-bean>
+   <managed-bean-name>JPropertiesListBean</managed-bean-name>
+   <managed-bean-class>beans.JPropertiesListBean</managed-bean-class>
+   <managed-bean-scope>request</managed-bean-scope>
+</managed-bean>
+
+<managed-bean>
+   <managed-bean-name>JNewAPBean</managed-bean-name>
+   <managed-bean-class>beans.JNewAPBean</managed-bean-class>
+   <managed-bean-scope>request</managed-bean-scope>
+</managed-bean>
+
+<managed-bean>
+   <managed-bean-name>JRegionBean</managed-bean-name>
+   <managed-bean-class>beans.JRegionBean</managed-bean-class>
+   <managed-bean-scope>request</managed-bean-scope>
+</managed-bean>
+
+<managed-bean>
+   <managed-bean-name>JPropertyValidator</managed-bean-name>
+   <managed-bean-class>validators.JPropertyValidator</managed-bean-class>
+   <managed-bean-scope>request</managed-bean-scope>
+</managed-bean>
+
+<managed-bean>
+   <managed-bean-name>JAPInfoValidator</managed-bean-name>
+   <managed-bean-class>validators.JAPInfoValidator</managed-bean-class>
+   <managed-bean-scope>request</managed-bean-scope>
+</managed-bean>
+
+<managed-bean>
+   <managed-bean-name>JRegionValidator</managed-bean-name>
+   <managed-bean-class>validators.JRegionValidator</managed-bean-class>
+   <managed-bean-scope>request</managed-bean-scope>
+</managed-bean>
+
+<managed-bean>
+   <managed-bean-name>JControllerCommanderBean</managed-bean-name>
+   <managed-bean-class>beans.JControllerCommanderBean</managed-bean-class>
+   <managed-bean-scope>request</managed-bean-scope>
+</managed-bean>
+
+<managed-bean>
+ <managed-bean-name>JRowCounterBean</managed-bean-name>
+ <managed-bean-class>beans.JRowCounterBean</managed-bean-class>
+ <managed-bean-scope>request</managed-bean-scope>
+</managed-bean>
+
+</root>
