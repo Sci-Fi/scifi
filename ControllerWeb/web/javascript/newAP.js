@@ -15,7 +15,7 @@ function ShowInsertionStatus()
     {
         if(added == 0)
         {
-            alert("O ponto de acesso n√£o foi adicionado.");
+            alert("O ponto de acesso n„o foi adicionado.");
         }
     }
 }

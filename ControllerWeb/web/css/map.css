@@ -1,0 +1,398 @@
+#googleMap{
+    border: 1px dashed #C0C0C0;
+    position: relative;
+    width: auto;
+    height: 500px;
+    overflow: hidden;
+    margin-left: 4%;
+    margin-bottom: 10px;
+    margin-right: 4%;
+    z-index: 0;
+    clear: both;
+}
+
+
+#legenda {
+    border: 1px solid gray;
+    border-radius: 5px 5px 5px 5px;
+    clear: both;
+    float: right;
+    font-size: 10px;
+    line-height: 17px;
+    margin-bottom: 10px;
+    margin-left: 4%;
+    margin-right: 4%;
+    padding: 3px;
+}
+
+#legenda label {
+    font-size: 11px;
+    font-weight: bold;
+}
+
+#legenda ul {
+    margin-top: 5px;
+}
+
+#legenda ul li {
+    display: inline;
+    list-style: none outside none;
+    margin-right: 7px;
+}
+
+#legenda ul li img {
+    vertical-align: top;
+}
+
+.ir_ap {
+    text-decoration: none;
+}
+
+#treeviewMap {
+    margin-left: 4%;
+    margin-bottom: 10px;
+    margin-right: 4%;
+}
+
+#atualizar_status_aps:hover {
+    background-color: #EEE;
+}
+
+#atualizar_status_aps a {
+    text-decoration: none;
+    color: black;
+}
+
+#atualizar_status_aps {
+    background-color: white;
+    font-size: 13px;
+    font-weight: bold;
+    margin-left: -100px;
+    margin-top: 6px;
+    padding: 1px;
+    padding-top: 2px;
+    margin-right: 2px;
+    text-align: center;
+    cursor: pointer;
+}
+
+#fixPanel3 {
+    overflow: auto;
+    opacity: 0.8;
+    visibility: hidden;
+    border: 1px solid #000;
+    background-color: white;
+    width: 200px;
+    height: 400px;
+    font-size: 12px;
+    color:#000;
+    border-radius: 4px 4px 4px 4px;
+}
+
+#fixPanel2 {
+    background-image: url(../figuras/mapa/seta-prev.png);
+    border: 1px solid #000;
+    width: 25px;
+    height: 25px;
+    font-size: 12px;
+    padding-left:5px;
+    color:#FFFFFF;
+    border-radius: 4px 4px 4px 4px;
+    cursor: default;
+}
+
+#fixPanel2:hover {
+    cursor: pointer;
+}
+
+#fixPanel {
+    border: 1px solid #000;
+    background-color: gray;
+    width: 200px;
+    height: 30px;
+    font-size: 12px;
+    padding-left:5px;
+    color:#FFFFFF;
+    border-radius: 4px 4px 4px 4px;
+}
+
+#whatIsCheckReachable {
+    text-decoration: none;
+    font-size:16px;
+    margin-left: 8px;
+    font-weight: bold;
+    border: 0px none;
+    border-width:0;
+}
+
+#check_reachable {
+    clear: both;
+    float: left;
+}
+
+#optionsMap {
+    margin-left: 4%;
+    margin-bottom: 5px;
+    margin-right: 4%;
+}
+
+#filterSearch_Map {
+    /*clear:both;*/
+    float: right;
+}
+
+#searchMACAP_Map {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+#searchAP_Map {
+    font-style: italic;
+    color: #C0C0C0;
+}
+
+#infoSearchAP_Map {
+    color: #CC0000;
+    text-align: right;
+    float:right;
+    width: auto;
+    font-weight: bold;
+    font-size: 10px;
+    margin-bottom: 5px;
+    margin-top:3px;
+    clear: both;
+}
+
+#menu{
+    background-color: #FFFFFF;
+    width:175px;
+    height:0px;
+    padding:0px;
+    border:1px;
+    cursor:pointer;
+    border-left:1px solid #cccccc;
+    border-top:1px solid #cccccc;
+    border-right:1px solid #676767;
+    border-bottom:1px solid #676767;
+
+}
+#menu .item{
+    font-family: arial,helvetica,sans-serif;
+    font-size: 12px;
+    text-align:left;
+    line-height: 40px;
+    border-left:0px;
+    width: 185px;
+    border-top:0px;
+    border-right:0px;
+    padding-left:30px;
+    background-repeat: no-repeat;
+    background-position: 4px center;
+    background-color: #FFFFFF;
+}
+ .item.markHere{
+    background-image: url(../figuras/mapa/white-wifi.png);
+}
+
+#menu .item.target{
+    background-image: url(../figuras/mapa/target.png);
+}
+
+#menu .item.home{
+    background-image: url(../figuras/mapa/home.png);
+}
+
+#menu .item.itemA{
+    background-image: url(../figuras/icon_greenA.png);
+}
+#menu .item.itemB{
+    background-image: url(../figuras/icon_greenB.png);
+}
+#menu .item.centerHere{
+    background-image: url(../figuras/mapa/here.png);
+}
+#menu .item.hover{
+    background-color: #d6e9f8;
+}
+#menu .item.separator{
+    /*border-bottom:1px solid #cccccc;*/
+}
+
+a {
+    text-decoration: none;
+}
+
+.listCommandAP_Map {
+    width:auto;
+    height:auto;
+    margin-bottom: 10px;
+}
+
+.listaComandos li {
+    position: relative;
+
+    display: inline;
+    margin-right:5px;
+    margin-bottom:10px;
+}
+
+.listaComandos {
+    vertical-align: middle;
+}
+
+.listaComandos li .habilitado img {
+    border-width: 0px;    
+}
+
+.listaComandos li .reiniciar_ap {
+    background-image: url(../figuras/reiniciar.png);
+    background-repeat: no-repeat;
+    float: right;
+    margin-left: 4px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.listaComandos li .reiniciar_ap:hover {
+    background-image: url(../figuras/reiniciarhover.png);
+    cursor: pointer;
+}
+
+.listaComandos li .reiniciar_ap_desabilitado {
+    background-image: url(../figuras/reiniciar_desabilitado.png);
+    background-repeat: no-repeat;
+    float: right;
+    margin-left: 4px;
+    width: 30px;
+    height: 30px;
+    cursor: default;
+}
+
+.listaComandos li .remover_ap {
+    background-image: url(../figuras/remover.png);
+    background-repeat: no-repeat;
+    float: right;
+    margin-left: 4px;
+    width: 30px;
+    height: 30px;
+}
+
+.listaComandos li .remover_ap:hover {
+    background-image: url(../figuras/removerhover.png);
+}
+
+.listaComandos li .scan_ap {
+    background-image: url(../figuras/mapa/scan_icon.png);
+    background-repeat: no-repeat;
+    float: right;
+    margin-left: 4px;
+    width: 30px;
+    height: 30px;
+}
+
+.listaComandos li .scan_ap:hover {
+    background-image: url(../figuras/mapa/scan_iconhover.png);
+}
+
+.listaComandos li .ap_mrtg {
+    background-image: url(../figuras/mapa/mrtg_icon.png);
+    background-repeat: no-repeat;
+    float: right;
+    margin-left: 4px;
+    margin-right: 4px;
+    width: 30px;
+    height: 30px;
+}
+
+.listaComandos li .ap_mrtg:hover {
+    background-image: url(../figuras/mapa/mrtg_iconhover.png);
+}
+
+.listaComandos li .habilitado {
+    float: right;
+}
+
+.listaDados {    
+    list-style: none;
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+.add_marker_listaDados {
+    list-style: none;
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+.listCommandAP_Map hr {
+    margin-top: 10px;
+    margin-bottom: 6px;
+}
+
+.listCommandAP_Map a{
+    text-decoration: none;
+}
+
+.listCommandAP_Map_posicao_atual {
+    margin-bottom: 13px;
+}
+
+.listaDados #ip, .listaDados #mac, .listaDados #enabled {
+    font-weight: bold;
+}
+
+.listaDados #info_controller {
+    /*margin-top: 25px;*/
+}
+
+.listaDados #info_controller label {    
+    font-size: 11px;
+    font-weight: bold;
+    visibility: hidden;
+}
+
+.listaDados #mac {
+    margin-bottom: 3px;
+}
+
+.listaDados #enabled {
+    margin-top: 5px;
+}
+
+.jump-link {
+    font: normal bold;  /*fonte do link - define o tamanho da letra, fonte da letra etc */
+    margin: 0px;
+}
+
+a.jump-link:hover {
+    box-shadow: 0 0 5px #333333;
+}
+
+a.jump-link:active {
+    background: none repeat scroll 0 0 #cccccc;
+    border: 1px solid #000000;
+    box-shadow: 0 0 0 #888888;
+}
+
+a.jump-link:link, a.jump-link:visited {
+    background: -moz-linear-gradient(center top , #FBFBFB, #E3E3E3) repeat scroll 0 0 transparent;
+    border: 1px solid #DDDDDD;
+    border-radius: 5px 5px 5px 5px;
+    color: #000000;
+    outline: medium none;
+    padding: 5px;
+    text-decoration: none;
+    float:left;
+    /*margin-right: 5px;
+    margin-left: 5px;
+    margin-bottom: 5px;*/
+    margin: 2px 5px 5px 5px;
+}
+
+.desabilitados {
+    background-image: url(../figuras/desabilitado.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 70px;
+}

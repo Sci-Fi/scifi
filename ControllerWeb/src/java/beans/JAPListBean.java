@@ -20,135 +20,164 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 /**
- * Este é um java bean que representa a lista de APs controlados.
+ * Este ï¿½ um java bean que representa a lista de APs controlados.
  * @author Felipe Rolim
  */
 @ManagedBean
 @SessionScoped
-public class JAPListBean
+public class JAPListBean extends JAPInfo
 {
-    private List listAP = null;
+
+    static private List listAP = null;
+    private List listConnections = null;
     private List listScan = null;
     private Integer numberOfUsers;
     private String userLocation = null;
     private String selectedMAC = "";
     private int sortType = JAPInfoDBManager.IP;
     private boolean sortAscending = true;
+    private ArrayList<JAPInfo> listUpdatedRegionAP = new ArrayList<JAPInfo>();
 
     public JAPListBean()
     {
-
+        super("", "", 0, "", "", -1, -1, 10, 25, 1, null, 0, 1, 0.00, 0.00, 0);
     }
+
     /**
-     * Este método busca no banco de dados a lista de APs controlados.
+     * Este mï¿½todo busca no banco de dados a lista de APs controlados.
      * @return Retorna a lista de APs.
      */
     public List getListAP()
     {
-        //a lista de pontos de acesso é sempre carregada do banco, apesar do escopo de sessão
-        //deste Bean, pois o controlador também altera informações sobre os APs,
-        //como o canal, potência, etc.
-        
+        //a lista de pontos de acesso ï¿½ sempre carregada do banco, apesar do escopo de sessï¿½o
+        //deste Bean, pois o controlador tambï¿½m altera informaï¿½ï¿½es sobre os APs,
+        //como o canal, potï¿½ncia, etc.
+
         listAP = JAPInfoDBManager.getAPListFromDB(sortType, sortAscending);
-            
+
         return listAP;
     }
-    
-     /**
-     * Este método busca no banco de dados a lista de APs controlados.
+
+    public List getListConnections()
+    {
+        //a lista de pontos de acesso ï¿½ sempre carregada do banco, apesar do escopo de sessï¿½o
+        //deste Bean, pois o controlador tambï¿½m altera informaï¿½ï¿½es sobre os APs,
+        //como o canal, potï¿½ncia, etc.
+
+        //listConnections = JAPInfoDBManager.getHistoricalConnections(sortAscending);
+
+        return listConnections;
+    }
+
+    /**
+     * Este mï¿½todo busca no banco de dados a lista de APs controlados.
      * @return Retorna a lista de APs.
      */
     public List getListCellInfo()
-    {        
-        Map<String,String> mapParameter = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+    {
+        Map<String, String> mapParameter = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 
-        // pegando o MAC da estação.
+        // pegando o MAC da estaï¿½ï¿½o.
         String strMAC = mapParameter.get("MAC");
 
-        if(strMAC != null && !strMAC.isEmpty())
-        {  
-           listScan = JAPInfoDBManager.getScanInfoFromDB(strMAC);
+        if (strMAC != null && !strMAC.isEmpty())
+        {
+            listScan = JAPInfoDBManager.getScanInfoFromDB(strMAC);
         }
-  
+
         return listScan;
     }
-    
-     /**
-     * Método que retorna o MAC informado na queryString
+
+    /**
+     * Mï¿½todo que retorna o MAC informado na queryString
      * @return Retorna a lista de APs.
      */
     public String getMACFromQueryString()
-    {        
-        Map<String,String> mapParameter = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+    {
+        Map<String, String> mapParameter = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 
-        // pegando o MAC da estação.
+        // pegando o MAC da estaï¿½ï¿½o.
         String strMAC = "";
-        
+
         String strTemp = mapParameter.get("MAC");
 
-        if(strTemp != null && !strTemp.isEmpty())
-        {  
-           strMAC = strTemp;
+        if (strTemp != null && !strTemp.isEmpty())
+        {
+            strMAC = strTemp;
         }
-  
+
         return strMAC;
     }
-    
-     /**
-     * Método que retorna o MAC informado na queryString
+
+    /**
+     * Mï¿½todo que retorna o MAC informado na queryString
      * @return Retorna a lista de APs.
      */
     public String getIPFromQueryString()
-    {        
-        Map<String,String> mapParameter = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        
+    {
+        Map<String, String> mapParameter = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+
         String strTemp = mapParameter.get("IP");
-        
-        if(strTemp != null && !strTemp.isEmpty())
+
+        if (strTemp != null && !strTemp.isEmpty())
         {
             return strTemp;
         }
-        
+
         strTemp = mapParameter.get("MAC");
 
-        if(strTemp != null && !strTemp.isEmpty())
-        {  
-           JAPInfo apInfo = getAPInfoFromMAC(strTemp);
-            
-           if(apInfo != null)
-           {
-               return apInfo.getIP();
-           }
+        if (strTemp != null && !strTemp.isEmpty())
+        {
+            JAPInfo apInfo = getAPInfoFromMAC(strTemp);
+
+            if (apInfo != null)
+            {
+                return apInfo.getIP();
+            }
         }
-     
+
         return "";
     }
-    
-     /**
+
+    /**
      * Busca o objeto da classe JAPInfo correspondente ao MAC fornecido
-     * @return Retorna o objeto APInfo ou null caso não exista.
+     * @return Retorna o objeto APInfo ou null caso nï¿½o exista.
      */
     protected JAPInfo getAPInfoFromMAC(String strMAC)
     {
-        for(int nInd = 0; nInd < listAP.size(); nInd++)
+        for (int nInd = 0; nInd < listAP.size(); nInd++)
         {
-            if(((JAPInfo)listAP.get(nInd)).getMAC().equals(strMAC))
+            if (((JAPInfo) listAP.get(nInd)).getMAC().equals(strMAC))
             {
-                return ((JAPInfo)listAP.get(nInd));
+                return ((JAPInfo) listAP.get(nInd));
             }
         }
-        
+
         return null;
     }
-    
+
+    public int getRowIndex(String strMAC) {
+    	for (int nInd = 0; nInd < listAP.size(); nInd++)
+        {
+            if (((JAPInfo) listAP.get(nInd)).getMAC().equals(strMAC))
+            {
+                return nInd;
+            }
+        }
+
+        return 0;
+    }
+
     /**
-     * Método que atualiza no banco de dados as informações dos APs controlados.
-     * A lista atual está armazenada na variável listAP.
-     * A variável listAP é atualizada conforme o usurário insira, através da interface, novos valores para os parâmetros dos APs e salve as informações.
+     * Mï¿½todo que atualiza no banco de dados as informaï¿½ï¿½es dos APs controlados.
+     * A lista atual estï¿½ armazenada na variï¿½vel listAP.
+     * A variï¿½vel listAP ï¿½ atualizada conforme o usurï¿½rio insira, atravï¿½s da interface, novos valores para os parï¿½metros dos APs e salve as informaï¿½ï¿½es.
+     * updateRegionDefaultAP() chama o mï¿½todo que atualiza em cada AP, o txt que informa a regiï¿½o alocada a ele. O txt ï¿½ /tmp/Regiao_alocada
      */
     public void updateList()
     {
-        if(JAPInfoDBManager.updateAPList(listAP))
+
+        if (JAPInfoDBManager.updateAPList(listAP))
         {
             try
             {
@@ -161,37 +190,83 @@ public class JAPListBean
         }
     }
 
-    /**
-     * Método que descreve a ação a ser tomada quando o evento de "clicar o botão de excluir um AP" na interface de usuário ocorre.
-     * A ação, neste caso, é a remoção do ponto de acesso determinado pela variável MACtoRemove.
-     */
-    public void removeAP()
-    {
-        JAPInfoDBManager.removeAP(selectedMAC);
 
-        for(int nInd = 0; nInd < listAP.size(); nInd++)
+    //NAO USADA
+    public void updateAP()
+    {
+        if (JAPInfoDBManager.updateAPList(MAC, IP, location, listTxPower, underloadThreshold, overloadThreshold, region, latitude, longitude))
         {
-            if(((JAPInfo)listAP.get(nInd)).getMAC().equals(selectedMAC))
+            try
             {
-                listAP.remove(listAP.get(nInd));
-                
-                break;
+                FacesContext.getCurrentInstance().getExternalContext().redirect("ap_info.jsf");
+
+                //AQUI IRÃ ATUALIZAR A REGIAO DO TXT DOS APs
+            }
+            catch (IOException ex)
+            {
+                Logger.getLogger(JAPListBean.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
-        try 
-        {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("ap_info.jsf");
-        } 
-        catch (IOException ex) 
-        {
-            Logger.getLogger(JNewAPBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
+
     /**
-     * Método que retorna o nÃºmero de estações conectadas a um AP.
-     * Este valor fica guardado na variável numberOfUsers.
-     * @return Retorna o nÃºmero de estações associadas a um AP.
+     * Mï¿½todo que descreve a aï¿½ï¿½o a ser tomada quando o evento de "clicar o botï¿½o de excluir um AP" na interface de usuï¿½rio ocorre.
+     * A aï¿½ï¿½o, neste caso, ï¿½ a remoï¿½ï¿½o do ponto de acesso determinado pela variï¿½vel MACtoRemove.
+     */
+//    public void removeAP()
+//    {
+//        JAPInfoDBManager.removeAP(selectedMAC);
+//
+//        for (int nInd = 0; nInd < listAP.size(); nInd++)
+//        {
+//            if (((JAPInfo) listAP.get(nInd)).getMAC().equals(selectedMAC))
+//            {
+//                listAP.remove(listAP.get(nInd));
+//
+//                break;
+//            }
+//        }
+//
+//        try
+//        {
+//            FacesContext.getCurrentInstance().getExternalContext().redirect("ap_info.jsf");
+//        }
+//        catch (IOException ex)
+//        {
+//            Logger.getLogger(JNewAPBean.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
+
+    /**
+     * Mï¿½todo que descreve a aï¿½ï¿½o a ser tomada quando o evento de "clicar o botï¿½o de excluir um AP" na interface de usuï¿½rio ocorre.
+     * A aï¿½ï¿½o, neste caso, ï¿½ a remoï¿½ï¿½o do ponto de acesso determinado pela variï¿½vel MACtoRemove.
+     */
+    public boolean removeAP(String MAC)
+    {
+        boolean bReturn = JAPInfoDBManager.removeAP(MAC);
+
+//        if (bReturn)
+//        {
+            //atualizar lista de APs
+            
+//            for (int nInd = 0; nInd < listAP.size(); nInd++)
+//            {
+//                if (((JAPInfo) listAP.get(nInd)).getMAC().equals(MAC))
+//                {
+//                    listAP.remove(listAP.get(nInd));
+//
+//                    break;
+//                }
+//            }
+//        }
+
+        return bReturn;
+    }
+
+    /**
+     * Mï¿½todo que retorna o nÃºmero de estaï¿½ï¿½es conectadas a um AP.
+     * Este valor fica guardado na variï¿½vel numberOfUsers.
+     * @return Retorna o nÃºmero de estaï¿½ï¿½es associadas a um AP.
      */
     public Integer getNumberOfUsers()
     {
@@ -204,24 +279,66 @@ public class JAPListBean
 
         return numberOfUsers;
     }
-     /**
-     * Método que habilita o AP caso esteja desabilitado ou vice-versa.
+
+    /**
+     * Mï¿½todo que habilita o AP caso esteja desabilitado ou vice-versa.
      */
-    public void enableAP()
+//    public void enableAP()
+//    {
+//        JAPInfo apInfo = getAPInfoFromMAC(selectedMAC);
+//
+//        if (apInfo != null)
+//        {
+//			//Quando atualizar, enviar um comando para o controlador, informando a atualizaç£¯.
+//            JControllerCommanderBean commandBean = new JControllerCommanderBean();
+//            commandBean.updateEnabled(selectedMAC, (!apInfo.getEnabled()) ? 1 : 0, apInfo.getRegion());
+//        }
+//
+//    }
+
+    /**
+     * Mï¿½todo que habilita o AP caso esteja desabilitado ou vice-versa.
+     */
+    public int enableAP(String MAC, int nEnabled, int nRegion)
+    {
+//        return (new JControllerCommanderBean().updateEnabled(MAC, nEnabled, nRegion));
+        boolean enabled = (nEnabled != 0);
+        
+        if(JAPInfoDBManager.enableAP(MAC, enabled))
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    /**
+     * Mï¿½todo que verifica se o AP estÃ¡ habilitado ou nÃ£o, se estÃ¡ comunicÃ¡vel ou nÃ£o para que o reboot possa ser habilitado.
+     */
+    public void rebootAP()
     {
         JAPInfo apInfo = getAPInfoFromMAC(selectedMAC);
-        
-        if(apInfo != null)
+
+        if (apInfo != null)
         {
-            if(JAPInfoDBManager.enableAP(selectedMAC, !apInfo.getEnabled()))
-            {
-                apInfo.setEnabled(!apInfo.getEnabled());
-            }
+            JControllerCommanderBean commandBean = new JControllerCommanderBean();
+            commandBean.rebootAP();
         }
-        
+
     }
+
     /**
-     * Monta a string que é utilizada para preencher o estilo da linha para cada ponto de acesso.
+     * Mï¿½todo que verifica se o AP estÃ¡ habilitado ou nÃ£o, se estÃ¡ comunicÃ¡vel ou nÃ£o para que o reboot possa ser habilitado.
+     */
+    public int rebootAP(String MAC, int nRegion)
+    {
+        return (new JControllerCommanderBean().rebootAP(MAC, nRegion));
+    }
+
+    /**
+     * Monta a string que ï¿½ utilizada para preencher o estilo da linha para cada ponto de acesso.
      * O estilo preenche com cores as linhas da tabela de pontos de acesso.
      * Existem 3 cores distintas. Cada cor representa o nÃ­vel de carga do AP.
      * @return Retorna uma string contendo os nomes dos estilos (low, normal ou full) separados por vÃ­rgula.
@@ -232,21 +349,28 @@ public class JAPListBean
 
         for (int nInd = 0; nInd < listAP.size(); nInd++)
         {
-            switch(((JAPInfo) listAP.get(nInd)).getLoadStatus())
+            switch (((JAPInfo) listAP.get(nInd)).getLoadStatus())
             {
-                case JAPInfo.STATUS_LOW: strClass += "low,"; break;
+                case JAPInfo.STATUS_LOW:
+                    strClass += "low,";
+                    break;
 
-                case JAPInfo.STATUS_NORMAL: strClass += "normal,"; break;
+                case JAPInfo.STATUS_NORMAL:
+                    strClass += "normal,";
+                    break;
 
-                case JAPInfo.STATUS_FULL: strClass += "full,"; break;
+                case JAPInfo.STATUS_FULL:
+                    strClass += "full,";
+                    break;
             }
         }
 
         return strClass;
     }
+
     /**
-     * Monta a string que é utilizada para preencher o estilo da linha para cada ponto de acesso, indicando 
-     * se o AP está desabilitado ou não e se sua conexão cabeada com o controlador está funcionando.
+     * Monta a string que ï¿½ utilizada para preencher o estilo da linha para cada ponto de acesso, indicando 
+     * se o AP estï¿½ desabilitado ou nï¿½o e se sua conexï¿½o cabeada com o controlador estï¿½ funcionando.
      * @return Retorna uma string contendo os nomes dos estilos (enabled ou disabled) separados por vÃ­rgula.
      */
     public String getRowColorEnabled()
@@ -255,31 +379,54 @@ public class JAPListBean
 
         for (int nInd = 0; nInd < listAP.size(); nInd++)
         {
-            // se a conexão entre AP e controlador não está funcionando
-            if(!(((JAPInfo) listAP.get(nInd)).getReachable()))
+            if (((JAPInfo) listAP.get(nInd)).getEnabled())
             {
-                strClass += "unreachable,";
-            }
-            // se a conexão está funcionando        
-            else
-            {
-                // se o AP está habilitado
-                if(((JAPInfo) listAP.get(nInd)).getEnabled())
+                if (!(((JAPInfo) listAP.get(nInd)).getReachable()))
                 {
-                    strClass += "enabled,";
+                    // se a conexï¿½o entre AP e controlador nï¿½o estï¿½ funcionando
+                    strClass += "unreachable,";
                 }
-                // se não está habilitado
+                // se a conexï¿½o estï¿½ funcionando
                 else
                 {
-                    strClass += "disabled,";
+                    // se o AP estï¿½ habilitado
+                    strClass += "enabled,";
                 }
+            }
+            // se nï¿½o estï¿½ habilitado
+            else
+            {
+                strClass += "disabled,";
             }
         }
 
         return strClass;
-    }    
-     /**
-     * Monta a string que é utilizada para preencher o estilo da linha para a tabela de scan.
+    }
+
+    /**
+     * Habilita e desabilita o botÃ£o Reboot.
+     * @return Retorna uma string contendo os nomes dos estilos (enabled ou disabled) separados por vÃ­rgula.
+     */
+    public String getRebootEnabled()
+    {
+        String strClass = new String();
+
+        JAPInfo apInfo = getAPInfoFromMAC(selectedMAC);
+        strClass = "reiniciar_desabilitar";
+
+        if (apInfo != null)
+        {
+            if (apInfo.getEnabled() && apInfo.getReachable())
+            {
+                strClass = "reiniciar";
+            }
+        }
+
+        return strClass;
+    }
+
+    /**
+     * Monta a string que ï¿½ utilizada para preencher o estilo da linha para a tabela de scan.
      * As linhas marcadas em verde indicam os pontos da rede SciFi.
      * @return Retorna uma string contendo os nomes dos estilos separados por vÃ­rgula.
      */
@@ -290,56 +437,60 @@ public class JAPListBean
         for (int nInd = 0; nInd < listScan.size(); nInd++)
         {
             String strMACTemp = ((JCellInfo) listScan.get(nInd)).getMAC();
-            
-            if(isMACOnTheList(strMACTemp, (ArrayList<JAPInfo>) listAP))
+
+            if (listAP != null)
             {
-                strClass += "highlight,";
-            }
-            else
-            {
-                strClass += " ,";
+                if (isMACOnTheList(strMACTemp, (ArrayList<JAPInfo>) listAP))
+                {
+                    strClass += "highlight,";
+                }
+                else
+                {
+                    strClass += " ,";
+                }
             }
         }
 
         return strClass;
     }
+
     /**
-     * Método que preenche a variável userLocation com a localização do AP ao qual uma determinada estação está associada e a retorna.
-     * @return Retorna a localização do AP ao qual a estação está associada.
+     * Mï¿½todo que preenche a variï¿½vel userLocation com a localizaï¿½ï¿½o do AP ao qual uma determinada estaï¿½ï¿½o estï¿½ associada e a retorna.
+     * @return Retorna a localizaï¿½ï¿½o do AP ao qual a estaï¿½ï¿½o estï¿½ associada.
      */
     public String getUserLocation()
     {
-        if(userLocation == null)
+        if (userLocation == null)
         {
-            Map<String,String> mapParameter = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+            Map<String, String> mapParameter = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 
-            // pegando o MAC da estação.
+            // pegando o MAC da estaï¿½ï¿½o.
             String strMAC = mapParameter.get("MAC");
 
-            if(strMAC != null && !strMAC.isEmpty())
-            {   
-                // pegando a localização da estação.
+            if (strMAC != null && !strMAC.isEmpty())
+            {
+                // pegando a localizaï¿½ï¿½o da estaï¿½ï¿½o.
                 userLocation = JAPInfoDBManager.getSTALocation(strMAC);
             }
             else
             {
 
-                userLocation =  "";
+                userLocation = "";
             }
         }
-        
+
         return userLocation;
     }
-    
-     /**
-     * Método chamado no clique do link de ordenação por IP.
+
+    /**
+     * Mï¿½todo chamado no clique do link de ordenaï¿½ï¿½o por IP.
      */
     public void sortByIPAction()
     {
-        if(sortType != JAPInfoDBManager.IP)
+        if (sortType != JAPInfoDBManager.IP)
         {
             setSortAscending(true);
-            
+
             sortType = JAPInfoDBManager.IP;
         }
         else
@@ -347,33 +498,33 @@ public class JAPListBean
             setSortAscending(!isSortAscending());
         }
     }
-    
+
     /**
-     * Método chamado no clique do link de ordenação por MAC.
+     * Mï¿½todo chamado no clique do link de ordenaï¿½ï¿½o por MAC.
      */
     public void sortByMACAction()
     {
-        if(sortType != JAPInfoDBManager.MAC)
+        if (sortType != JAPInfoDBManager.MAC)
         {
             setSortAscending(true);
-            
-            sortType = JAPInfoDBManager.MAC;;
+
+            sortType = JAPInfoDBManager.MAC;
         }
         else
         {
             setSortAscending(!isSortAscending());
         }
     }
-    
+
     /**
-     * Método chamado no clique do link de ordenação pela localização.
+     * Mï¿½todo chamado no clique do link de ordenaï¿½ï¿½o pela localizaï¿½ï¿½o.
      */
     public void sortByLocationAction()
     {
-        if(sortType != JAPInfoDBManager.LOCATION)
+        if (sortType != JAPInfoDBManager.LOCATION)
         {
             setSortAscending(true);
-            
+
             sortType = JAPInfoDBManager.LOCATION;
         }
         else
@@ -381,16 +532,16 @@ public class JAPListBean
             setSortAscending(!isSortAscending());
         }
     }
-    
+
     /**
-     * Método chamado no clique do link de ordenação pela localização.
+     * Mï¿½todo chamado no clique do link de ordenaï¿½ï¿½o pela localizaï¿½ï¿½o.
      */
     public void sortByRegionAction()
-    {        
-        if(sortType != JAPInfoDBManager.REGIONNAME)
+    {
+        if (sortType != JAPInfoDBManager.REGIONNAME)
         {
             setSortAscending(true);
-            
+
             sortType = JAPInfoDBManager.REGIONNAME;
         }
         else
@@ -398,16 +549,16 @@ public class JAPListBean
             setSortAscending(!isSortAscending());
         }
     }
-    
-     /**
-     * Método chamado no clique do link de ordenação por canal.
+
+    /**
+     * Mï¿½todo chamado no clique do link de ordenaï¿½ï¿½o por canal.
      */
     public void sortByChannelAction()
-    {        
-        if(sortType != JAPInfoDBManager.CHANNEL)
+    {
+        if (sortType != JAPInfoDBManager.CHANNEL)
         {
             setSortAscending(true);
-            
+
             sortType = JAPInfoDBManager.CHANNEL;
         }
         else
@@ -415,16 +566,16 @@ public class JAPListBean
             setSortAscending(!isSortAscending());
         }
     }
-    
-     /**
-     * Método chamado no clique do link de ordenação pela lista de potência.
+
+    /**
+     * Mï¿½todo chamado no clique do link de ordenaï¿½ï¿½o pela lista de potï¿½ncia.
      */
     public void sortByTxPowerListAction()
     {
-        if(sortType != JAPInfoDBManager.TXPOWERLIST)
+        if (sortType != JAPInfoDBManager.TXPOWERLIST)
         {
             setSortAscending(true);
-            
+
             sortType = JAPInfoDBManager.TXPOWERLIST;
         }
         else
@@ -432,16 +583,16 @@ public class JAPListBean
             setSortAscending(!isSortAscending());
         }
     }
-    
-     /**
-     * Método chamado no clique do link de ordenação pela potência.
+
+    /**
+     * Mï¿½todo chamado no clique do link de ordenaï¿½ï¿½o pela potï¿½ncia.
      */
     public void sortByPowerAction()
-    {        
-        if(sortType != JAPInfoDBManager.CURTXPOWER)
+    {
+        if (sortType != JAPInfoDBManager.CURTXPOWER)
         {
             setSortAscending(true);
-            
+
             sortType = JAPInfoDBManager.CURTXPOWER;
         }
         else
@@ -449,16 +600,16 @@ public class JAPListBean
             setSortAscending(!isSortAscending());
         }
     }
-    
-     /**
-     * Método chamado no clique do link de ordenação pelo nÃºmero de usuários.
+
+    /**
+     * Mï¿½todo chamado no clique do link de ordenaï¿½ï¿½o pelo nÃºmero de usuï¿½rios.
      */
     public void sortByNumberOfUsersAction()
-    {        
-        if(sortType != JAPInfoDBManager.NUMBEROFUSERS)
+    {
+        if (sortType != JAPInfoDBManager.NUMBEROFUSERS)
         {
             setSortAscending(true);
-            
+
             sortType = JAPInfoDBManager.NUMBEROFUSERS;
         }
         else
@@ -466,16 +617,16 @@ public class JAPListBean
             setSortAscending(!isSortAscending());
         }
     }
-    
-     /**
-     * Método chamado no clique do link de ordenação pela carga do ponto de acesso.
+
+    /**
+     * Mï¿½todo chamado no clique do link de ordenaï¿½ï¿½o pela carga do ponto de acesso.
      */
     public void sortByStatusAction()
-    {        
-        if(sortType != JAPInfoDBManager.LOAD)
+    {
+        if (sortType != JAPInfoDBManager.LOAD)
         {
             setSortAscending(true);
-            
+
             sortType = JAPInfoDBManager.LOAD;
         }
         else
@@ -483,16 +634,16 @@ public class JAPListBean
             setSortAscending(!isSortAscending());
         }
     }
-    
-     /**
-     * Método chamado no clique do link de ordenação pelo limite de carga baixa.
+
+    /**
+     * Mï¿½todo chamado no clique do link de ordenaï¿½ï¿½o pelo limite de carga baixa.
      */
     public void sortByUnderloadThresholdAction()
     {
-        if(sortType != JAPInfoDBManager.UNDERLOAD)
+        if (sortType != JAPInfoDBManager.UNDERLOAD)
         {
             setSortAscending(true);
-            
+
             sortType = JAPInfoDBManager.UNDERLOAD;
         }
         else
@@ -500,16 +651,16 @@ public class JAPListBean
             setSortAscending(!isSortAscending());
         }
     }
-    
-     /**
-     * Método chamado no clique do link de ordenação pelo limite de sobrecarga.
+
+    /**
+     * Mï¿½todo chamado no clique do link de ordenaï¿½ï¿½o pelo limite de sobrecarga.
      */
     public void sortByOverloadThresholdAction()
-    {        
-        if(sortType != JAPInfoDBManager.OVERLOAD)
+    {
+        if (sortType != JAPInfoDBManager.OVERLOAD)
         {
             setSortAscending(true);
-            
+
             sortType = JAPInfoDBManager.OVERLOAD;
         }
         else
@@ -517,9 +668,44 @@ public class JAPListBean
             setSortAscending(!isSortAscending());
         }
     }
+
     /**
-     * Método chamado pelo clique de um botão que executa alguma operação que necessita saber o MAC selecionado.
-     * @param event Evento que gera a chamada deste método.
+     * Mï¿½todo chamado no clique do link de ordenaï¿½ï¿½o pela latitude.
+     */
+    public void sortByLatitude()
+    {
+        if (sortType != JAPInfoDBManager.LATITUDE)
+        {
+            setSortAscending(true);
+
+            sortType = JAPInfoDBManager.LATITUDE;
+        }
+        else
+        {
+            setSortAscending(!isSortAscending());
+        }
+    }
+
+    /**
+     * Mï¿½todo chamado no clique do link de ordenaï¿½ï¿½o pela longitude.
+     */
+    public void sortByLongitude()
+    {
+        if (sortType != JAPInfoDBManager.LONGITUDE)
+        {
+            setSortAscending(true);
+
+            sortType = JAPInfoDBManager.LONGITUDE;
+        }
+        else
+        {
+            setSortAscending(!isSortAscending());
+        }
+    }
+
+    /**
+     * Mï¿½todo chamado pelo clique de um botï¿½o que executa alguma operaï¿½ï¿½o que necessita saber o MAC selecionado.
+     * @param event Evento que gera a chamada deste mï¿½todo.
      */
     public void selectMAC(ActionEvent event)
     {
@@ -527,7 +713,7 @@ public class JAPListBean
     }
 
     /**
-     * @return Retorna se a ordenação é ascendente
+     * @return Retorna se a ordenaï¿½ï¿½o ï¿½ ascendente
      */
     public boolean isSortAscending()
     {
@@ -535,29 +721,29 @@ public class JAPListBean
     }
 
     /**
-     * @param bAscending define se a ordenação será ascendente ou descendente
+     * @param bAscending define se a ordenaï¿½ï¿½o serï¿½ ascendente ou descendente
      */
     public void setSortAscending(boolean bAscending)
     {
         sortAscending = bAscending;
     }
-    
+
     /**
-    * O objetivo deste método é verificar se um AP com um determinado MAC se encontra em uma lista de APs.
-     
-   @param  strMAC  MAC do AP procurado.
+     * O objetivo deste mï¿½todo ï¿½ verificar se um AP com um determinado MAC se encontra em uma lista de APs.
+
+    @param  strMAC  MAC do AP procurado.
      * 
-   @param  listAP Lista de APs em que o AP com o MAC determinado no primeiro parâmetro será procurado.
+    @param  listAP Lista de APs em que o AP com o MAC determinado no primeiro parï¿½metro serï¿½ procurado.
      *   
-   @return Retorna true se o AP com o MAC procurado (parâmetro 1) está na lista de de APs (parâmetro 2).
-    */     
+    @return Retorna true se o AP com o MAC procurado (parï¿½metro 1) estï¿½ na lista de de APs (parï¿½metro 2).
+     */
     protected boolean isMACOnTheList(String strMAC, ArrayList<JAPInfo> listAP)
     {
         strMAC = strMAC.toUpperCase();
-        
+
         for (int nInd = 0; nInd < listAP.size(); nInd++)
         {
-            // se o MAC do AP em questão é igual ao MAC do parâmetro de entrada, retorna true
+            // se o MAC do AP em questï¿½o ï¿½ igual ao MAC do parï¿½metro de entrada, retorna true
             if (listAP.get(nInd).getMAC().equals(strMAC))
             {
                 return true;
@@ -566,12 +752,12 @@ public class JAPListBean
 
         return false;
     }
-    
+
     /**
-    * Busca todas as regiões existentes no banco de dados
+     * Busca todas as regiï¿½es existentes no banco de dados
      *   
-   @return Retorna uma lista com todas as regiões.
-    */
+    @return Retorna uma lista com todas as regiï¿½es.
+     */
     public Collection getRegions()
     {
         return JAPInfoDBManager.loadRegions();

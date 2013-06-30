@@ -17,4 +17,8 @@ public class JRowCounterBean
         return ++m_nRow;
     }
 
+	public Integer getIndexRow()
+    {
+        return m_nRow;
+    }
 }

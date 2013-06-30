@@ -4,11 +4,10 @@
  */
 package data;
 
-import javax.persistence.criteria.CriteriaBuilder.In;
 
 /**
  * Classe que representa um AP controlado e seus parâmetros.
- * @author Felipe Rolim
+ * @author ferolim e carlosmaciel
  */
 public class JAPInfo implements Comparable
 {
@@ -27,6 +26,9 @@ public class JAPInfo implements Comparable
     protected Integer region;
     protected String regionName;
     protected Integer reachable;
+    protected Double latitude;
+    protected Double longitude;
+    protected Integer emailSent;
 
     public final static int STATUS_LOW = 0;
     public final static int STATUS_NORMAL = 1;
@@ -43,7 +45,7 @@ public class JAPInfo implements Comparable
      * @param underloadThreshold  Limite de carga baixa
      * @param overloadThreshold Limite de sobrecarga
      */
-    public JAPInfo(String MAC, String IP, Integer channel, String location, String listTxPower, Integer curTxPower, Integer loadStatus, Integer underloadThreshold, Integer overloadThreshold, Integer enabled, Integer region, Integer numberOfUsers, Integer reachable)
+    public JAPInfo(String MAC, String IP, Integer channel, String location, String listTxPower, Integer curTxPower, Integer loadStatus, Integer underloadThreshold, Integer overloadThreshold, Integer enabled, Integer region, Integer numberOfUsers, Integer reachable, Double latitude, Double longitude, Integer emailSent)
     {
         this.location = location;
         this.MAC = MAC.toUpperCase();
@@ -58,16 +60,19 @@ public class JAPInfo implements Comparable
         this.region = region;
         this.numberOfUsers = numberOfUsers;
         this.reachable = reachable;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.emailSent = emailSent;
     }
     /**
      * Variável que determina o número de estações associadas ao AP.
-     * @param numberOfUsers 
+     * @param numberOfUsers
      */
     public void setNumberOfUsers(Integer numberOfUsers)
     {
         this.numberOfUsers = numberOfUsers;
     }
-    
+
     public String getLocation()
     {
         return location;
@@ -77,7 +82,7 @@ public class JAPInfo implements Comparable
     {
         this.location = location;
     }
-    
+
     public String getRegionName()
     {
         return regionName;
@@ -97,14 +102,14 @@ public class JAPInfo implements Comparable
     {
         this.MAC = MAC.toUpperCase();
     }
-    
+
     public Integer getRegion()
     {
         return region;
     }
 
     public void setRegion(Integer region)
-    {       
+    {
         this.region = region;
     }
 
@@ -121,7 +126,7 @@ public class JAPInfo implements Comparable
     {
         return numberOfUsers.compareTo(((JAPInfo) o).numberOfUsers);
     }
-    
+
     public Integer getLoadStatus()
     {
         return loadStatus;
@@ -139,7 +144,7 @@ public class JAPInfo implements Comparable
                 break;
 
             case JAPInfo.STATUS_NORMAL:
-                loadStatusText = "Carga M�dia";
+                loadStatusText = "Carga Média";
                 break;
 
             case JAPInfo.STATUS_FULL:
@@ -209,19 +214,43 @@ public class JAPInfo implements Comparable
     {
         this.overloadThreshold = overloadThreshold;
     }
-    
+
     public boolean getEnabled()
     {
         return enabled.equals(1);
     }
-    
+
     public void setEnabled(boolean enabled)
     {
         this.enabled = enabled ? 1 : 0;
     }
-    
+
     public boolean getReachable()
     {
         return reachable.equals(1);
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Integer getEmailSent() {
+        return emailSent;
+    }
+
+    public void setEmailSent(Integer emailSent) {
+        this.emailSent = emailSent;
     }
 }

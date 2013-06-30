@@ -306,7 +306,7 @@ public class JHostFileParser
     
      /**
      * Método que trata a informação contida no arquivo proveniente da operação de obtenção de canal.
-     * @param strFile Caminho para o arquivo com as informações de scan.
+     * @param strFile Caminho para o arquivo com a informação de canal.
      * @return Retorna o canal contido no arquivo.
      */   
     public static Integer parseChannelFile(String strFile)
@@ -340,7 +340,7 @@ public class JHostFileParser
      
     /**
     * Método que trata a informação contida no arquivo proveniente da operação de obtenção de potência.
-    * @param strFile Caminho para o arquivo com as informações de scan.
+    * @param strFile Caminho para o arquivo com a informação de potência.
     * @return Retorna a potência contida no arquivo.
     */  
     public static Integer parsePowerFile(String strFile)

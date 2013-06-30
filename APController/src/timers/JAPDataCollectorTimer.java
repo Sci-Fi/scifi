@@ -12,8 +12,8 @@ import apcontroller.JTaskExecuter.JTask;
 import apcontroller.Main;
 import java.util.ArrayList;
 import java.util.Timer;
-import log.JLogger;
 import loadBalance.JLoadBalance;
+import log.JLogger;
 import org.apache.log4j.Logger;
 
 /**

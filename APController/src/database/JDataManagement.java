@@ -20,6 +20,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import log.JLogger;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -47,12 +48,42 @@ public class JDataManagement
     protected static int APINFO_REGION_COL = 11;    
     protected static int REGION_ID_COL = 1;
     protected static int REGION_DESCRIPTION_COL = 2;
+    protected static int APINFO_REACHABLE_COL = 12;
+    protected static int APINFO_EMAILSENT_COL = 15;
+    //protected static int APINFO_UPDATEREGION_COL = 16;
+    //protected static int CONNECTION_INFO_STATUS_COL = 5;
+    //protected static int CONNECTION_INFO_MAC_AP_COL = 4;
+    //private static int TIMEINFO_STATIONDUMP_ID = 1;
 
     //static class
     private JDataManagement()
     {
     }
-
+    
+//    public static int getTIMEINFO_STATIONDUMP_ID()
+//    {
+//        return TIMEINFO_STATIONDUMP_ID;
+//    }    
+    
+     /**
+     * Método de acesso à variável m_hashSTAInfo 
+     * @return m_hashSTAInfo
+     */    
+    public static HashMap<String, ArrayList<JSTAInfo>> getHashSTAInfo()
+    {
+        return m_hashSTAInfo;
+    }
+    
+    /**
+     * Método de acesso à variável m_hashSTAInfo 
+     * @param strMACAP MAC do AP
+     * @param listSTAInfo Lista de clientes associados ao AP
+     */
+    public static void setHashSTAInfo(String strMACAP, ArrayList<JSTAInfo> listSTAInfo)
+    {
+        m_hashSTAInfo.put(strMACAP, listSTAInfo);
+    }
+    
    /**
     * Método que inicia a conexão com o banco de dados.
      
@@ -173,11 +204,10 @@ public class JDataManagement
         return rsReturn;
     }
 
-   /**
+    /**
     * Método que apaga do banco de dados as informações de scan (CellInfos escutados) do pontos de acesso especificado como parâmetro.   
-     @param  strMAC String com o MAC do AP que terá sua informação de scan apagada.
-     * 
-   @return Retorna true se a operação ocorreu com sucesso ou false, caso contrário.
+    * @param  strMAC String com o MAC do AP que terá sua informação de scan apagada.
+    * @return Retorna true se a operação ocorreu com sucesso ou false, caso contrário.
     */     
     public static boolean clearScanInfo(String strMAC)
     {
@@ -194,11 +224,10 @@ public class JDataManagement
         return execute("DELETE FROM \"CellInfo\" WHERE \"MAC\" NOT IN (SELECT DISTINCT \"MAC_CellInfo\" FROM \"APInfo_CellInfo\")");
     }
     
-    /**
-    * Método que apaga do banco de dados as informações sobre os clientes.   
-      
+   /**
+   * Método que apaga do banco de dados todas as informações sobre as estações clientes associadas aos APs obtidos pelo Station Dump.   
    @return Retorna true se a operação ocorreu com sucesso ou false, caso contrário.
-    */     
+   */     
     public static boolean clearSTAInfo()
     {
         return execute("DELETE FROM \"APInfo_STAInfo\"")
@@ -325,53 +354,64 @@ public class JDataManagement
         }
         return true;
     }
-
+    
     /**
     * Método que adiciona informação sobre stações associadas aos APs na variável m_hashSTAInfo.
     * A variável m_hashSTAInfo mapeia a lista de JSTAInfo provenientes do station dump de um AP com o seu MAC.
     * Ao final, as informações de STAInfo e as relações de associação com o AP são atualizadas no banco de dados através da função addStationDumpInfoToDB. 
-    * 
     @param strAPMAC MAC do ponto de acesso que gerou o station dump.
-    *      
     @param listSTAInfo Lista de JSTAInfos (estações associadas) provenientes do station dump do AP.
-    *     
     @return Retorna true se a operação ocorreu com sucesso ou false, caso contrário.
     */     
     public static boolean addSTAInfo(String strAPMAC, ArrayList<JSTAInfo> listSTAInfo)
     {
         // pega a lista atual de estações associadas ao AP
         ArrayList<JSTAInfo> listSTAInfoOld = m_hashSTAInfo.get(strAPMAC);
-
+   
         if(listSTAInfoOld != null)
         {
-            // Se a lista contém estações, apaga do banco de dados a relação de estações associadas a este AP.
+            //Se a lista contém estações, apaga do banco de dados a relação de estações associadas a este AP.
             clearSTAsAssociatedWithAP(strAPMAC);
             // Apaga do banco de dados as estações contidas na lista.
             clearSTAs(listSTAInfoOld);
         }
+            
         //Atualiza o m_hashSTAInfo com a nova listagem de estações.
-        m_hashSTAInfo.put(strAPMAC, listSTAInfo);
+        setHashSTAInfo(strAPMAC, listSTAInfo);
         //Adiciona a nova listagem de STAs e suas relações de associação com o AP no banco de dados.
         addStationDumpInfoToDB(strAPMAC);
-
+        
         return true;
     }
-    
+   
     /**
-    * Método que registra cada conexão do usuário ao AP. Criado para a geração de relatórios estatisticos.
-    * 
-    @param strAPMAC MAC do ponto de acesso que está sendo conectado
-    *
-    @param strSTAMAC MAC do usuário que está conectando.
-    *      
-    @return Retorna true se a operação ocorreu com sucesso ou false, caso contrário.
-    */     
-    //public static boolean registerConnectionSTA_AP(String strSTAMAC, String strAPMAC)
-    //{
-    //    String StrSql = "INSERT INTO \"ConnectionInfo\" (\"MAC_STA\", \"MAC_AP\") VALUES ('" + strSTAMAC.toUpperCase() + "', '" + strAPMAC.toUpperCase() + "')";
-    //    return execute(StrSql);
-    //}  
+     * Método que retorna todos os clientes (STA) associados a um determinado AP.
+     * @param strAPMAC MAC do AP em questão
+     * @return Uma lista de JSTAInfo contendo objetos que representam os clientes.
+     */
+    public static ArrayList<JSTAInfo> getSTAList(String strAPMAC)
+    {
+        ArrayList<JSTAInfo> listSTA = new ArrayList<JSTAInfo>();
+                
+        try
+        {
+            ResultSet rs = executeQuery("SELECT \"MAC_STA\" FROM \"APInfo_STAInfo\" WHERE \"MAC_AP\" = '" + strAPMAC.toUpperCase() + "'" );
+            while (rs.next())  
+            {              
+                listSTA.add(new JSTAInfo(rs.getString(1)));
+            }
+            
+            return listSTA; 
+        }
 
+        catch (SQLException ex)
+        {
+            Logger.getLogger(JDataManagement.class.getName()).log(Level.ERROR, null, ex);
+            return null;
+        }
+                
+    }
+        
     /**
     * Método que adiciona informação de station dump (estações associadas aos APs) no banco de dados e faz a relação entre os STAInfos e o AP ao qual estão associados.
     * 
@@ -520,7 +560,7 @@ public class JDataManagement
     }
 
     /**
-    * Método que busca no banco de dados a lista de APs da rede controlada.
+    * Método que busca no banco de dados a lista de APs habilitados em uma determinada região de controle.
     @return Retorna uma lista contendo os JAPInfos representando os APs da rede controlada, com seus parâmetros preenchidos (IP, MAC, localização...).
     */     
     public static ArrayList<JAPInfo> loadAPList()
@@ -544,11 +584,14 @@ public class JDataManagement
                     Integer nOverloadLimit = setAP.getInt(APINFO_OVERLOAD_LIMIT_COL);
                     Integer nCurrentTxPower = setAP.getInt(APINFO_CURRENT_TXPOWER_COL);
                     Integer nCurrentChannel = setAP.getInt(APINFO_CHANNEL_COL);
-
+                    Integer nReachable = setAP.getInt(APINFO_REACHABLE_COL);
+                    Integer nEnabled = setAP.getInt(APINFO_ENABLED_COL);
+                    Integer nEmailSent = setAP.getInt(APINFO_EMAILSENT_COL);
+                    
                     ArrayList<Integer> listTxPower = new ArrayList<Integer>();
                     listTxPower.addAll(Arrays.asList(arrayTxPower));
 
-                    listAP.add(new JAPInfo(strIP, strMAC, listTxPower, strLocation, nUnderloadLimit, nOverloadLimit, nCurrentChannel, nCurrentTxPower, nRegion));
+                    listAP.add(new JAPInfo(strIP, strMAC, listTxPower, strLocation, nUnderloadLimit, nOverloadLimit, nCurrentChannel, nCurrentTxPower, nRegion, nReachable, nEnabled, nEmailSent));
                 }
             }
             catch (SQLException ex)
@@ -560,6 +603,183 @@ public class JDataManagement
         return listAP;
     }
     
+    /**
+    * Método que busca no banco de dados a lista de todos APs habilitados e desabilitados de uma dada região de controle.
+    @return Retorna uma lista contendo os JAPInfos representando os APs da rede controlada, com seus parâmetros preenchidos (IP, MAC, localização...).
+    */     
+//    public static ArrayList<JAPInfo> loadAllAPList()
+//    {
+//        ArrayList<JAPInfo> listAP = new ArrayList<JAPInfo>();
+//
+//        ResultSet setAP = executeQuery("SELECT * FROM \"APInfo\" WHERE \"Region\" = '" + Main.getRegionId() + "'");
+//
+//        if (setAP != null)
+//        {
+//            try
+//            {
+//                while (setAP.next())
+//                {                    
+//                    String strMAC = setAP.getString(APINFO_MAC_COL);
+//                    String strIP = setAP.getString(APINFO_IP_COL);
+//                    String strLocation = setAP.getString(APINFO_LOCATION_COL);
+//                    Integer arrayTxPower[] = (Integer[]) setAP.getArray(APINFO_TXPOWER_LIST_COL).getArray();
+//                    Integer nRegion = setAP.getInt(APINFO_REGION_COL);
+//                    Integer nUnderloadLimit = setAP.getInt(APINFO_UNDERLOAD_LIMIT_COL);
+//                    Integer nOverloadLimit = setAP.getInt(APINFO_OVERLOAD_LIMIT_COL);
+//                    Integer nCurrentTxPower = setAP.getInt(APINFO_CURRENT_TXPOWER_COL);
+//                    Integer nCurrentChannel = setAP.getInt(APINFO_CHANNEL_COL);
+//                    Integer nReachable = setAP.getInt(APINFO_REACHABLE_COL);
+//                    Integer nEnabled = setAP.getInt(APINFO_ENABLED_COL);
+//                    Integer nEmailSent = setAP.getInt(APINFO_EMAILSENT_COL);
+//                    
+//                    ArrayList<Integer> listTxPower = new ArrayList<Integer>();
+//                    listTxPower.addAll(Arrays.asList(arrayTxPower));
+//
+//                    listAP.add(new JAPInfo(strIP, strMAC, listTxPower, strLocation, nUnderloadLimit, nOverloadLimit, nCurrentChannel, nCurrentTxPower, nRegion, nReachable, nEnabled, nEmailSent));
+//                }
+//            }
+//            catch (SQLException ex)
+//            {
+//                Logger.getLogger(JDataManagement.class.getName()).log(Level.ERROR, null, ex);
+//            }
+//        }
+//
+//        return listAP;
+//    }
+    
+    /**
+    * Método que busca no banco de dados a lista de todos APs incomunicantes desta região
+    @return Retorna uma lista contendo os JAPInfos representando os APs incomunicantes da rede controlada, com seus parâmetros preenchidos (IP, MAC, localização...).
+    */     
+    public static ArrayList<JAPInfo> loadAllAPListUnreachables()
+    {
+        ArrayList<JAPInfo> listAP = new ArrayList<JAPInfo>();
+
+        ResultSet setAP = executeQuery("SELECT * FROM \"APInfo\" WHERE \"Region\" = '" + Main.getRegionId() + "' AND \"Enabled\"=1 AND \"Reachable\"=0");
+
+        if (setAP != null)
+        {
+            try
+            {
+                while (setAP.next())
+                {                    
+                    String strMAC = setAP.getString(APINFO_MAC_COL);
+                    String strIP = setAP.getString(APINFO_IP_COL);
+                    String strLocation = setAP.getString(APINFO_LOCATION_COL);
+                    Integer arrayTxPower[] = (Integer[]) setAP.getArray(APINFO_TXPOWER_LIST_COL).getArray();
+                    Integer nRegion = setAP.getInt(APINFO_REGION_COL);
+                    Integer nUnderloadLimit = setAP.getInt(APINFO_UNDERLOAD_LIMIT_COL);
+                    Integer nOverloadLimit = setAP.getInt(APINFO_OVERLOAD_LIMIT_COL);
+                    Integer nCurrentTxPower = setAP.getInt(APINFO_CURRENT_TXPOWER_COL);
+                    Integer nCurrentChannel = setAP.getInt(APINFO_CHANNEL_COL);
+                    Integer nReachable = setAP.getInt(APINFO_REACHABLE_COL);
+                    Integer nEnabled = setAP.getInt(APINFO_ENABLED_COL);
+                    Integer nEmailSent = setAP.getInt(APINFO_EMAILSENT_COL);
+                    
+                    ArrayList<Integer> listTxPower = new ArrayList<Integer>();
+                    listTxPower.addAll(Arrays.asList(arrayTxPower));
+
+                    listAP.add(new JAPInfo(strIP, strMAC, listTxPower, strLocation, nUnderloadLimit, nOverloadLimit, nCurrentChannel, nCurrentTxPower, nRegion, nReachable, nEnabled, nEmailSent));
+                }
+            }
+            catch (SQLException ex)
+            {
+                Logger.getLogger(JDataManagement.class.getName()).log(Level.ERROR, null, ex);
+            }
+        }
+
+        return listAP;
+    }
+    
+    /**
+    * Método que busca no banco de dados a lista de todos APs incomunicantes
+    @return Retorna uma lista contendo os JAPInfos representando os APs incomunicantes da rede controlada, com seus parâmetros preenchidos (IP, MAC, localização...).
+    */     
+//    public static ArrayList<JAPInfo> loadAllAPListToUpdateRegions()
+//    {
+//        ArrayList<JAPInfo> listAP = new ArrayList<JAPInfo>();
+//
+//        ResultSet setAP = executeQuery("SELECT * FROM \"APInfo\" WHERE \"Region\" = '" + Main.getRegionId() + "' AND \"UpdateRegion\"=1");
+//
+//        if (setAP != null)
+//        {
+//            try
+//            {
+//                while (setAP.next())
+//                {                    
+//                    String strMAC = setAP.getString(APINFO_MAC_COL);
+//                    String strIP = setAP.getString(APINFO_IP_COL);
+//                    String strLocation = setAP.getString(APINFO_LOCATION_COL);
+//                    Integer arrayTxPower[] = (Integer[]) setAP.getArray(APINFO_TXPOWER_LIST_COL).getArray();
+//                    Integer nRegion = setAP.getInt(APINFO_REGION_COL);
+//                    Integer nUnderloadLimit = setAP.getInt(APINFO_UNDERLOAD_LIMIT_COL);
+//                    Integer nOverloadLimit = setAP.getInt(APINFO_OVERLOAD_LIMIT_COL);
+//                    Integer nCurrentTxPower = setAP.getInt(APINFO_CURRENT_TXPOWER_COL);
+//                    Integer nCurrentChannel = setAP.getInt(APINFO_CHANNEL_COL);
+//                    Integer nReachable = setAP.getInt(APINFO_REACHABLE_COL);
+//                    Integer nEnabled = setAP.getInt(APINFO_ENABLED_COL);
+//                    Integer nEmailSent = setAP.getInt(APINFO_EMAILSENT_COL);
+//                    
+//                    ArrayList<Integer> listTxPower = new ArrayList<Integer>();
+//                    listTxPower.addAll(Arrays.asList(arrayTxPower));
+//
+//                    listAP.add(new JAPInfo(strIP, strMAC, listTxPower, strLocation, nUnderloadLimit, nOverloadLimit, nCurrentChannel, nCurrentTxPower, nRegion, nReachable, nEnabled, nEmailSent));
+//                }
+//            }
+//            catch (SQLException ex)
+//            {
+//                Logger.getLogger(JDataManagement.class.getName()).log(Level.ERROR, null, ex);
+//            }
+//        }
+//
+//        return listAP;
+//    }
+    
+    /**
+    Método que busca no banco de dados informações de um determinado AP.
+    @param MAC MAC do AP
+    @return Retorna o JAPInfo que possui o determinado MAC, com seus parâmetros preenchidos (IP, MAC, localização...).
+    */     
+    public static JAPInfo loadAP(String MAC)
+    {
+        JAPInfo apInfo = null;
+
+        ResultSet setAP = executeQuery("SELECT * FROM \"APInfo\" WHERE \"Region\" = '" + Main.getRegionId() + "' AND \"MAC\" = '" + MAC + "'");
+
+        if (setAP != null)
+        {
+            try
+            {
+                if (setAP.next())
+                {                    
+                    String strMAC = setAP.getString(APINFO_MAC_COL);
+                    String strIP = setAP.getString(APINFO_IP_COL);
+                    String strLocation = setAP.getString(APINFO_LOCATION_COL);
+                    Integer arrayTxPower[] = (Integer[]) setAP.getArray(APINFO_TXPOWER_LIST_COL).getArray();
+                    Integer nRegion = setAP.getInt(APINFO_REGION_COL);
+                    Integer nUnderloadLimit = setAP.getInt(APINFO_UNDERLOAD_LIMIT_COL);
+                    Integer nOverloadLimit = setAP.getInt(APINFO_OVERLOAD_LIMIT_COL);
+                    Integer nCurrentTxPower = setAP.getInt(APINFO_CURRENT_TXPOWER_COL);
+                    Integer nCurrentChannel = setAP.getInt(APINFO_CHANNEL_COL);
+                    Integer nReachable = setAP.getInt(APINFO_REACHABLE_COL);
+                    Integer nEnabled = setAP.getInt(APINFO_ENABLED_COL);
+                    Integer nEmailSent = setAP.getInt(APINFO_EMAILSENT_COL);
+                    
+                    ArrayList<Integer> listTxPower = new ArrayList<Integer>();
+                    listTxPower.addAll(Arrays.asList(arrayTxPower));
+
+                    apInfo = new JAPInfo(strIP, strMAC, listTxPower, strLocation, nUnderloadLimit, nOverloadLimit, nCurrentChannel, nCurrentTxPower, nRegion, nReachable, nEnabled, nEmailSent);
+                }
+            }
+            catch (SQLException ex)
+            {
+                Logger.getLogger(JDataManagement.class.getName()).log(Level.ERROR, null, ex);
+            }
+        }
+
+        return apInfo;
+    }
+        
     /**
     * Método que retorna a lista de CellInfos do ponto de acesso determinado pelo parâmetro strAPMAC.
     * 
@@ -609,14 +829,72 @@ public class JDataManagement
 
         return execute(strSql);
     }
+    
+    /**
+    Método que atualiza o status do AP (habilitado para controle ou não).
+    @param strAPMAC MAC do ponto de acesso.
+    @param nEnabled  Status que o AP será atualizado.
+    @return Retorna true se a operação ocorreu com sucesso ou false, caso contrário.
+    */     
+//    public static boolean updateEnabled(String strAPMAC, int nEnabled)
+//    {
+//        String strSql = "UPDATE \"APInfo\" SET \"Enabled\"=" + nEnabled + " WHERE \"MAC\"='" + strAPMAC + "'";
+//        
+//        boolean bResult = execute(strSql);
+//        
+//        if(bResult) {
+//            Logger.getLogger(Main.CONNECTION_LOG).info(JLogger.getDateTime() + " " + JLogger.getTime() + " Updated AP_Enabled " + strAPMAC +" to " + nEnabled);
+//        }
+//
+//        return bResult;
+//    }
+    
+    /**
+    Método que atualiza o campo EmailSent na APInfo. Este campo, informa se já foi enviado email de AP incomunicante no dia atual.
+    @param strAPMAC MAC do ponto de acesso.
+    @return Retorna true se a operação ocorreu com sucesso ou false, caso contrário.
+    */     
+    public static boolean updateEmailSent(String strAPMAC)
+    {
+        String strSql = "UPDATE \"APInfo\" SET \"EmailSent\" = 1 WHERE \"MAC\"='" + strAPMAC + "'";
+        
+        boolean bResult = execute(strSql);
+
+        return bResult;
+    }
+    
+    /**
+    Método que zera o campo EmailSent de todos APs na APInfo.
+    @param strAPMAC MAC do ponto de acesso.
+    @return Retorna true se a operação ocorreu com sucesso ou false, caso contrário.
+    */     
+    public static boolean updateRestartEmailSent()
+    {
+        String strSql = "UPDATE \"APInfo\" SET \"EmailSent\" = 0";
+        
+        boolean bResult = execute(strSql);
+
+        return bResult;
+    }
+    
+//    /**
+//    Método que zera o campo temporario UpdateRegion de todos APs na APInfo.
+//    @param strAPMAC MAC do ponto de acesso.
+//    @return Retorna true se a operação ocorreu com sucesso ou false, caso contrário.
+//    */     
+//    public static boolean resetRestartUpdateRegion()
+//    {
+//        String strSql = "UPDATE \"APInfo\" SET \"UpdateRegion\"=0";
+//        
+//        boolean bResult = execute(strSql);
+//
+//        return bResult;
+//    }
 
     /**
-    * Método que atualiza o status de conexão com o AP no banco de dados.
-    * 
+    Método que atualiza o status de conexão com o AP no banco de dados.
     @param strAPMAC MAC do ponto de acesso.
-    *
     @param nReachableInfo  índice que representa o status de conexão do AP (0 = sem conexão; 1 = com conexão)
-    *           
     @return Retorna true se a operação ocorreu com sucesso ou false, caso contrário.
     */     
     public static boolean addReachableInfoToDB(String strAPMAC, int nReachableInfo)

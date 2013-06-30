@@ -4,13 +4,11 @@
  */
 package timers;
 
-import data.JAPInfo;
 import apcontroller.JCommander;
 import database.JDataManagement;
 import apcontroller.JTaskExecuter;
 import apcontroller.JTaskExecuter.JTask;
 import apcontroller.Main;
-import java.util.ArrayList;
 import java.util.Timer;
 import log.JLogger;
 import org.apache.log4j.Logger;
@@ -101,7 +99,11 @@ public class JConfigCheckTimer
                 // Checa se outras operações de coleta de dados ou execução de algoritmos está ocorrendo no ponto de acesso.
                 // Outra operação só ocorrerá quando esta se encerrar.
                 Main.m_mutexGlobal.acquire();
-                                 
+                 
+                //insere no log que o check de configuração começou e a data e hora
+                Logger.getLogger(Main.JAVA_LOG).info(JLogger.getDateTime() + " " + JLogger.getTime() + " Config check started. ");                        
+
+                //executando o config check em todos os APs
                 JTaskExecuter.executeTasks(JCheckConfigTask.class.getName());
 
                 // busca no banco de dados o valor do intervalo de tempo de execução da coleta de configurações.
@@ -126,6 +128,9 @@ public class JConfigCheckTimer
             }
             finally
             {
+                //insere no log que o check de configuração terminou e a data e hora
+                Logger.getLogger(Main.JAVA_LOG).info(JLogger.getDateTime() + " " + JLogger.getTime() + " Config check ended. ");                        
+                
                 // libera a execução de outras operações no ponto de acesso.
                 Main.m_mutexGlobal.release();                
             }

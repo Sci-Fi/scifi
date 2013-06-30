@@ -7,7 +7,12 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
         <title>Controlador Scifi - Editar Configurações do Controlador</title>
+        <script type="text/javascript" src="../javascript/jquery-1.8.3.min.js"></script>
+        <link rel="stylesheet" href="../css/thickbox.css" type="text/css" media="screen" />
+        <script language="javascript" type="text/javascript" src="../javascript/thickbox.js"></script>
         <script type="text/javascript" src="../javascript/preloadImages.js"></script>
+        <script type="text/javascript" charset="UTF-8" src="../javascript/utils.js"></script>
+        <script type="text/javascript" charset="UTF-8" src="../javascript/time_aps.js"></script>
         <link href="../css/estilo.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
@@ -15,7 +20,7 @@
 
             <div id="topo">
 
-                <div id="logo"><ul><li><a href="admin.html" title="Voltar à página inicial"></a></li></ul></div>
+                <div id="logo"><ul><li><a href="admin.jsf" title="Voltar à página inicial"></a></li></ul></div>
 
                 <div id="figuraTopo"></div>
 
@@ -46,12 +51,13 @@
                         </li>
                         <li class="comandos"><a href="commander.jsf" title="Executar Comandos do Controlador"></a></li>
                         <li class="configurar"><a href="edit_parameters.jsf" title="Editar Configurações do Controlador"></a></li>
+                        <li class="mrtg"><a href="editMap.jsp?type=10" target="_blank" title="Monitoramento"></a></li>
                     </ul>
                 </div>
             </div>
 
             <div id="coluna_dir">
-                <div id="titulo">Editar Configurações do Controlador</div>
+                <div id="titulo">Editar Configurações do Controlador<label id="info_unreachable"><label></label><a href="#" title="Controlador Scifi - Pontos de acesso incomunicantes" class="thickbox"></a><img src="../figuras/wait.gif"/></label> <a href="logout.jsf" id="logout">Logout</a> </div>
                 <div class="barraConteudo"></div>
                 <div id="conteudo">
                     <f:view>
@@ -60,9 +66,6 @@
                             <h:inputHidden id="ShortErrorMessage" value="true"/>
 
                             <h:dataTable id="dt1" var="item" value="#{JPropertiesListBean.listProperties}" >
-                                <f:facet name="caption">
-                                    <h:outputText value="Tabela de configuração de parâmetros" />
-                                </f:facet>
 
                                 <h:column >
                                     <f:facet name="header" >
@@ -84,7 +87,7 @@
                                         </h:inputText>
 
                                         <h:message for="PropertyValue" errorClass="errorMessage" infoClass="infoMessage" />
-                                    </h:panelGrid> 
+                                    </h:panelGrid>
                                 </h:column>
 
                                 <h:column >
@@ -100,7 +103,7 @@
 
                                 <h:messages globalOnly="true" errorClass="errorMessage" infoClass="infoMessage"/> 
 
-                                <h:commandButton action="#{JPropertiesListBean.updateProperiesList}" value="Salvar modificações" styleClass="submit"></h:commandButton>
+                                <h:commandButton action="#{JPropertiesListBean.updateProperiesList}" onclick="javascript: trocaCursor('progress',this);" value="Salvar modificações" styleClass="submit"></h:commandButton>
 
                             </h:panelGrid> 
 

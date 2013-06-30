@@ -4,9 +4,12 @@
  */
 package loadBalance;
 
+import apcontroller.Main;
 import data.JAPInfo;
 import database.JDataManagement;
 import java.util.ArrayList;
+import log.JLogger;
+import org.apache.log4j.Logger;
 
 /**
  * Esta classe é responsável por definir e atualizar no banco de dados o status de carga dos pontos de acesso controlados.
@@ -41,8 +44,8 @@ public class JLoadBalance
   
         return true;
     }
-
     
+   
     /**
     * O objetivo deste método é definir o status de carga do ponto de acesso dado pelo parâmetro apInfo e inserir seu status no banco de dados. 
 

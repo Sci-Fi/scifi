@@ -9,40 +9,62 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 /**
- * Classe que contém métodos de validação dos valores dos parâmetros do controlador inseridos via interface de usuário.
+ * Classe que contï¿½m mï¿½todos de validaï¿½ï¿½o dos valores dos parï¿½metros do controlador inseridos via interface de usuï¿½rio.
  * @author controlador
  */
 public class JPropertyValidator extends JValidator
 {
+
     /**
-     * Método que verifica se o valor preenchido via interface de usuário para um determinado parâmetro do controlador é válido. Apenas números são aceitos.
+     * Mï¿½todo que verifica se o valor preenchido via interface de usuï¿½rio para um determinado parï¿½metro do controlador ï¿½ vï¿½lido. Apenas nï¿½meros sï¿½o aceitos.
      * @param context Contexto do Faces.
-     * @param component Componente que está sendo validado.
-     * @param value Valor do componente que está sendo validado.
+     * @param component Componente que estï¿½ sendo validado.
+     * @param value Valor do componente que estï¿½ sendo validado.
      */
     public void isValueValid(FacesContext context, UIComponent component, Object value)
     {
         Map<String, Object> hashAttributes = component.getAttributes();
-        
-        String strType = (String)hashAttributes.get("Type");
-        
-        if(!isEmpty(context, component, value) && (strType != null))
+
+        String strType = (String) hashAttributes.get("Type");
+
+        if (!isEmpty(context, component, value) && (strType != null))
         {
-            if(strType.equals("IP"))
+            if (strType.equals("IP"))
             {
                 validateIP(context, component, value);
             }
             else
             {
-                if(strType.equals("UINT") || strType.equals("SECONDS"))
+                if (strType.equals("UINT") || strType.equals("SECONDS"))
                 {
                     isUnsignedInteger(context, component, value);
                 }
                 else
                 {
-                    if(strType.equals("PERCENTAGE"))
+                    if (strType.equals("PERCENTAGE"))
                     {
                         isPercentage(context, component, value);
+                    }
+                    else
+                    {
+                        if (strType.equals("DECIMAL"))
+                        {
+                            isDouble(context, component, value);
+                        }
+                        else
+                        {
+                            if (strType.equals("STRING"))
+                            {
+                                isEmpty(context, component, value);
+                            }
+                            else
+                            {
+                                if (strType.equals("EMAIL"))
+                                {
+                                    isEmail(context, component, value);
+                                }                                
+                            }
+                        }
                     }
                 }
             }
@@ -51,9 +73,9 @@ public class JPropertyValidator extends JValidator
 
     private void validateIP(FacesContext context, UIComponent component, Object value)
     {
-        if(!isIPValid((String)value))
+        if (!isIPValid((String) value))
         {
-            showMessage(component, context, "IP Inválido", SHORT_MESSAGE, FILL_DATA_MESSAGE);
+            showMessage(component, context, "IP InvÃ¡lido", SHORT_MESSAGE, FILL_DATA_MESSAGE);
         }
     }
 }

@@ -55,7 +55,7 @@ public class JLoader
                      break;                     
                 }           
                                 
-                timerCheckProcesses.scheduleAtFixedRate(timerTask, 0, 30000);
+                timerCheckProcesses.scheduleAtFixedRate(timerTask, 0, 15000);
 
                 //adicionando um hook para limpar todos os processos criados ao finalizar o programa
                 Runtime.getRuntime().addShutdownHook(timerTask.new JCleaner());

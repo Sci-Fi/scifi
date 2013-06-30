@@ -7,10 +7,14 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
         <title>Controlador Scifi - Executar Comandos</title>
+        <script type="text/javascript" src="../javascript/jquery-1.8.3.min.js"></script>
+        <link rel="stylesheet" href="../css/thickbox.css" type="text/css" media="screen" />
+        <script language="javascript" type="text/javascript" src="../javascript/thickbox.js"></script>
         <script type="text/javascript" src="../javascript/preloadImages.js"></script>
         <script type="text/javascript" src="../javascript/preloadImages_Commander.js"></script>
-        <script type="text/javascript" src="../javascript/utils.js"></script>
+        <script type="text/javascript" charset="UTF-8" src="../javascript/utils.js"></script>
         <script type="text/javascript" src="../javascript/commander.js"></script>
+        <script type="text/javascript" charset="UTF-8" src="../javascript/time_aps.js"></script>
         <script type="text/javascript">    
             ShowExecutionStatus();
         </script>
@@ -21,7 +25,7 @@
 
             <div id="topo">
 
-                <div id="logo"><ul><li><a href="admin.html" title="Voltar à página inicial"></a></li></ul></div>
+                <div id="logo"><ul><li><a href="admin.jsf" title="Voltar à página inicial"></a></li></ul></div>
 
                 <div id="figuraTopo"></div>
 
@@ -52,12 +56,13 @@
                         </li>
                         <li class="comandos"><a href="commander.jsf" title="Executar Comandos do Controlador"></a></li>
                         <li class="configurar"><a href="edit_parameters.jsf" title="Editar Configurações do Controlador"></a></li>
+                        <li class="mrtg"><a href="editMap.jsp?type=10" target="_blank" title="Monitoramento"></a></li>
                     </ul>
                 </div>
             </div>
 
             <div id="coluna_dir">
-                <div id="titulo">Executar Comandos do Controlador</div>
+                <div id="titulo">Executar Comandos do Controlador<label id="info_unreachable"><label></label><a href="#" title="Controlador Scifi - Pontos de acesso incomunicantes" class="thickbox"></a><img src="../figuras/wait.gif"/></label><a href="logout.jsf" id="logout">Logout</a> </div>
                 <div class="barraConteudo"></div>
                 <div id="conteudo">
 
@@ -67,7 +72,7 @@
                                 <div class="divComando">
                                     <table class="tableComando">
                                         <tr>
-                                            <td><h:commandButton action="#{JControllerCommanderBean.forceRestart}" title="Reiniciar Controlador" styleClass="reiniciarControlador"></h:commandButton></td>
+                                            <td><h:commandButton action="#{JControllerCommanderBean.forceRestart}" onclick="javascript: trocaCursor('progress',this);" title="Reiniciar Controlador" styleClass="reiniciarControlador"></h:commandButton></td>
                                             <td><h:outputText value="Reiniciar Controlador" /></td>
                                         </tr>
                                     </table>
@@ -76,7 +81,7 @@
                                 <div class="divComando">
                                     <table class="tableComando">
                                         <tr>
-                                            <td><h:commandButton action="#{JControllerCommanderBean.forceTimerRestart}" title="Forçar Reinicio dos Temporizadores" styleClass="reiniciarTemporizadores"></h:commandButton></td>
+                                            <td><h:commandButton action="#{JControllerCommanderBean.forceTimerRestart}" onclick="javascript: trocaCursor('progress',this);" title="Forçar Reinicio dos Temporizadores" styleClass="reiniciarTemporizadores"></h:commandButton></td>
                                             <td><h:outputText value="Forçar Reinicio dos Temporizadores" /></td>
                                         </tr>
                                     </table>
@@ -85,7 +90,7 @@
                                 <div class="divComando">
                                     <table class="tableComando">
                                         <tr>
-                                            <td><h:commandButton action="#{JControllerCommanderBean.forceChannelSelection}" title="Forçar Seleção de Canal" styleClass="selecaoCanal"></h:commandButton></td>
+                                            <td><h:commandButton action="#{JControllerCommanderBean.forceChannelSelection}" onclick="javascript: trocaCursor('progress',this);" title="Forçar Seleção de Canal" styleClass="selecaoCanal"></h:commandButton></td>
                                             <td><h:outputText value="Forçar Seleção de Canal" /></td>
                                         </tr>
                                     </table>
@@ -93,7 +98,7 @@
                                 <div class="divComando">
                                     <table class="tableComando">
                                         <tr>
-                                            <td><h:commandButton action="#{JControllerCommanderBean.forcePowerControl}" title="Forçar Controle de Potência" styleClass="controlePotencia"></h:commandButton></td>
+                                            <td><h:commandButton action="#{JControllerCommanderBean.forcePowerControl}" onclick="javascript: trocaCursor('progress',this);" title="Forçar Controle de Potência" styleClass="controlePotencia"></h:commandButton></td>
                                             <td><h:outputText value="Forçar Controle de Potência" /></td>
                                         </tr>
                                     </table>
@@ -101,7 +106,7 @@
                                 <div class="divComando">
                                     <table class="tableComando">
                                         <tr>
-                                            <td><h:commandButton action="#{JControllerCommanderBean.forceScan}" title="Forçar Escaneamento do Ambiente" styleClass="scan"></h:commandButton></td>
+                                            <td><h:commandButton action="#{JControllerCommanderBean.forceScan}" onclick="javascript: trocaCursor('progress',this);" title="Forçar Escaneamento do Ambiente" styleClass="scan"></h:commandButton></td>
                                             <td><h:outputText value="Forçar Escaneamento do Ambiente" /></td>
                                         </tr>
                                     </table>
@@ -109,7 +114,7 @@
                                 <div class="divComando">
                                     <table class="tableComando">
                                         <tr>
-                                            <td><h:commandButton action="#{JControllerCommanderBean.forceSTAInfoCollection}" title="Forçar Coleta de Dados dos Usuários" styleClass="coletaUsuarios"></h:commandButton></td>
+                                            <td><h:commandButton action="#{JControllerCommanderBean.forceSTAInfoCollection}" onclick="javascript: trocaCursor('progress',this);" title="Forçar Coleta de Dados dos Usuários" styleClass="coletaUsuarios"></h:commandButton></td>
                                             <td><h:outputText value="Forçar Coleta de Dados dos Usuários" /></td>
                                         </tr>
                                     </table>
@@ -117,7 +122,7 @@
                                 <div class="divComando">
                                     <table class="tableComando">
                                         <tr>
-                                            <td><h:commandButton action="#{JControllerCommanderBean.rebootAll}" title="Reiniciar todos os Pontos de Acesso" styleClass="reiniciarAPs"></h:commandButton></td>
+                                            <td><h:commandButton action="#{JControllerCommanderBean.rebootAll}" onclick="javascript: trocaCursor('progress',this);" title="Reiniciar todos os Pontos de Acesso" styleClass="reiniciarAPs"></h:commandButton></td>
                                             <td><h:outputText value="Reiniciar todos os Pontos de Acesso" /></td>
                                         </tr>
                                     </table>
@@ -125,7 +130,7 @@
                                 <div class="divComando">
                                     <table class="tableComando">
                                         <tr>
-                                            <td><h:commandButton action="#{JControllerCommanderBean.forceConfigCheck}" title="Forçar Análise de Configurações dos Pontos de Acesso" styleClass="analiseAPs"></h:commandButton></td>
+                                            <td><h:commandButton action="#{JControllerCommanderBean.forceConfigCheck}" onclick="javascript: trocaCursor('progress',this);" title="Forçar Análise de Configurações dos Pontos de Acesso" styleClass="analiseAPs"></h:commandButton></td>
                                             <td><h:outputText value="Forçar Análise de Configurações dos Pontos de Acesso" /></td>
                                         </tr>
                                     </table>

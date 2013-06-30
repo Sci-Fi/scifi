@@ -7,15 +7,23 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
         <title>Controlador Scifi - Editar Pontos de Acesso</title>
+        <script type="text/javascript" src="../javascript/jquery-1.8.3.min.js"></script>
+        <link rel="stylesheet" href="../css/thickbox.css" type="text/css" media="screen" />
+        <script language="javascript" type="text/javascript" src="../javascript/thickbox.js"></script>
         <script type="text/javascript" src="../javascript/preloadImages.js"></script>
+        <script type="text/javascript" charset="UTF-8" src="../javascript/utils.js"></script>
+        <script type="text/javascript" charset="UTF-8" src="../javascript/time_aps.js"></script>
         <link href="../css/estilo.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript">
+            ShowUpdateStatus();
+        </script>  
     </head>
     <body>
         <div id="tudo">
 
             <div id="topo">
 
-                <div id="logo"><ul><li><a href="admin.html" title="Voltar à página inicial"></a></li></ul></div>
+                <div id="logo"><ul><li><a href="admin.jsf" title="Voltar à página inicial"></a></li></ul></div>
 
                 <div id="figuraTopo"></div>
 
@@ -46,12 +54,13 @@
                         </li>
                         <li class="comandos"><a href="commander.jsf" title="Executar Comandos do Controlador"></a></li>
                         <li class="configurar"><a href="edit_parameters.jsf" title="Editar Configurações do Controlador"></a></li>
+                        <li class="mrtg"><a href="editMap.jsp?type=10" target="_blank" title="Monitoramento"></a></li>
                     </ul>
                 </div>
             </div>
 
             <div id="coluna_dir">
-                <div id="titulo">Editar Pontos de Acesso</div>
+                <div id="titulo">Editar Pontos de Acesso<label id="info_unreachable"><label></label><a href="#" title="Controlador Scifi - Pontos de acesso incomunicantes" class="thickbox"></a><img src="../figuras/wait.gif"/></label> <a href="logout.jsf" id="logout">Logout</a> </div>
                 <div class="barraConteudo"></div>
                 <div id="conteudo">
                         <f:view>
@@ -61,30 +70,26 @@
 
                                 <h:dataTable id="dt1" var="item" value="#{JAPListBean.listAP}">
 
-                                    <f:facet name="caption">
-                                        <h:outputText value="Tabela de uso dos pontos de acesso" />
-                                    </f:facet>
-
                                     <h:column >
                                         <f:facet name="header" >
-                                            <h:outputText value="MAC" ></h:outputText>
+                                            <h:outputText value="MAC"></h:outputText>
                                         </f:facet>
                                         <h:outputText value="#{item.MAC}"></h:outputText>
                                     </h:column>
 
                                     <h:column>
                                         <f:facet name="header" >
-                                            <h:outputText value="IP" ></h:outputText>
+                                            <h:outputText value="IP"></h:outputText>
                                         </f:facet>
                                         <h:outputText value="#{item.IP}"></h:outputText>
                                     </h:column>
 
                                     <h:column >
                                         <f:facet name="header" >
-                                            <h:outputText value="Localização" ></h:outputText>
+                                            <h:outputText value="Localização"></h:outputText>
                                         </f:facet>
 
-                                        <h:panelGrid  columns="2" columnClasses=" ,infoSize">    
+                                        <h:panelGrid  columns="2" columnClasses=" ,infoSize">
 
                                             <h:inputText id="APLocation" value="#{item.location}" validator="#{JAPInfoValidator.isEmpty}">
                                                 <f:attribute name="ShortErrorMessage" value="#{true}"/>
@@ -92,7 +97,7 @@
 
                                             <h:message for="APLocation" errorClass="errorMessage" infoClass="infoMessage"/>
 
-                                        </h:panelGrid> 
+                                        </h:panelGrid>
 
                                     </h:column>
 
@@ -102,73 +107,107 @@
                                         </f:facet>
                                         <h:selectOneMenu id="APRegion" value="#{item.region}">
                                             <f:selectItems value="#{JAPListBean.regions}"/>
+                                            <f:attribute name="selectedMAC" value="#{item.MAC}"/>
                                         </h:selectOneMenu>
                                     </h:column>
 
-
-
                                     <h:column >
                                         <f:facet name="header" >
-                                            <h:outputText value="Lista de Potências" ></h:outputText>
+                                            <h:outputText value="Lista de Potências"></h:outputText>
                                         </f:facet>
 
                                         <h:panelGrid  columns="2" columnClasses=" ,infoSize">
 
-                                            <h:inputText value="#{item.listTxPower}" id="TxPower" validator="#{JAPInfoValidator.checkListTxPower}" >
+                                            <h:inputText value="#{item.listTxPower}" id="TxPower" validator="#{JAPInfoValidator.checkListTxPower}">
                                                 <f:attribute name="ShortErrorMessage" value="#{true}"/>
+                                                <f:attribute name="selectedMAC" value="#{item.MAC}"/>
                                             </h:inputText>
 
                                             <h:message for="TxPower" errorClass="errorMessage" infoClass="infoMessage" />
 
-                                        </h:panelGrid> 
+                                        </h:panelGrid>
                                     </h:column>
 
                                     <h:column >
                                         <f:facet name="header" >
-                                            <h:outputText value="Limite de Carga Baixa" ></h:outputText>
+                                            <h:outputText value="Limite de Carga Baixa"></h:outputText>
                                         </f:facet>
 
                                         <h:panelGrid  columns="2" columnClasses=" underload,infoSize">
 
-                                            <h:inputText value="#{item.underloadThreshold}" converterMessage="*" id="APUnderloadThreshold" validator="#{JAPInfoValidator.isUnsignedInteger}" >
+                                            <h:inputText value="#{item.underloadThreshold}" converterMessage="*" id="APUnderloadThreshold" validator="#{JAPInfoValidator.isUnsignedInteger}">
                                                 <f:attribute name="ShortErrorMessage" value="#{true}"/>
+                                                <f:attribute name="selectedMAC" value="#{item.MAC}"/>
                                             </h:inputText>
 
                                             <h:message for="APUnderloadThreshold" errorClass="errorMessage" infoClass="infoMessage" />
 
-                                        </h:panelGrid> 
+                                        </h:panelGrid>
                                     </h:column>
+
 
                                     <h:column >
                                         <f:facet name="header" >
-                                            <h:outputText value="Limite de Sobrecarga" ></h:outputText>
+                                            <h:outputText value="Limite de Sobrecarga"></h:outputText>
                                         </f:facet>
 
                                         <h:panelGrid  columns="2" columnClasses=" overload,infoSize">
 
                                             <h:inputText value="#{item.overloadThreshold}" converterMessage="*" id="APOverloadThreshold" validator="#{JAPInfoValidator.checkOverloadThreshold}" >
                                                 <f:attribute name="ShortErrorMessage" value="#{true}"/>
+                                                <f:attribute name="selectedMAC" value="#{item.MAC}"/>
                                             </h:inputText>
 
                                             <h:message for="APOverloadThreshold" errorClass="errorMessage" infoClass="infoMessage" />
 
-                                        </h:panelGrid> 
+                                        </h:panelGrid>
+                                    </h:column>
+
+                                    <h:column >
+                                        <f:facet name="header" >
+                                            <h:outputText value="Latitude"></h:outputText>
+                                        </f:facet>
+
+                                        <h:panelGrid  columns="2" columnClasses=",infoSize">
+
+                                            <h:inputText value="#{item.latitude}" id="APLatitude" validator="#{JAPInfoValidator.checkLatitude}" >
+                                                <f:attribute name="ShortErrorMessage" value="#{true}"/>
+                                                <f:attribute name="selectedMAC" value="#{item.MAC}"/>
+                                            </h:inputText>
+
+                                            <h:message for="APLatitude" errorClass="errorMessage" infoClass="infoMessage" />
+
+                                        </h:panelGrid>
+                                    </h:column>
+
+                                    <h:column >
+                                        <f:facet name="header" >
+                                            <h:outputText value="Longitude"></h:outputText>
+                                        </f:facet>
+
+                                        <h:panelGrid  columns="2" columnClasses=",infoSize">
+
+                                            <h:inputText value="#{item.longitude}" id="APLongitude" validator="#{JAPInfoValidator.checkLongitude}" >
+                                                <f:attribute name="ShortErrorMessage" value="#{true}"/>
+                                                <f:attribute name="selectedMAC" value="#{item.MAC}"/>
+                                            </h:inputText>
+
+                                            <h:message for="APLongitude" errorClass="errorMessage" infoClass="infoMessage" />
+
+                                        </h:panelGrid>
                                     </h:column>
 
                                 </h:dataTable>
 
-                                <h:panelGrid columns="1" styleClass="tableFinal">  
-
-                                    <h:messages globalOnly="true" errorClass="errorMessage" infoClass="infoMessage"/>  
-
-                                    <h:commandButton action="#{JAPListBean.updateList}" value="Salvar modificações" styleClass="submit"></h:commandButton>
-
-                                </h:panelGrid> 
+                                <h:panelGrid columns="1" styleClass="tableFinal">
+                                    <h:messages globalOnly="true" errorClass="errorMessage" infoClass="infoMessage"/>
+                                    <h:commandButton action="#{JAPListBean.updateList}" onclick="javascript: trocaCursor('progress',this);" value="Salvar Modificações" styleClass="submit"></h:commandButton>
+                                </h:panelGrid>
 
                             </h:form>
                         </f:view>
                 </div>
-            </div>        
+            </div>
             <div class="clr"></div>
 
             <div id="rodape">
@@ -179,7 +218,7 @@
                     <li class="engenharia"><a href="http://www.engenharia.uff.br/" title="Escola de Engenharia UFF"></a></li>
                     <li class="rnp"><a href="http://www.rnp.br/" title="Rede Nacional de Pesquisa"></a></li>
                 </ul>
-            </div>           
+            </div>
 
         </div>
     </body>

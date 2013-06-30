@@ -8,27 +8,32 @@ import database.JPropertyDBManager;
 import java.util.ArrayList;
 
 /**
- * Classe que representa uma propriedade do controlador SciFi, como o intervalo entre execuções dos algorítmos e coletas de dados. Esta propriedade pode ser alterada via interface de usuário.
+ * Classe que representa uma propriedade do controlador SciFi, como o intervalo entre execuï¿½ï¿½es dos algorï¿½tmos e coletas de dados. Esta propriedade pode ser alterada via interface de usuï¿½rio.
  * @author controlador
  */
 public class JProperty
 {
+
     private String name;
     private String value;
     private String description;
     private String type;
+    private int order;
+
     /**
      * Construtor de JProperty
      * @param strName Nome da propriedade.
      * @param strValue Valor da propriedade.
      */
-    public JProperty(String strName, String strValue, String strDescription, String strType)
+    public JProperty(String strName, String strValue, String strDescription, String strType, int order)
     {
-        name = strName;
-        value = strValue;
-        description = strDescription;
-        type = strType;
+        this.name = strName;
+        this.value = strValue;
+        this.description = strDescription;
+        this.type = strType;
+        this.order = order;
     }
+
     /**
      * Nome da propriedade.
      * @return Retorna o nome da propriedade.
@@ -38,10 +43,11 @@ public class JProperty
         return name;
     }
 
-    public String getValue() 
+    public String getValue()
     {
         return value;
     }
+
     /**
      * Define o valor da propriedade.
      * @param strValue Valor da propriedade.
@@ -52,7 +58,7 @@ public class JProperty
     }
 
     /**
-     * @return A descrição da propriedade
+     * @return A descriï¿½ï¿½o da propriedade
      */
     public String getDescription()
     {
@@ -60,7 +66,7 @@ public class JProperty
     }
 
     /**
-     * @param strDescription Descrição da propriedade
+     * @param strDescription Descriï¿½ï¿½o da propriedade
      */
     public void setDescription(String strDescription)
     {
@@ -74,56 +80,87 @@ public class JProperty
     {
         return type;
     }
-    
+
     /**
      * @return Retorna o nome do tipo da propriedade 
      */
     public String getTypeName()
     {
-        if(type.equals("IP"))
+        if (type.equals("IP"))
         {
             return "IP";
         }
         else
         {
-            if(type.equals("SECONDS"))
+            if (type.equals("SECONDS"))
             {
                 return "Segundos";
             }
             else
             {
-                if(type.equals("UINT"))
+                if (type.equals("UINT"))
                 {
                     return "Inteiro Positivo";
                 }
                 else
                 {
-                    if(type.equals("PERCENTAGE"))
+                    if (type.equals("PERCENTAGE"))
                     {
                         return "Porcentagem";
+                    }
+                    else
+                    {
+                        if (type.equals("DECIMAL"))
+                        {
+                            return "Decimal";
+                        }
+                        else
+                        {
+                            if (type.equals("STRING"))
+                            {
+                                return "Texto";
+                            }
+                            else
+                            {
+                                if (type.equals("EMAIL"))
+                                {
+                                    return "Email";
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
-        
+
         return "";
     }
-    
+
     public static JProperty getProperty(String strName)
     {
         ArrayList<JProperty> listProperties = JPropertyDBManager.getPropertiesListFromDB();
-        
-        if(listProperties != null)
+
+        if (listProperties != null)
         {
-            for(int nInd = 0; nInd < listProperties.size(); nInd++)
+            for (int nInd = 0; nInd < listProperties.size(); nInd++)
             {
-                if(listProperties.get(nInd).getName().equals(strName))
+                if (listProperties.get(nInd).getName().equals(strName))
                 {
                     return listProperties.get(nInd);
                 }
             }
         }
-        
+
         return null;
+    }
+
+    public int getOrder()
+    {
+        return order;
+    }
+
+    public void setOrder(int order)
+    {
+        this.order = order;
     }
 }

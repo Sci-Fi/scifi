@@ -3,9 +3,13 @@
     <type>org.netbeans.modules.web.project</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/web-project/3">
-            <name>ControllerWeb</name>
+            <name>ControllerSplash</name>
             <minimum-ant-version>1.6.5</minimum-ant-version>
             <web-module-libraries>
+                <library dirs="200">
+                    <file>${file.reference.gson-2.2.2.jar}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
                 <library dirs="200">
                     <file>${file.reference.jsf-api.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
@@ -20,7 +24,7 @@
                 <root id="src.dir"/>
             </source-roots>
             <test-roots>
-                <root id="test.src.dir"/>
+                <root id="test.test.dir" name="Test Packages"/>
             </test-roots>
         </data>
     </configuration>

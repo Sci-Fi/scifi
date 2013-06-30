@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
 
 /**
- * Este é um java bean que representa um novo AP que será inserido na lista de APs controlados do banco de dados.
+ * Este ï¿½ um java bean que representa um novo AP que serï¿½ inserido na lista de APs controlados do banco de dados.
  * @author ferolim
  */
 public class JNewAPBean extends JAPInfo
@@ -25,17 +25,26 @@ public class JNewAPBean extends JAPInfo
     
     public JNewAPBean()
     {
-        super("","",0,"","",-1,-1,10,25,1,null,0,1);
+        super("","",0,"","",-1,-1,10,25,1,null,0,1,0.00,0.00,0);
+
+        if (FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().containsKey("latitude") && FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().containsKey("longitude")) {
+
+            Double LATITUDE = Double.parseDouble(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("latitude"));
+            Double LONGITUDE = Double.parseDouble(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("longitude"));
+
+            this.setLatitude(LATITUDE);
+            this.setLongitude(LONGITUDE);
+        }
     }
     
     /**
-     * Método que adicina um novo AP controlado no banco de dados.
+     * Mï¿½todo que adicina um novo AP controlado no banco de dados.
      */
     public void addAP()
     {
         int nStatus = 0;
         
-        if (JAPInfoDBManager.addAP(MAC, IP, location, listTxPower, underloadThreshold, overloadThreshold, region))
+        if (JAPInfoDBManager.addAP(MAC, IP, location, listTxPower, underloadThreshold, overloadThreshold, region, latitude, longitude))
         {
             nStatus = 1;
         }

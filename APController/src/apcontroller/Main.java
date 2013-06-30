@@ -19,6 +19,7 @@ import java.util.concurrent.Semaphore;
 import log.JLogger;
 import org.apache.log4j.Logger;
 import server.JServer;
+import timers.JSendMailReportTimer;
 
 /**
  * Classe principal que executa o controlador.
@@ -29,8 +30,9 @@ public class Main
 
     public final static String CONNECTION_LOG = "ConnectionLog";
     public final static String JAVA_LOG = "JAVALog";
+   //public final static Integer REACHABLE = 1;
     
-    // Este Mutex é usado para prevenir a execução simultânea de operações de coleta de dados de scan, station dump, algoritmo de seleção de canal e de controle de potência.
+    // Este Mutex é usado para prevenir a execução simultânea de operações de coleta de dados de scan, station dump, algoritmo de seleção de canal, controle de potência e envio de relatorio de emails.
     // Somente uma operação por vez irá ocorrer. 
     public static Semaphore m_mutexGlobal = new Semaphore(1);
     private static Integer m_nRegion = -1;
@@ -55,7 +57,7 @@ public class Main
 
                 if(initLogger())
                 {
-                    //a porta é a porta base + identificador da região
+                    //a porta é a porta base + identificador da região + 1
 
                     switch (args.length)
                     {
@@ -80,7 +82,9 @@ public class Main
 
                     // roda algoritmos e coleta de dados
                     firstRun();
-                    //Agenda as próximas execuções dos algoritmos e coleta de dados.
+                    //Agenda as próximas execuções dos algoritmos e coleta de dados.    
+                    JSendMailReportTimer.start();
+                    
                     JAPDataCollectorTimer.start();
 
                     JAlgorithmTimer.start();
@@ -96,7 +100,7 @@ public class Main
             // caso não tenha conseguido se conectar ao banco de dados        
             else
             {
-                Logger.getLogger(Main.JAVA_LOG).error(JLogger.getDateTime() + " " + JLogger.getTime() + " Could not connect to database. Suggestion: Check DB Path in DBConfig.txt and credentials in login_config ");                
+                Logger.getLogger(Main.JAVA_LOG).error(JLogger.getDateTime() + " " + JLogger.getTime() + " Could not connect to database. Suggestion: Check DB Path in DBConfig.txt ");                
             }
         }
         // caso o número de argumentos esteja incorreto
@@ -154,7 +158,7 @@ public class Main
             m_mutexGlobal.acquire();
             
             ArrayList<JAPInfo> listAP = JDataManagement.loadAPList();
-
+            
             for(int nInd = 0; nInd < listAP.size(); nInd++)
             {
                 listAP.get(nInd).setMaxPower();

@@ -7,9 +7,13 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
         <title>Controlador Scifi - Adicionar Região de Controle</title>
+        <script type="text/javascript" src="../javascript/jquery-1.8.3.min.js"></script>
+        <link rel="stylesheet" href="../css/thickbox.css" type="text/css" media="screen" />
+        <script language="javascript" type="text/javascript" src="../javascript/thickbox.js"></script>
         <script type="text/javascript" src="../javascript/preloadImages.js"></script>
-        <script type="text/javascript" src="../javascript/utils.js"></script>
+        <script type="text/javascript" charset="UTF-8" src="../javascript/utils.js"></script>
         <script type="text/javascript" src="../javascript/newRegion.js" charset="utf-8"></script>
+        <script type="text/javascript" charset="UTF-8" src="../javascript/time_aps.js"></script>
         <script type="text/javascript">    
             ShowInsertionStatus();
         </script>
@@ -20,7 +24,7 @@
 
             <div id="topo">
 
-                <div id="logo"><ul><li><a href="admin.html" title="Voltar à página inicial"></a></li></ul></div>
+                <div id="logo"><ul><li><a href="admin.jsf" title="Voltar à página inicial"></a></li></ul></div>
 
                 <div id="figuraTopo"></div>
 
@@ -51,12 +55,13 @@
                         </li>
                         <li class="comandos"><a href="commander.jsf" title="Executar Comandos do Controlador"></a></li>
                         <li class="configurar"><a href="edit_parameters.jsf" title="Editar Configurações do Controlador"></a></li>
+                        <li class="mrtg"><a href="editMap.jsp?type=10" target="_blank" title="Monitoramento"></a></li>
                     </ul>
                 </div>
             </div>
 
             <div id="coluna_dir">
-                <div id="titulo">Adicionar Região de Controle</div>
+                <div id="titulo">Adicionar Região de Controle<label id="info_unreachable"><label></label><a href="#" title="Controlador Scifi - Pontos de acesso incomunicantes" class="thickbox"></a><img src="../figuras/wait.gif"/></label> <a href="logout.jsf" id="logout">Logout</a> </div>
                 <div class="barraConteudo"></div>
                 <div id="conteudo">
                     <div id="tableCenter">
@@ -75,7 +80,7 @@
                                     </tr>
                                 </table>
                                 <h:panelGrid columns="1" styleClass="tableFinal">
-                                    <h:commandButton action="#{JRegionBean.addRegion}" value="Adicionar" styleClass="submit"></h:commandButton>
+                                    <h:commandButton action="#{JRegionBean.addRegion}" value="Adicionar" onclick="javascript: trocaCursor('progress',this);" styleClass="submit"></h:commandButton>
                                 </h:panelGrid>
                             </h:form>
                         </f:view>

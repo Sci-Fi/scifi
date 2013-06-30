@@ -26,8 +26,11 @@ public final class JAPInfo
     protected int m_nCurrentTxPowerIndex;
     private int m_nUnderloadLimit;
     private int m_nOverloadLimit;
+    private int m_nReachable;
+    private int m_nEnabled;
+    private int m_nEmailSent;
 
-    public JAPInfo(String strIP, String strMAC, ArrayList<Integer> listTxPower, String strLocalization, Integer nUnderloadLimit, Integer nOverloadLimit, Integer nCurrentChannel, Integer nCurrentTxPower, Integer nRegion)
+    public JAPInfo(String strIP, String strMAC, ArrayList<Integer> listTxPower, String strLocalization, Integer nUnderloadLimit, Integer nOverloadLimit, Integer nCurrentChannel, Integer nCurrentTxPower, Integer nRegion, Integer nReachable, Integer nEnabled, Integer nEmailSent)
     {
         m_strIP = strIP;
         m_strMAC = strMAC.toUpperCase();
@@ -37,6 +40,9 @@ public final class JAPInfo
         m_nOverloadLimit = nOverloadLimit;
         m_listTxPower = listTxPower;
         m_nChannel = nCurrentChannel;
+        m_nReachable = nReachable;
+        m_nEnabled = nEnabled;
+        m_nEmailSent = nEmailSent;
 
         updateTxPowerIndex(nCurrentTxPower);
     }
@@ -116,6 +122,42 @@ public final class JAPInfo
 
     public void setRegion(int m_nRegion) {
         this.m_nRegion = m_nRegion;
+    }
+    
+    /*
+     * Informação se o AP está comunicante ou não
+     */
+    
+    public int getReachable() {
+        return m_nReachable;
+    }
+
+    public void setReachable(int nReachable) {
+        m_nReachable = nReachable;
+    }
+    
+     /*
+     * Informação se o AP está habilitado para controle ou não
+     */
+    
+    public int getEnabled() {
+        return m_nEnabled;
+    }
+
+    public void setEnabled(int nEnabled) {
+        m_nEnabled = nEnabled;
+    }
+    
+    /*
+     * Informação se o email de AP incomunicante já foi enviado ao AP no dia atual.
+     */
+    
+    public int getEmailSent() {
+        return m_nEmailSent;
+    }
+
+    public void setEmailSent(int nEmailSent) {
+        m_nEmailSent = nEmailSent;
     }
     
    /**

@@ -14,7 +14,7 @@
 
             <div id="topo">
 
-                <div id="logo"><ul><li><a href="admin.html" title="Voltar à página inicial"></a></li></ul></div>
+                <div id="logo"><ul><li><a href="admin.jsf" title="Voltar à página inicial"></a></li></ul></div>
 
                 <div id="figuraTopo"></div>
 
@@ -38,7 +38,7 @@
                             </tr>
                             <tr>
                                 <td class="linhabotoes2">   
-                                    <a class="botao" href="admin.html">Clique aqui para tentar novamente.</a>
+                                    <a class="botao" href="admin.jsf">Clique aqui para tentar novamente.</a>
                                 </td>
                             </tr>
                         </table>

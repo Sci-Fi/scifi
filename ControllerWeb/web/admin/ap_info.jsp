@@ -1,29 +1,33 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<%@taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
-<%@taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
-
 <html xmlns="http://www.w3.org/1999/xhtml">
+
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
         <title>Controlador Scifi - Visualizar Pontos de Acesso</title>
-        <script type="text/javascript" src="../javascript/preloadImages.js"></script>
-        <script type="text/javascript" src="../javascript/preloadImages_apInfo.js"></script>
-        <script type="text/javascript" src="../javascript/utils.js"></script>
-        <script type="text/javascript" src="../javascript/apInfo.js"></script>
-        <script type="text/javascript" src="../javascript/commander.js"></script>
+        <link href="../css/estilo.css" rel="stylesheet" type="text/css" />        
+        <script type="text/javascript" src="../javascript/jquery-1.8.3.min.js"></script>
+        <link rel="stylesheet" href="../css/thickbox.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="../css/jquery.dataTables.css" type="text/css" media="screen" />
+        <script language="javascript" charset="UTF-8" type="text/javascript" src="../javascript/thickbox.js"></script>
+        <script type="text/javascript" charset="UTF-8" src="../javascript/preloadImages.js"></script>
+        <script type="text/javascript" charset="UTF-8" src="../javascript/preloadImages_apInfo.js"></script>
+        <script language="javascript" type="text/javascript"  charset="UTF-8" src="../javascript/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" charset="UTF-8" src="../javascript/utils.js"></script>
+        <script type="text/javascript" charset="UTF-8" src="../javascript/apInfo.js"></script>
+        <script type="text/javascript" charset="UTF-8" src="../javascript/commander.js"></script>
 
         <script type="text/javascript">    
             ShowExecutionStatus();
         </script>
-        <link href="../css/estilo.css" rel="stylesheet" type="text/css" />
     </head>
     <body id="apInfo">
         <div id="tudo">
 
+
             <div id="topo">
 
-                <div id="logo"><ul><li><a href="admin.html" title="Voltar à página inicial"></a></li></ul></div>
+                <div id="logo"><ul><li><a href="admin.jsf" title="Voltar à página inicial"></a></li></ul></div>
 
                 <div id="figuraTopo"></div>
 
@@ -54,148 +58,37 @@
                         </li>
                         <li class="comandos"><a href="commander.jsf" title="Executar Comandos do Controlador"></a></li>
                         <li class="configurar"><a href="edit_parameters.jsf" title="Editar Configurações do Controlador"></a></li>
+                        <li class="mrtg"><a href="editMap.jsp?type=10" target="_blank" title="Monitoramento"></a></li>
                     </ul>
                 </div>
             </div>
 
             <div id="coluna_dir">
-                <div id="titulo">Visualizar Pontos de Acesso</div>
+                <div id="titulo">Visualizar Pontos de Acesso<label id="info_unreachable"><label></label><a href="#" title="Controlador Scifi - Pontos de acesso incomunicantes" class="thickbox"></a><img src="../figuras/wait.gif"/></label><a href="logout.jsf" id="logout">Logout</a> </div>
                 <div class="barraConteudo"></div>
                 <div id="conteudo">
-
-                    <f:view>
-                        <h:form>
-
-
-                            <h:dataTable id="dt1" var="item" value="#{JAPListBean.listAP}" rowClasses="#{JAPListBean.rowColorEnabled}">
-
-                                <f:facet name="caption">
-                                    <h:outputText value="Tabela de uso dos pontos de acesso" />
-                                </f:facet>
-
-                                <h:column >
-                                    <f:facet name="header" >
-                                        <h:outputText value=""></h:outputText>
-                                    </f:facet>
-                                    <h:outputText value=" #{JRowCounterBean.row} "></h:outputText>
-                                </h:column> 
-
-
-                                <h:column >
-                                    <f:facet name="header" >
-                                        <h:outputText value="MAC"></h:outputText>
-                                    </f:facet>
-                                    <h:outputText value="#{item.MAC}"></h:outputText>
-                                </h:column>
-
-                                <h:column >
-                                    <f:facet name="header" >
-                                        <h:outputText value="IP" ></h:outputText>
-                                    </f:facet>
-                                    <h:outputText value="#{item.IP}"></h:outputText>
-                                </h:column>
-
-                                <h:column >
-                                    <f:facet name="header" >
-                                        <h:outputText value="Localização" ></h:outputText>
-                                    </f:facet>
-                                    <h:outputText value="#{item.location}"></h:outputText>
-                                </h:column>
-
-                                <h:column >
-                                    <f:facet name="header" >
-                                        <h:outputText value="Região" ></h:outputText>
-                                    </f:facet>
-                                    <h:outputText value="#{item.regionName}"></h:outputText>
-                                </h:column>
-
-                                <h:column >
-                                    <f:facet name="header" >
-                                        <h:outputText value="Canal" ></h:outputText>
-                                    </f:facet>
-                                    <h:outputText value="#{item.channel}"></h:outputText>
-                                </h:column>
-
-                                <h:column >
-                                    <f:facet name="header" >
-                                        <h:outputText value="Lista de Potências" ></h:outputText>
-                                    </f:facet>
-                                    <h:outputText value="#{item.listTxPower}"></h:outputText>
-                                </h:column>
-
-                                <h:column >
-                                    <f:facet name="header" >
-                                        <h:outputText value="Potência Atual" ></h:outputText>
-                                    </f:facet>
-                                    <h:outputText value="#{item.curTxPower}"></h:outputText>
-                                </h:column>
-
-                                <h:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="Número de Usuários" ></h:outputText>
-                                    </f:facet>
-                                    <h:outputText value="#{item.numberOfUsers}"></h:outputText>
-                                </h:column>
-
-                                <h:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="Status" ></h:outputText>
-                                    </f:facet>
-                                    <h:outputText value="#{item.loadStatusText}"></h:outputText>
-                                </h:column>
-
-                                <h:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="Limite de Carga Baixa" ></h:outputText>
-                                    </f:facet>
-                                    <h:outputText value="#{item.underloadThreshold}"></h:outputText>
-                                </h:column>
-
-                                <h:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="Limite de Sobrecarga" ></h:outputText>
-                                    </f:facet>
-                                    <h:outputText value="#{item.overloadThreshold}"></h:outputText>
-                                </h:column>
-
-                                <h:column >
-                                    <f:facet name="header" >
-                                        <h:outputText value="Informação de Scan" />
-                                    </f:facet>
-                                    <div class="visualizarScan">
-                                        <ul>
-                                            <li>
-                                                <h:outputLink value="scan_info.jsf?MAC=#{item.MAC}" title="Visualizar Informações de Scan" />
-                                            </li>
-                                        </ul>
-                                    </div>      
-                                </h:column>
-
-                                <h:column >
-                                    <f:facet name="header" >
-                                        <h:outputText value="Ações" />
-                                    </f:facet>
-
-                                    <h:commandButton actionListener="#{JAPListBean.selectMAC}" action="#{JAPListBean.removeAP}" onclick="javascript: return ConfirmRemoval();" title="Remover" styleClass="remover">
-                                        <f:attribute name="selectedMAC" value="#{item.MAC}"/>
-                                    </h:commandButton>
-
-                                    <h:commandButton actionListener="#{JControllerCommanderBean.selectMAC}" action="#{JControllerCommanderBean.rebootAP}" onclick="javascript: return ConfirmReboot();" title="Reiniciar" styleClass="reiniciar">
-                                        <f:attribute name="selectedMAC" value="#{item.MAC}"/>
-                                    </h:commandButton>
-
-                                    <h:commandButton actionListener="#{JAPListBean.selectMAC}" action="#{JAPListBean.enableAP}" rendered="#{!item.enabled}" styleClass="habilitar" title="Habilitar">
-                                        <f:attribute name="selectedMAC" value="#{item.MAC}"/>
-                                    </h:commandButton>
-
-                                    <h:commandButton actionListener="#{JAPListBean.selectMAC}" action="#{JAPListBean.enableAP}"  rendered="#{item.enabled}" styleClass="desabilitar" title="Desabilitar">
-                                        <f:attribute name="selectedMAC" value="#{item.MAC}"/>
-                                    </h:commandButton>
-                                </h:column>                    
-                            </h:dataTable>
-                        </h:form>
-                    </f:view>
-
+                    <table id="tab_aps">
+                        <thead>
+                            <tr>
+                                <th>MAC</th>
+                                <th>IP</th>
+                                <th>Localização</th>
+                                <th>Região</th>
+                                <th>Canal</th>
+                                <th>Lista de Potências</th>
+                                <th>Potência Atual</th>
+                                <th>Número de Usuários</th>
+                                <th>Status</th>
+                                <th>Limite de Carga Baixa</th>
+                                <th>Limite de Sobrecarga</th>
+                                <th>Latitude</th>
+                                <th>Longitude</th>
+                                <th>Informação de Scan</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody_aps"></tbody>
+                    </table>
                 </div>
             </div>        
             <div class="clr"></div>

@@ -31,9 +31,7 @@ public class JDataParserThread implements Runnable
 {
     private static final String AP_TYPE = "AP";
     private static final String WEB_TYPE = "WEB";
-    private static final int AUTH_RESPONSE = 2;
-    private static final int ASYNC_RESPONSE_CONNECT = 1;
-    private static final int ASYNC_RESPONSE_DISCONNECT = 0;
+    //private static final int AUTH_RESPONSE = 2;
     private Socket m_socketClient;
     /**
      * Construtor da classe JDataParserThread. Inicializa a variável m_socketClient.
@@ -69,6 +67,8 @@ public class JDataParserThread implements Runnable
             {
                 strMessage = strMessage.substring(0, nEndChar);
             }
+            
+            Logger.getLogger(Main.CONNECTION_LOG).info(JLogger.getDateTime() + " " + JLogger.getTime() + " Message: " + strMessage);
        
             boolean bAnswer = decodeMessage(strMessage);
                         
@@ -104,7 +104,7 @@ public class JDataParserThread implements Runnable
                 {
                     return decodeMessageFromWeb(strSplit[1]);
                 }
-            //}
+//            }
         }
         
         return false;
@@ -193,7 +193,7 @@ public class JDataParserThread implements Runnable
                                     }
                                     else
                                     {
-                                        JCommander.reboot(JAPInfo.getAPInfoByMAC(strData, JDataManagement.loadAPList()));
+                                        JCommander.reboot(JDataManagement.loadAP(strData));
                                     }
                                 }
                                 else
@@ -203,18 +203,33 @@ public class JDataParserThread implements Runnable
                                         JConfigCheckTimer.runConfigCheck();
                                     }
 //                                    else
-//                                    {
-//                                        if(strType.equals("UPDATE_REGION")) 
+//                                    {                                        
+//                                        if(strType.equals("UPDATE_ENABLED")) 
 //                                        {
-//                                            ArrayList<JAPInfo> listAP = JDataManagement.loadAPList();
+//                                            String[] vetData = strData.split(";");
 //
-//                                            for(int nInd = 0; nInd < listAP.size(); nInd++)
-//                                            {
-//                                                /* Atualiza a regiao no arquivo de cada AP.
-//                                                 * O arquivo se encontra em /tmp e tem nome "Regiao_alocada"
-//                                                 */                                                
-//                                                JCommander.updateRegionAP(listAP.get(nInd), listAP.get(nInd).getRegion());                                                
-//                                            }
+//                                            String strMAC = vetData[0];
+//                                            int nEnabled = Integer.parseInt(vetData[1]);
+//
+//                                            if(!JDataManagement.updateEnabled(strMAC, nEnabled))
+//                                            {                                                    
+//                                                return false;                                             
+//                                            }  /*                                             
+//                                            else
+//                                            {                                                    
+//                                                JAPInfo apinfo = JDataManagement.loadAP(strMAC);
+//                                                // Apenas APs comunicantes terão o arquivo atualizado. Isto foi criado para que o usuário não tenha que aguardar muito para a atualização do mapa da interface web.
+//                                                if (apinfo.getReachable() == Main.REACHABLE)
+//                                                {
+//                                                    if(!JCommander.updateFileEnabledAP(apinfo, nEnabled))
+//                                                    {
+//
+//                                                        return false;
+//
+//                                                    }
+//
+//                                                }
+//                                            }*/
 //                                        }
 //                                    }
                                 }
@@ -230,11 +245,11 @@ public class JDataParserThread implements Runnable
         return true;
     }
     
-//    /**
-//     * Decodifica uma mensagem enviada por um ponto de acesso.
-//     * 
-//     * @param strMessage Mensagem enviada pelo ponto de acesso.
-//     */
+    /**
+     * Decodifica uma mensagem enviada por um ponto de acesso.
+     * 
+     * @param strMessage Mensagem enviada pelo ponto de acesso.
+     */
 //    protected boolean decodeMessageFromAP(String strMessage)
 //    {
 //        // O formato da informação recebida é a seguinte:
@@ -259,16 +274,6 @@ public class JDataParserThread implements Runnable
 //                                     strAPMAC = strSplit[3];
 //                                     
 //                                     return handleAuthResponse(strAPMAC, strSTAMAC);
-//                    
-//                case ASYNC_RESPONSE_CONNECT : strSTAMAC = strSplit[2];
-//                                      strAPMAC = strSplit[3];
-//                                      
-//                                      return handleAsyncResponse_connect(strAPMAC, strSTAMAC);
-//                    
-//                case ASYNC_RESPONSE_DISCONNECT : strSTAMAC = strSplit[2];
-//                                      strAPMAC = strSplit[3];
-//                                      
-//                                      return handleAsyncResponse_disconnect(strAPMAC, strSTAMAC);
 //            }
 //        }
 //        
@@ -281,36 +286,13 @@ public class JDataParserThread implements Runnable
      * @param strAPMAC MAC do AP.
      * @param strSTAMAC MAC do cliente associado.
      */
-    protected boolean handleAuthResponse(String strAPMAC, String strSTAMAC)
-    {
-        JSTAInfo staInfo = new JSTAInfo(strSTAMAC);
-        ArrayList<JSTAInfo> listSTA = new ArrayList<JSTAInfo>();
-        listSTA.add(staInfo);
-        // adiciona no banco de dados a informação sobre a nova estação associada e a que AP ela está associada.
-        return JDataManagement.addSTAInfo(strAPMAC, listSTA);
-    }
+//    protected boolean handleAuthResponse(String strAPMAC, String strSTAMAC)
+//    {
+//        JSTAInfo staInfo = new JSTAInfo(strSTAMAC);
+//        ArrayList<JSTAInfo> listSTA = new ArrayList<JSTAInfo>();
+//        listSTA.add(staInfo);
+//        // adiciona no banco de dados a informação sobre a nova estação associada e a que AP ela está associada.
+//        return JDataManagement.addSTAInfo(strAPMAC, listSTA);
+//    } 
     
-    /*
-     * Esta função regista a conexão do Cliente com o AP.
-     * Adiciona no banco de dados a informação sobre a nova estação associada, a data e a hora da associação e a que AP ela está associada.
-     * @param strAPMAC MAC do AP.
-     * @param strSTAMAC MAC do cliente associado.         
-     * @return Retorna true se a operação ocorreu com sucesso ou false, caso contrário.
-     */    
-//    protected boolean handleAsyncResponse_connect(String strAPMAC, String strSTAMAC)
-//    {
-//        return JDataManagement.registerConnectionSTA_AP(strSTAMAC, strAPMAC.trim(), true);
-//    }    
-//    
-//    /*
-//     * Esta função regista a conexão do Cliente com o AP.
-//     * Adiciona no banco de dados a informação sobre a nova estação associada, a data e a hora da associação e a que AP ela está associada.
-//     * @param strAPMAC MAC do AP.
-//     * @param strSTAMAC MAC do cliente associado.         
-//     * @return Retorna true se a operação ocorreu com sucesso ou false, caso contrário.
-//     */    
-//    protected boolean handleAsyncResponse_disconnect(String strAPMAC, String strSTAMAC)
-//    {
-//        return JDataManagement.registerConnectionSTA_AP(strSTAMAC, strAPMAC.trim(), false);
-//    }    
 }

@@ -15,9 +15,8 @@ function ShowExecutionStatus()
     {
         if(answer == 0)
         {
-            alert("O comando n√£o p√¥de ser executado.");
+            alert("O comando n„o pÙde ser executado.");
         }
     }
 }
-
 

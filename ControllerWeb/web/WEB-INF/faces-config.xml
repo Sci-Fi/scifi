@@ -28,6 +28,18 @@
 </managed-bean>
 
 <managed-bean>
+   <managed-bean-name>JNewAPMapBean</managed-bean-name>
+   <managed-bean-class>beans.JNewAPMapBean</managed-bean-class>
+   <managed-bean-scope>request</managed-bean-scope>
+</managed-bean>
+
+<managed-bean>
+   <managed-bean-name>JAPListMapBean</managed-bean-name>
+   <managed-bean-class>beans.JAPListMapBean</managed-bean-class>
+   <managed-bean-scope>request</managed-bean-scope>
+</managed-bean>
+
+<managed-bean>
    <managed-bean-name>JRegionBean</managed-bean-name>
    <managed-bean-class>beans.JRegionBean</managed-bean-class>
    <managed-bean-scope>request</managed-bean-scope>

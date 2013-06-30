@@ -6,11 +6,9 @@ package database;
 
 import java.sql.Statement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.Context;
@@ -19,16 +17,16 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 /**
- * Classe que cuida da conexão com o Servidor de Aplicação e operações no banco de dados.
- * O Servidor de Aplicação disponibiliza algumas conexões que podem ser utilizadas para comunicação com o banco de dados.
- * A aplicação deve se conectar ao Servidor para obter e modificar informações no banco de dados.
+ * Classe que cuida da conexï¿½o com o Servidor de Aplicaï¿½ï¿½o e operaï¿½ï¿½es no banco de dados.
+ * O Servidor de Aplicaï¿½ï¿½o disponibiliza algumas conexï¿½es que podem ser utilizadas para comunicaï¿½ï¿½o com o banco de dados.
+ * A aplicaï¿½ï¿½o deve se conectar ao Servidor para obter e modificar informaï¿½ï¿½es no banco de dados.
  * @author Felipe Rolim
  */
 public class JDBManager
 {    
     /**
-     * Método que pega uma das conexões do pool do Servidor de Aplicação. No caso do SciFi, o Jboss é utilizado como Servidor de Aplicação.
-     * @return Retorna a conexão com o Servidor de Aplicação.
+     * Mï¿½todo que pega uma das conexï¿½es do pool do Servidor de Aplicaï¿½ï¿½o. No caso do SciFi, o Jboss ï¿½ utilizado como Servidor de Aplicaï¿½ï¿½o.
+     * @return Retorna a conexï¿½o com o Servidor de Aplicaï¿½ï¿½o.
      */
     protected static Connection getConnection()
     {
@@ -49,7 +47,7 @@ public class JDBManager
         {
             Logger.getLogger(JDBManager.class.getName()).log(Level.SEVERE, null, ex);
         }
-        // se falhar para pegar a conexão na primeira tentativa, tentar novamente.
+        // se falhar para pegar a conexï¿½o na primeira tentativa, tentar novamente.
         if(connection==null)
         {
             try 
@@ -73,8 +71,8 @@ public class JDBManager
         return connection;
     }
     /**
-     * Método que libera a conexão com o Servidor de Aplicação.
-     * @param connection A conexão que será liberada.
+     * Mï¿½todo que libera a conexï¿½o com o Servidor de Aplicaï¿½ï¿½o.
+     * @param connection A conexï¿½o que serï¿½ liberada.
      */
     protected static void closeConnection(Connection connection)
     {
@@ -91,8 +89,8 @@ public class JDBManager
         }
     }
     /**
-     * Método que fecha o conjunto de resultados de uma requisição ao banco de dados.
-     * É necessário fechá-lo antes de finalizar uma conexão.
+     * Mï¿½todo que fecha o conjunto de resultados de uma requisiï¿½ï¿½o ao banco de dados.
+     * ï¿½ necessï¿½rio fechï¿½-lo antes de finalizar uma conexï¿½o.
      * @param rs Result Set a ser finalizado.
      */
     protected static void closeResultSet(ResultSet rs)
@@ -110,8 +108,8 @@ public class JDBManager
         }
     }
     /**
-     * Método que fecha o Statement criado para realizar uma operação no banco de dados.
-     * É necessário fechá-lo antes de finalizar uma conexão.
+     * Mï¿½todo que fecha o Statement criado para realizar uma operaï¿½ï¿½o no banco de dados.
+     * ï¿½ necessï¿½rio fechï¿½-lo antes de finalizar uma conexï¿½o.
      * @param statement Statement a ser finalizado.
      */
     protected static void closeStatement(Statement statement)
@@ -128,12 +126,32 @@ public class JDBManager
             }
         }
     }
+
+    /**
+     * Mï¿½todo que fecha o PreparedStatement criado para realizar uma operaï¿½ï¿½o no banco de dados.
+     * ï¿½ necessï¿½rio fechï¿½-lo antes de finalizar uma conexï¿½o.
+     * @param statement Statement a ser finalizado.
+     */
+    protected static void closePreparedStatement(PreparedStatement pstatement)
+    {
+        if(pstatement != null)
+        {
+            try
+            {
+                pstatement.close();
+            }
+            catch (SQLException ex)
+            {
+                System.out.println("Could not close the Statement");
+            }
+        }
+    }
     
     /**
-     * Método que executa uma operação no banco de dados.
-     * @param connection Conexão que será utilizada para comunicação com o banco de dados.
+     * Mï¿½todo que executa uma operaï¿½ï¿½o no banco de dados.
+     * @param connection Conexï¿½o que serï¿½ utilizada para comunicaï¿½ï¿½o com o banco de dados.
      * @param strSQl Comando a ser executado.
-     * @return Retorna true se a execução ocorreu com sucesso ou false, caso contrário.
+     * @return Retorna true se a execuï¿½ï¿½o ocorreu com sucesso ou false, caso contrï¿½rio.
      */
     protected static boolean execute(Connection connection, String strSQl)
     {
@@ -146,7 +164,7 @@ public class JDBManager
             try
             {
                 sSql = connection.createStatement();
-
+                
                 sSql.execute(strSQl);
                 
                 sSql.close();
@@ -166,7 +184,7 @@ public class JDBManager
     }
     
     /**
-     * Método que executa uma consulta ao banco de dados.
+     * Mï¿½todo que executa uma consulta ao banco de dados.
      * @param sSql Statement a ser utilizado para executar a consulta.
      * @param strSQl Consulta a ser executada.
      * @return Retorna o conjunto de resultados gerados pela consulta.
@@ -187,6 +205,63 @@ public class JDBManager
             }
         }
         
+        return rsReturn;
+    }
+
+    /**
+     * Mï¿½todo que executa uma operaï¿½ï¿½o no banco de dados com proteÃ§Ã£o contra SQL Injection (PreparedStatement).
+     * @param connection Conexï¿½o que serï¿½ utilizada para comunicaï¿½ï¿½o com o banco de dados.
+     * @param strSQl Comando a ser executado.
+     * @return Retorna true se a execuï¿½ï¿½o ocorreu com sucesso ou false, caso contrï¿½rio.
+     */
+    protected static boolean safe_execute(Connection connection, String strSQl, PreparedStatement pSql)
+    {
+        Boolean bReturn = true;
+
+        if(connection != null)
+        {
+            try
+            {
+                pSql.executeUpdate();
+
+                pSql.close();
+            }
+            catch (SQLException se)
+            {
+                System.out.println("Could not execute sql - " + se.toString());
+                bReturn = false;
+            }
+        }
+        else
+        {
+            bReturn = false;
+        }
+
+        return bReturn;
+    }
+
+    /**
+     * Mï¿½todo que executa uma consulta sem SQL Injection ao banco de dados.
+     * @param sSql Statement a ser utilizado para executar a consulta.
+     * @param strSQl Consulta a ser executada.
+     * @return Retorna o conjunto de resultados gerados pela consulta.
+     */
+    protected static ResultSet safe_executeQuery(PreparedStatement pSql, String strSQl)
+    {
+        ResultSet rsReturn = null;
+
+        if(pSql != null)
+        {
+            try
+            {
+                rsReturn = pSql.executeQuery();
+            }
+            catch (SQLException se)
+            {
+                System.out.println("Could not execute sql - " + se.toString());
+            }
+        }
+
         return rsReturn;
     }
 }

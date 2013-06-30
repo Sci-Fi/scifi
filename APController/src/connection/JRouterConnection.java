@@ -10,6 +10,7 @@ import database.JDataManagement;
 import java.io.File;
 import log.JLogger;
 import org.apache.log4j.Logger;
+import util.JMail;
 
 /**
  * Esta classe é responsável pela conexão entre o controlador e os pontos de acesso, execução de comandos e cópia de arquivo via SCP.
@@ -147,6 +148,9 @@ public class JRouterConnection
         {
             // Insere no banco de dados que o AP está sem conexão (Reachable = 0)
             JDataManagement.addReachableInfoToDB(apInfo.getMAC(), 0);
+            
+            JMail.sendUnreachableMail(apInfo);
+            
             return false;
         }
         else

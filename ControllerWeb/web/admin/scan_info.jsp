@@ -7,16 +7,24 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
         <title>Controlador Scifi - Visualizar Informações de Scan</title>
+        <script type="text/javascript" src="../javascript/jquery-1.8.3.min.js"></script>
+        <link rel="stylesheet" href="../css/thickbox.css" type="text/css" media="screen" />
+        <script language="javascript" type="text/javascript" src="../javascript/thickbox.js"></script>
         <script type="text/javascript" src="../javascript/preloadImages.js"></script>
-        <script type="text/javascript" src="../javascript/apInfo.js"></script>
+        <script type="text/javascript" charset="UTF-8" src="../javascript/utils.js"></script>
         <link href="../css/estilo.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" charset="UTF-8" src="../javascript/time_aps.js"></script>
+        <script type="text/javascript" charset="UTF-8" src="../javascript/scan_info.js"></script>
+        <script>
+            getPreviousLink();
+        </script>
     </head>
     <body>
         <div id="tudo">
 
             <div id="topo">
 
-                <div id="logo"><ul><li><a href="admin.html" title="Voltar à página inicial"></a></li></ul></div>
+                <div id="logo"><ul><li><a href="admin.jsf" title="Voltar à página inicial"></a></li></ul></div>
 
                 <div id="figuraTopo"></div>
 
@@ -47,12 +55,13 @@
                         </li>
                         <li class="comandos"><a href="commander.jsf" title="Executar Comandos do Controlador"></a></li>
                         <li class="configurar"><a href="edit_parameters.jsf" title="Editar Configurações do Controlador"></a></li>
+                        <li class="mrtg"><a href="editMap.jsp?type=10" target="_blank" title="Monitoramento"></a></li>
                     </ul>
                 </div>
             </div>
 
             <div id="coluna_dir">
-                <div id="titulo">Visualizar Informações de Scan</div>
+                <div id="titulo">Visualizar Informações de Scan<label id="info_unreachable"><label></label><a href="#" title="Controlador Scifi - Pontos de acesso incomunicantes" class="thickbox"></a><img src="../figuras/wait.gif"/></label> <a href="logout.jsf" id="logout">Logout</a> </div>
                 <div class="barraConteudo"></div>
                 <div id="conteudo">
                     <f:view>
@@ -60,7 +69,7 @@
                             <h:dataTable id="dt1" var="item" value="#{JAPListBean.listCellInfo}" rowClasses="#{JAPListBean.rowColorScan}">
 
                                 <f:facet name="caption">
-                                    <h:outputText value="Tabela de Scan - MAC: #{JAPListBean.MACFromQueryString} - IP: #{JAPListBean.IPFromQueryString}" />
+                                    <h:outputText value="MAC: #{JAPListBean.MACFromQueryString} - IP: #{JAPListBean.IPFromQueryString}" />
                                 </f:facet>
 
                                 <h:column >
@@ -98,8 +107,8 @@
                                     <h:outputText value="#{item.ESSID}"></h:outputText>
                                 </h:column>
                             </h:dataTable>
-
-                            <h:outputLink value="ap_info.jsf"><h:outputText value="Voltar"></h:outputText></h:outputLink>
+                            
+                            <input type="button" id="bttVoltar" value="Voltar"/>
 
                         </h:form>
                     </f:view>

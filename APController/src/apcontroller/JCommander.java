@@ -31,23 +31,34 @@ public class JCommander
     private static final String ROUTER_STA_FILE_PATH = "/tmp/sta.txt";
     private static final String ROUTER_POWER_FILE_PATH = "/tmp/power.txt";
     private static final String ROUTER_CHANNEL_FILE_PATH = "/tmp/channel.txt";
-   
-    /**
-    * Método que atualiza a região de operação no AP para que operações assíncronas sejam executadas.
-     * Este método é executado quando um AP é adicionado na interface web ou quando sua informação de região é modificada.
-     * O AP necessita saber sua região para computar o número da porta na qual o servidor de sua região aguarda conexões.
-     
-   @param apInfo Objeto que representa e guarda informações sobre o AP.
-     * 
-   @return Retorna true caso o script seja executado corretamente, e false caso não.*/
+
     
-    public static boolean updateRegionAP(JAPInfo apInfo, int Region)
-    {   
-        //boolean bResult = JRouterConnection.execCommand("ash /etc/scripts/sta_async_event.sh " + strInternalIP + " " + nPort + " &", apInfo);
-        boolean bResult = JRouterConnection.execCommand("echo " + Region + " > /tmp/Regiao_alocada", apInfo);
-        
-        return bResult;        
-    }
+    /**
+    * Método que atualiza o Status de habilitação do AP no arquivo /tmp/AP_Enabled contido no AP.
+    * Através deste arquivo o AP saberá se está habilitado ou não para enviar mensagens assíncronas ao controlador.
+    * @param apInfo Objeto que representa e guarda informações sobre o AP.
+    * @return Retorna true caso o script seja executado corretamente, e false caso não.
+    */
+    
+//    public static boolean updateFileEnabledAP(final JAPInfo apInfo, int Enabled)
+//    {   
+//        //boolean bResult = JRouterConnection.execCommand("ash /etc/scripts/sta_async_event.sh " + strInternalIP + " " + nPort + " &", apInfo);
+//        boolean bResult = JRouterConnection.execCommand("echo " + Enabled + " > /tmp/AP_Enabled", apInfo);
+//        
+//        return bResult;
+//    }
+    
+    /**
+     * Método que apaga a informação de uma determinada estação da tabela de associação do AP. A estação é desassociada do AP.
+     * @param apInfo Objeto que representa o AP em questão
+     * @param strSTAMAC MAC da estação que será desassociada.
+     * @return true se a operação ocorrer corretamente.
+     */
+//    public static boolean deleteSTA(JAPInfo apInfo, String strSTAMAC)
+//    {
+//        boolean bResult = JRouterConnection.execCommand("sh /etc/scripts/sta_del.sh " + strSTAMAC, apInfo);
+//        return bResult;
+//    }
     
     /**
     * Método que cria um arquivo texto especifico para um AP.
@@ -175,7 +186,7 @@ public class JCommander
             
             if(fileTemp != null && JRouterConnection.scpFrom(apInfo, ROUTER_POWER_FILE_PATH, fileTemp))
             {
-                Integer nPower = JHostFileParser.parseChannelFile(fileTemp.getAbsolutePath());
+                Integer nPower = JHostFileParser.parsePowerFile(fileTemp.getAbsolutePath());
 
                 fileTemp.delete();
 
@@ -224,8 +235,11 @@ public class JCommander
     */         
     public static boolean stationDump(JAPInfo apInfo)
     {
+
+        // executa o station dump
         if(JRouterConnection.execCommand("sh /etc/scripts/sta.sh ", apInfo))
         {
+            
             File fileTemp = getAPSpecificFile(STA_FILE_NAME, apInfo);
             
             if(fileTemp != null && JRouterConnection.scpFrom(apInfo, ROUTER_STA_FILE_PATH,  fileTemp))
@@ -234,8 +248,6 @@ public class JCommander
 
                 if(listSTAInfo != null)
                 {
-                    //verifySTADisassociation deve ser executada sempre antes de addSTAInfo porque addSTAinfo altera a variavel local m_hashSTAInfo que contém a lista de estações obtida na coleta anterior.
-                    //JDataManagement.verifySTADisassociation(apInfo.getMAC(), listSTAInfo);
                     JDataManagement.addSTAInfo(apInfo.getMAC(), listSTAInfo);
                 }
                 
@@ -267,6 +279,9 @@ public class JCommander
                 {
                     Main.m_mutexGlobal.acquire();
 
+                    //insere no log que o reboot começou e a data e hora
+                    Logger.getLogger(Main.JAVA_LOG).info(JLogger.getDateTime() + " " + JLogger.getTime() + " Reboot Started for AP " + apInfo.getIP());                        
+                    
                     JRouterConnection.execCommand("sh /etc/scripts/reboot.sh ", apInfo);
 
                     //esperando o AP reniciar
@@ -275,9 +290,12 @@ public class JCommander
                     //voltando com as configurações anteriores
                     JCommander.setChannel(apInfo, apInfo.getChannel());
                     JCommander.setPower(apInfo, apInfo.getPower());
-                    
-                    Main.m_mutexGlobal.release();
 
+                    //insere no log que o reboot terminou e a data e hora
+                    Logger.getLogger(Main.JAVA_LOG).info(JLogger.getDateTime() + " " + JLogger.getTime() + " Reboot Ended for AP " + apInfo.getIP());                        
+                   
+                    Main.m_mutexGlobal.release();
+                    
                 } 
                 catch (InterruptedException ex)
                 {
@@ -292,7 +310,7 @@ public class JCommander
     }
     
     /**
-    * Método que reinicia todos os pontos de acesso.
+    * Método que reinicia todos os pontos de acesso da região.
     *
     *
    @return Retorna true se a operação foi realizada com sucesso ou false, caso contrário.
@@ -308,6 +326,10 @@ public class JCommander
                     ArrayList<JAPInfo> listAP = JDataManagement.loadAPList();
 
                     Main.m_mutexGlobal.acquire();
+                    
+                    //insere no log que o reboot começou e a data e hora
+                    Logger.getLogger(Main.JAVA_LOG).info(JLogger.getDateTime() + " " + JLogger.getTime() + " Reboot Started for all APs ");                        
+
 
                     Thread rebootThread = null;
                     
@@ -346,6 +368,9 @@ public class JCommander
                         rebootThread.join(120*1000);
                     }
 
+                    //insere no log que o reboot terminou e a data e hora
+                    Logger.getLogger(Main.JAVA_LOG).info(JLogger.getDateTime() + " " + JLogger.getTime() + " Reboot Ended for all APs ");                        
+ 
                     //o mutex só será liberado quando a última thread terminar
                     Main.m_mutexGlobal.release();
                 } 

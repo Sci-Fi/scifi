@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jboss-web>
   <security-domain>java:/jaas/Controller</security-domain>
-  <context-root>/ControllerWeb</context-root>
+  <context-root>/ControllerSplash</context-root>
   <resource-ref>
     <res-ref-name>jdbc/ControllerDB</res-ref-name>
     <res-type>javax.sql.DataSource</res-type>

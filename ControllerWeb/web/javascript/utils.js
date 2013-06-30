@@ -28,3 +28,4 @@ function getParameter ( queryString, parameterName )
     }
 }
 
+temporizador = 60000;

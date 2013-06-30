@@ -16,5 +16,5 @@ if (document.images){
     imgPreload22 = new Image();
     imgPreload22.src = "../figuras/comandos/reiniciarAPshover.png";
     imgPreload23 = new Image();
-    imgPreload23.src = "../figuras/comandos/analiseAPshover.png";            
+    imgPreload23.src = "../figuras/comandos/analiseAPshover.png";
 }

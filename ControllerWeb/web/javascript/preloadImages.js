@@ -25,4 +25,11 @@ if (document.images) {
     imgPreload11.src = "../figuras/menu/adicionarRegiao.png";
     imgPreload12 = new Image();
     imgPreload12.src = "../figuras/menu/excluirRegiao.png";
+    imgPreload13 = new Image();
+    imgPreload13.src = "../figuras/menu/estatisticahover.png";
+    imgPreload14 = new Image();
+    imgPreload14.src = "../figuras/mapa/scan_iconhover.png";
+    imgPreload15 = new Image();
+    imgPreload15.src = "../figuras/mapa/mrtg_iconhover.png";
+
 }    

@@ -61,7 +61,8 @@ public class JServer implements Runnable
         }
         catch (IOException ex)
         {
-            Logger.getLogger(JLoader.LOADER_LOG).error(JLogger.getDateTime() + " " + JLogger.getTime() + " Could not create listening server: " + ex);
+            Logger.getLogger(JLoader.LOADER_LOG).error(JLogger.getDateTime() + " " + JLogger.getTime() + " Could not create listening server on " + m_strServerIP + ":" + m_nPort + " "  + ex);
+            Logger.getLogger(Main.JAVA_LOG).error(JLogger.getDateTime() + " " + JLogger.getTime() + "  Could not create listening server on " + m_strServerIP + ":" + m_nPort + " "  + ex);
         }       
     }
 }
