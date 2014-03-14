@@ -1,0 +1,97 @@
+#!/bin/bash
+##       /etc/rc.d/init.d/firewall
+## Run the Fire Wall script
+#
+# chkconfig: - 30 35
+# description: Fire Wall Script
+# processname: none
+# Source function library.
+#
+# Script Alterado Por Cosme Correa
+#set -xv
+
+IPT=`which iptables`
+
+fw_start()
+{
+        sh /etc/init.d/FW-SCIFI.fw
+}
+
+fw_stop()
+{
+        echo;echo
+        echo "Finalizando o Firewall ..."
+        echo "Excluindo Todas as Formas de Seguranca..."
+        $IPT -t filter -P INPUT       ACCEPT
+        $IPT -t filter -P FORWARD     ACCEPT
+        $IPT -t filter -P OUTPUT      ACCEPT
+        $IPT -t nat    -P PREROUTING  ACCEPT
+        $IPT -t nat    -P POSTROUTING ACCEPT
+        $IPT -t nat    -P OUTPUT      ACCEPT
+        $IPT -t mangle -P PREROUTING  ACCEPT
+        $IPT -t mangle -P POSTROUTING ACCEPT
+        $IPT -t mangle -P OUTPUT      ACCEPT
+        $IPT -t mangle -P INPUT       ACCEPT
+        $IPT -t mangle -P FORWARD     ACCEPT
+        $IPT -t filter -F
+        $IPT -t nat    -F
+        $IPT -t mangle -F
+        $IPT -t filter -X
+        $IPT -t nat    -X
+        $IPT -t mangle -X
+        $IPT -t filter -Z
+        $IPT -t nat    -Z
+        $IPT -t mangle -Z
+        $IPT -F 
+        echo "Firewall Finalizado..."
+}
+
+fw_status()
+{
+        $IPT -L -v
+}
+
+fw_usage()
+{
+        echo
+        echo "     Utilize o Firewall da seguinte forma:"
+        echo "     sh $0 (start | stop | restart | clear | status)"
+        echo
+        echo "       start   - Ativa o firewall"
+        echo "       stop    - Desativa o firewall"
+        echo "       restart - Reativa o firewall"
+        echo "       clear   - Limpa os contadores"
+        echo "       status  - Mostra as regras estabelecidas"
+        echo;echo;echo
+}
+
+fw_clear()
+{
+        $IPT -t filter -Z
+        $IPT -t nat    -Z
+        $IPT -t mangle -Z
+}
+
+case $1 in
+
+start)
+        fw_start;
+;;
+stop)
+        fw_stop;
+;;
+restart)
+        fw_stop;
+        fw_start;
+;;
+clear)
+        fw_clear;
+;;
+status)
+        fw_status;
+;;
+*)
+        fw_usage;
+        exit;
+;;
+esac

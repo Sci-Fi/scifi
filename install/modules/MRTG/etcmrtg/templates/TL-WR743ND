@@ -1,0 +1,117 @@
+EnableIPv6: no
+WorkDir: /var/www/mrtg
+Options[_]: growright,bits,pngdate,integer
+LoadMIBs: /usr/share/snmp/mibs/UCD-SNMP-MIB.txt
+LoadMIBs: /usr/share/snmp/mibs/HOST-RESOURCES-MIB.txt
+Language: brazilian
+
+### Interface 3 >> Descr: 'wlan0' | Name: 'wlan0' | Ip: '' | Eth: '' ###
+Target[apxxxx_wlan0]: 1.3.6.1.2.1.2.2.1.10.ZZZZZ&1.3.6.1.2.1.2.2.1.16.ZZZZZ:public@apxxxx:
+SetEnv[apxxxx_wlan0]: MRTG_INT_IP="" MRTG_INT_DESCR="wlan0"
+Directory[apxxxx_wlan0]: apxxxx
+MaxBytes[apxxxx_wlan0]: 12500000
+AbsMax[apxxxx_wlan0]: 12500000
+PNGTitle[apxxxx_wlan0]: APxxxx@YYYYY-WLAN
+Title[apxxxx_wlan0]: APxxxx@YYYYY-WLAN
+YLegend[apxxxx_wlan0]: Bits por Segundo
+PageTop[apxxxx_wlan0]: <h1>APxxxx@YYYYY-WLAN</h1>
+
+### Interface 2 >> Descr: 'eth1' | Name: 'eth1' | Ip: '' | Eth: '' ###
+Target[apxxxx_net]: #eth1:public@apxxxx:
+SetEnv[apxxxx_net]: MRTG_INT_IP="" MRTG_INT_DESCR="eth1"
+Directory[apxxxx_net]: apxxxx
+MaxBytes[apxxxx_net]: 12500000
+AbsMax[apxxxx_net]: 12500000
+WithPeak[apxxxx_net]: ymw
+PNGTitle[apxxxx_net]: APxxxx@YYYYY-Net
+Title[apxxxx_net]: APxxxx@YYYYY-Net
+YLegend[apxxxx_net]: Bits per Second
+PageTop[apxxxx_net]: <h1>APxxxx@YYYYY-Net</h1>
+                <div id="sysdetails">
+                        <table>
+                                <tr>
+                                        <td>System:</td>
+                                        <td>APxxxx em LOCAL </td>
+                                </tr>
+                                <tr>
+                                        <td>Maintainer:</td>
+                                        <td>cosmefc@id.uff.br</td>
+                                </tr>
+                                <tr>
+                                        <td>Description:</td>
+                                        <td>eth0  </td>
+                                </tr>
+                                <tr>
+                                        <td>ifType:</td>
+                                        <td>ethernetCsmacd (6)</td>
+                                </tr>
+                                <tr>
+                                        <td>ifName:</td>
+                                        <td>eth1</td>
+                                </tr>
+                                <tr>
+                                        <td>Max Speed:</td>
+                                        <td>10.0 Mbits/s</td>
+                                </tr>
+                        </table>
+                </div>
+
+# CPU Usage
+#Target[apxxxx_cpu]: hrProcessorLoad.768&hrProcessorLoad.768:public@apxxxx
+Target[apxxxx_cpu]: .1.3.6.1.2.1.25.3.3.1.2.768&.1.3.6.1.2.1.25.3.3.1.2.768:public@apxxxx
+Directory[apxxxx_cpu]: apxxxx
+MaxBytes[apxxxx_cpu]: 100
+WithPeak[apxxxx_cpu]: ymw
+Unscaled[apxxxx_cpu]: dwmy
+Options[apxxxx_cpu]: growright, gauge, nopercent, pngdate, integer
+Title[apxxxx_cpu]: APxxxx@YYYYY-CPU
+PageTop[apxxxx_cpu]: <H1>APxxxx@YYYYY-CPU</H1>
+PNGTitle[apxxxx_cpu]: APxxxx@YYYYY-CPU
+ShortLegend[apxxxx_cpu]: %
+YLegend[apxxxx_cpu]: CPU %
+Legend1[apxxxx_cpu]: CPU Usage
+Legend2[apxxxx_cpu]:
+Legend3[apxxxx_cpu]:
+Legend4[apxxxx_cpu]:
+LegendI[apxxxx_cpu]: CPU Usage
+LegendO[apxxxx_cpu]:
+
+# Memory Usage
+Title[apxxxx_mem]: APxxxx@YYYYY-Memory
+PageTop[apxxxx_mem]: <H1>APxxxx@YYYYY-Memory</H1>
+PNGTitle[apxxxx_mem]: APxxxx@YYYYY-Memory
+#Target[apxxxx_mem]: 100 - ( memAvailReal.0&memAvailReal.0:public@apxxxx ) * 100 / ( memTotalReal.0&memTotalReal.0:public@apxxxx )
+Target[apxxxx_mem]: 100 - ( .1.3.6.1.4.1.2021.4.6.0&.1.3.6.1.4.1.2021.4.6.0:public@apxxxx ) * 100 / ( .1.3.6.1.4.1.2021.4.5.0&.1.3.6.1.4.1.2021.4.5.0:public@apxxxx )
+Directory[apxxxx_mem]: apxxxx
+options[apxxxx_mem]: growright, gauge, nopercent, integer, pngdate
+Unscaled[apxxxx_mem]: ymwd
+MaxBytes[apxxxx_mem]: 100
+WithPeak[apxxxx_mem]: ymw
+YLegend[apxxxx_mem]: Memory %
+ShortLegend[apxxxx_mem]: %
+LegendI[apxxxx_mem]: Memory Usage
+LegendO[apxxxx_mem]:
+Legend1[apxxxx_mem]: Memory Usage
+Legend2[apxxxx_mem]:
+Legend3[apxxxx_mem]:
+Legend4[apxxxx_mem]:
+
+# Conected Users
+Title[apxxxx_usu]: APxxxx@YYYYY-Users
+PageTop[apxxxx_usu]: <H1>APxxxx@YYYYY-Users</H1>
+PNGTitle[apxxxx_usu]: APxxxx@YYYYY-Users
+Target[apxxxx_usu]: .1.3.6.1.4.1.2021.8.1.101.2&.1.3.6.1.4.1.2021.8.1.101.2:public@apxxxx
+Directory[apxxxx_usu]: apxxxx
+options[apxxxx_usu]: growright, gauge, nopercent, integer, pngdate
+#Unscaled[apxxxx_usu]: ymwd
+MaxBytes[apxxxx_usu]: 50
+AbsMax[apxxxx_usu]: 300
+WithPeak[apxxxx_usu]: ymw
+YLegend[apxxxx_usu]: Users
+ShortLegend[apxxxx_usu]: Conected
+LegendI[apxxxx_usu]: Users
+LegendO[apxxxx_usu]:
+Legend1[apxxxx_usu]: Users
+Legend2[apxxxx_usu]:
+Legend3[apxxxx_usu]:
+Legend4[apxxxx_usu]:

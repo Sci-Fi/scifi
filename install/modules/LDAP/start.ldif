@@ -1,0 +1,386 @@
+#!/bin/bash
+
+# Initialize LDPA
+
+# 1- Stop  LDAP server
+# 2- Clean base
+# 3- Initial load
+# 4- Setup permissions
+# 5- Start  LDAP server
+
+# Uncomment for  debug
+set -xv
+
+#DOMINIO_INST="`/bin/hostname -d`"
+#DOMINIO_INST="`/bin/dnsdomainname`"
+DOMINIO_INST="niteroi.org.br"
+RAIZ_BASE_LDAP="dc="`echo $DOMINIO_INST | sed -e 's/\./,dc=/g'`
+ORGANIZACAO="`echo $RAIZ_BASE_LDAP | sed -e 's/^dc=//; s/,dc=/./'`"
+DC="`echo $ORGANIZACAO | sed 's/^\.//; s/\..*$//'`"
+SENHA_ADMIN="Bananinha123"
+SENHA_LEITOR_SHIB="sh1b_redlei;"
+SENHA_LEITOR_RADIUS="rad_leiusr!"
+HASH_SENHA_ADMIN=$( slappasswd -h {SSHA} -u -s $SENHA_ADMIN )
+HASH_SENHA_LEITOR_SHIB=$( slappasswd -h {SSHA} -u -s $SENHA_LEITOR_SHIB )
+HASH_SENHA_LEITOR_RADIUS=$( slappasswd -h {SSHA} -u -s $SENHA_LEITOR_RADIUS )
+
+# 1- Stop LDAP sever
+/sbin/service slapd stop
+
+# 2- Clean base
+/bin/rm /var/lib/ldap/* -rf
+cp /etc/openldap/DB_CONFIG.example /var/lib/ldap/DB_CONFIG
+
+# 3- Initial load
+cat <<-EOF | slapadd
+dn: $RAIZ_BASE_LDAP
+objectClass: top
+objectClass: dcObject
+objectClass: organization
+o: $ORGANIZACAO
+dc: $DC
+structuralObjectClass: organization
+
+dn: ou=people,$RAIZ_BASE_LDAP
+objectClass: organizationalUnit
+objectClass: top
+ou: people
+structuralObjectClass: organizationalUnit
+
+dn: ou=group,$RAIZ_BASE_LDAP
+objectClass: top
+objectClass: organizationalUnit
+ou: group
+structuralObjectClass: organizationalUnit
+
+dn: sambaDomainName=NITEROI,dc=niteroi,dc=org,dc=br
+sambaDomainName: NITEROI
+sambaSID: S-1-5-21-1014769180-777746548-3660226278
+structuralObjectClass: sambaDomain
+entryUUID: e625ed54-58b0-1030-9b5d-81628d64ee16
+creatorsName: cn=Manager,dc=niteroi,dc=org,dc=br
+createTimestamp: 20110811215915Z
+sambaMinPwdLength: 5
+sambaPwdHistoryLength: 0
+sambaLogonToChgPwd: 0
+sambaMaxPwdAge: -1
+sambaMinPwdAge: 0
+sambaLockoutDuration: 30
+sambaLockoutObservationWindow: 30
+sambaLockoutThreshold: 0
+sambaForceLogoff: -1
+sambaRefuseMachinePwdChange: 0
+objectClass: sambaDomain
+sambaNextRid: 1000
+sambaNextGroupRid: 1000
+sambaNextUserRid: 1000
+sambaAlgorithmicRidBase: 1000
+entryCSN: 20110816135558.319799Z#000000#000#000000
+modifiersName: cn=Manager,dc=niteroi,dc=org,dc=br
+modifyTimestamp: 20110816135558Z
+
+dn: ou=Computers,dc=niteroi,dc=org,dc=br
+ou: Computers
+objectClass: organizationalUnit
+structuralObjectClass: organizationalUnit
+entryUUID: f13f67c4-58b0-1030-9b5e-81628d64ee16
+creatorsName: cn=Manager,dc=niteroi,dc=org,dc=br
+createTimestamp: 20110811215934Z
+entryCSN: 20110811215934.206413Z#000000#000#000000
+modifiersName: cn=Manager,dc=niteroi,dc=org,dc=br
+modifyTimestamp: 20110811215934Z
+
+dn: ou=Idmap,dc=niteroi,dc=org,dc=br
+ou: Idmap
+objectClass: organizationalUnit
+structuralObjectClass: organizationalUnit
+entryUUID: f1477252-58b0-1030-9b5f-81628d64ee16
+creatorsName: cn=Manager,dc=niteroi,dc=org,dc=br
+createTimestamp: 20110811215934Z
+entryCSN: 20110811215934.259113Z#000000#000#000000
+modifiersName: cn=Manager,dc=niteroi,dc=org,dc=br
+modifyTimestamp: 20110811215934Z
+
+dn: cn=users,ou=group,$RAIZ_BASE_LDAP
+structuralObjectClass: posixGroup
+userPassword:: Kg==
+objectClass: posixGroup
+objectClass: top
+gidNumber: 100
+cn: users
+memberUid: cosmefc
+
+dn: cn=root,ou=people,dc=niteroi,dc=org,dc=br
+sambaPwdCanChange: 0
+gecos: Netbios Domain Administrator
+objectClass: inetOrgPerson
+objectClass: sambaSamAccount
+objectClass: posixAccount
+objectClass: shadowAccount
+uidNumber: 0
+sambaAcctFlags: [U          ]
+cn: root
+sambaPwdMustChange: 2147483647
+sambaPrimaryGroupSID: S-1-5-21-1014769180-777746548-3660226278-512
+sambaNTPassword: XXX
+sambaKickoffTime: 2147483647
+loginShell: /bin/false
+sambaPwdLastSet: 0
+sambaSID: S-1-5-21-1014769180-777746548-3660226278-500
+sambaLogoffTime: 2147483647
+sn: root
+sambaLogonTime: 0
+uid: root
+gidNumber: 0
+homeDirectory: /dev/null
+sambaLMPassword: XXX
+structuralObjectClass: inetOrgPerson
+entryUUID: f14a8d7a-58b0-1030-9b60-81628d64ee16
+creatorsName: cn=Manager,dc=niteroi,dc=org,dc=br
+createTimestamp: 20110811215934Z
+entryCSN: 20110811215934.279469Z#000000#000#000000
+modifiersName: cn=Manager,dc=niteroi,dc=org,dc=br
+modifyTimestamp: 20110811215934Z
+
+dn: cn=Domain Admins,ou=group,dc=niteroi,dc=org,dc=br
+gidNumber: 512
+sambaGroupType: 2
+displayName: Domain Admins
+description: Netbios Domain Administrators
+memberUid: root
+objectClass: posixGroup
+objectClass: sambaGroupMapping
+sambaSID: S-1-5-21-1014769180-777746548-3660226278-512
+cn: Domain Admins
+structuralObjectClass: posixGroup
+entryUUID: f16d8d48-58b0-1030-9b62-81628d64ee16
+creatorsName: cn=Manager,dc=niteroi,dc=org,dc=br
+createTimestamp: 20110811215934Z
+entryCSN: 20110811221959.386654Z#000000#000#000000
+modifiersName: cn=Manager,dc=niteroi,dc=org,dc=br
+modifyTimestamp: 20110811221959Z
+
+dn: cn=Domain Users,ou=group,dc=niteroi,dc=org,dc=br
+gidNumber: 513
+sambaGroupType: 2
+displayName: Domain Users
+description: Netbios Domain Users
+objectClass: posixGroup
+objectClass: sambaGroupMapping
+sambaSID: S-1-5-21-1014769180-777746548-3660226278-513
+cn: Domain Users
+structuralObjectClass: posixGroup
+entryUUID: f186e978-58b0-1030-9b63-81628d64ee16
+creatorsName: cn=Manager,dc=niteroi,dc=org,dc=br
+createTimestamp: 20110811215934Z
+memberUid: cosmefc
+entryCSN: 20111209122722.981037Z#000000#001#000000
+modifiersName: cn=Manager,dc=niteroi,dc=org,dc=br
+modifyTimestamp: 20111209122722Z
+
+dn: cn=Domain Guests,ou=group,dc=niteroi,dc=org,dc=br
+gidNumber: 514
+sambaGroupType: 2
+displayName: Domain Guests
+description: Netbios Domain Guests
+objectClass: posixGroup
+objectClass: sambaGroupMapping
+sambaSID: S-1-5-21-1014769180-777746548-3660226278-514
+cn: Domain Guests
+structuralObjectClass: posixGroup
+entryUUID: f18dbc3a-58b0-1030-9b64-81628d64ee16
+creatorsName: cn=Manager,dc=niteroi,dc=org,dc=br
+createTimestamp: 20110811215934Z
+entryCSN: 20110811221958.713157Z#000000#000#000000
+modifiersName: cn=Manager,dc=niteroi,dc=org,dc=br
+modifyTimestamp: 20110811221958Z
+
+dn: cn=Domain Computers,ou=group,dc=niteroi,dc=org,dc=br
+gidNumber: 515
+sambaGroupType: 2
+displayName: Domain Computers
+description: Netbios Domain Computers
+objectClass: posixGroup
+objectClass: sambaGroupMapping
+sambaSID: S-1-5-21-1014769180-777746548-3660226278-515
+cn: Domain Computers
+structuralObjectClass: posixGroup
+entryUUID: f1955fda-58b0-1030-9b65-81628d64ee16
+creatorsName: cn=Manager,dc=niteroi,dc=org,dc=br
+createTimestamp: 20110811215934Z
+entryCSN: 20110811222000.010170Z#000000#000#000000
+modifiersName: cn=Manager,dc=niteroi,dc=org,dc=br
+modifyTimestamp: 20110811222000Z
+
+dn: cn=Administrators,ou=group,dc=niteroi,dc=org,dc=br
+sambaGroupType: 5
+displayName: Administrators
+description: Netbios Domain Members can fully administer the computer/sambaDom
+ ainName
+sambaSID: S-1-5-32-544
+structuralObjectClass: posixGroup
+entryUUID: f19d14a0-58b0-1030-9b66-81628d64ee16
+creatorsName: cn=Manager,dc=niteroi,dc=org,dc=br
+createTimestamp: 20110811215934Z
+objectClass: posixGroup
+objectClass: sambaGroupMapping
+objectClass: top
+gidNumber: 544
+cn: Administrators
+memberUid: cosmefc
+entryCSN: 20110812143701.498457Z#000000#000#000000
+modifiersName: cn=Manager,dc=niteroi,dc=org,dc=br
+modifyTimestamp: 20110812143701Z
+
+dn: cn=Account Operators,ou=group,dc=niteroi,dc=org,dc=br
+gidNumber: 548
+sambaGroupType: 5
+displayName: Account Operators
+description: Netbios Domain Users to manipulate users accounts
+objectClass: posixGroup
+objectClass: sambaGroupMapping
+sambaSID: S-1-5-32-548
+cn: Account Operators
+structuralObjectClass: posixGroup
+entryUUID: f1a4bade-58b0-1030-9b67-81628d64ee16
+creatorsName: cn=Manager,dc=niteroi,dc=org,dc=br
+createTimestamp: 20110811215934Z
+entryCSN: 20110811221959.075009Z#000000#000#000000
+modifiersName: cn=Manager,dc=niteroi,dc=org,dc=br
+modifyTimestamp: 20110811221959Z
+
+dn: cn=Print Operators,ou=group,dc=niteroi,dc=org,dc=br
+gidNumber: 550
+sambaGroupType: 5
+displayName: Print Operators
+description: Netbios Domain Print Operators
+objectClass: posixGroup
+objectClass: sambaGroupMapping
+sambaSID: S-1-5-32-550
+cn: Print Operators
+structuralObjectClass: posixGroup
+entryUUID: f1ac695a-58b0-1030-9b68-81628d64ee16
+creatorsName: cn=Manager,dc=niteroi,dc=org,dc=br
+createTimestamp: 20110811215934Z
+entryCSN: 20110811221959.230743Z#000000#000#000000
+modifiersName: cn=Manager,dc=niteroi,dc=org,dc=br
+modifyTimestamp: 20110811221959Z
+
+dn: cn=Backup Operators,ou=group,dc=niteroi,dc=org,dc=br
+gidNumber: 551
+sambaGroupType: 5
+displayName: Backup Operators
+description: Netbios Domain Members can bypass file security to back up files
+objectClass: posixGroup
+objectClass: sambaGroupMapping
+sambaSID: S-1-5-32-551
+cn: Backup Operators
+structuralObjectClass: posixGroup
+entryUUID: f1b413c6-58b0-1030-9b69-81628d64ee16
+creatorsName: cn=Manager,dc=niteroi,dc=org,dc=br
+createTimestamp: 20110811215934Z
+entryCSN: 20110811221959.698949Z#000000#000#000000
+modifiersName: cn=Manager,dc=niteroi,dc=org,dc=br
+modifyTimestamp: 20110811221959Z
+
+dn: cn=Replicators,ou=group,dc=niteroi,dc=org,dc=br
+gidNumber: 552
+sambaGroupType: 5
+displayName: Replicators
+description: Netbios Domain Supports file replication in a sambaDomainName
+objectClass: posixGroup
+objectClass: sambaGroupMapping
+sambaSID: S-1-5-32-552
+cn: Replicators
+structuralObjectClass: posixGroup
+entryUUID: f1bbc1de-58b0-1030-9b6a-81628d64ee16
+creatorsName: cn=Manager,dc=niteroi,dc=org,dc=br
+createTimestamp: 20110811215935Z
+entryCSN: 20110811221959.854563Z#000000#000#000000
+modifiersName: cn=Manager,dc=niteroi,dc=org,dc=br
+modifyTimestamp: 20110811221959Z
+
+dn: cn=residentes,ou=group,dc=niteroi,dc=org,dc=br
+objectClass: posixGroup
+objectClass: sambaGroupMapping
+cn: Residentes
+gidNumber: 1001
+userPassword:: Kg==
+memberUid: cosmefc
+sambaSID: S-1-5-21-1014769180-777746548-3660226278-1001
+displayName: Moradores de Niteroi
+description: Moradores de Niteroi
+sambaGroupType: 2
+structuralObjectClass: posixGroup
+entryUUID: c05e4a54-fb57-1030-9689-71548aa8ba0a
+creatorsName: cn=Manager,dc=niteroi,dc=org,dc=br
+createTimestamp: 20120305214146Z
+entryCSN: 20120305214146.524276Z#000000#001#000000
+modifiersName: cn=Manager,dc=niteroi,dc=org,dc=br
+modifyTimestamp: 20120305214146Z
+
+dn: cn=Manager,$RAIZ_BASE_LDAP
+objectClass: simpleSecurityObject
+objectClass: organizationalRole
+cn: Manager
+description: Administrador da base LDAP
+userPassword: $HASH_SENHA_ADMIN
+
+dn: cn=leitor-shib,$RAIZ_BASE_LDAP
+objectClass: simpleSecurityObject
+objectClass: organizationalRole
+cn: leitor-shib
+description: Leitor da base para o shibboleth
+userPassword: $HASH_SENHA_LEITOR_SHIB
+
+dn: cn=leitor-radius,$RAIZ_BASE_LDAP
+objectClass: simpleSecurityObject
+objectClass: organizationalRole
+cn: leitor-shib
+description: Leitor da base para o shibboleth
+userPassword: $HASH_SENHA_LEITOR_RADIUS
+
+dn: uid=cosmefc,ou=people,dc=niteroi,dc=org,dc=br
+structuralObjectClass: inetOrgPerson
+entryUUID: bfe9a746-1f5e-1031-98b4-0faf5e61b5fd
+creatorsName: cn=Manager,dc=niteroi,dc=org,dc=br
+createTimestamp: 20120420180234Z
+sn: CORREA
+givenName: COSME FARIA CORREA
+mail: cosmefc@niteroi.org.br
+eduPersonPrincipalName: IITWACTA-SVZFBAAA@uff.br
+brPersonCPF: 02123408751
+schacGender: 1
+schacDateOfBirth: 19700127
+schacCountryOfCitizenship: Brasil
+uidNumber: 100001
+gidNumber: 100
+homeDirectory: /home/cosmefc
+loginShell: /bin/bash
+userPassword:: e3NoYX1hd1hkNWFwTVVERXFJRkMzUi9uN0Q0aldLUnM9
+uid: cosmefc
+sambaSID: S-1-5-21-1014769180-777746548-3660226278-100001
+cn: COSME FARIA CORREA
+sambaNTPassword: 8742708b183e348a197c85011cded7e2
+displayName: COSME FARIA CORREA
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: eduPerson
+objectClass: brPerson
+objectClass: schacPersonalCharacteristics
+objectClass: posixAccount
+objectClass: shadowAccount
+objectClass: sambaSamAccount
+entryCSN: 20130517140550.690790Z#000000#001#000000
+modifiersName: cn=Manager,dc=niteroi,dc=org,dc=br
+modifyTimestamp: 20130517140550Z
+
+EOF
+
+# 4- Ajusta as permissões
+chown -R ldap:ldap /var/lib/ldap /etc/openldap/slapd.conf
+chmod 600 /etc/openldap/slapd.conf /var/lib/ldap/*
+
+# 5- Reinicia o LDAP
+/sbin/service slapd start
+

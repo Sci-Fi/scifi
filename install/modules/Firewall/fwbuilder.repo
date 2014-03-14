@@ -1,0 +1,6 @@
+[fwbuilder]
+name=Firewall Builder
+failovermethod=priority
+baseurl=http://packages.fwbuilder.org/rpm/stable/rhel-$releasever-$basearch
+enabled=1
+priority=14

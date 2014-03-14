@@ -1,0 +1,9 @@
+/var/log/denyhosts {
+    missingok
+    notifempty
+    create 0644 root root
+    postrotate
+        /sbin/service denyhosts condrestart > /dev/null 2>&1 || :
+    endscript
+
+}

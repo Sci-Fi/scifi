@@ -1,0 +1,13 @@
+# /etc/logrotate.d/slapd
+#
+# Rotate slapd(8) log file.
+#
+# Cosme Corrêa
+
+/var/log/slapd.log {
+compress
+postrotate
+service rsyslog restart
+endscript 
+}
+

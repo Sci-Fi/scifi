@@ -1,0 +1,271 @@
+#----------------------------------------------------------------------
+#
+# Definicao do esquema brEduPerson
+# Versao: 20080917-0.0.6
+# Data: Setembro, 2008
+# Baseado no documento: "Proposta de Esquema brEduPerson - Federacao Cafe - agosto de 2008"
+# (brEduPerson-20080714.0.0.4-3.pdf)
+#
+# A ultima versao deste documento esta disponivel no site
+# http://www.rnp-eaa.ufc.br/?/brEduPerson-20080917-0.0.6.schema.txt
+#
+#----------------------------------------------------------------------
+#
+# Changelog
+#
+# 20080917 - 0.0.6
+#          - Alteracao do atributo brEduAffiliation
+# 20080911 - 0.0.5
+#          - Inclusao do atributo brEduVoIPphone
+#          - Alteracao da classe brEduVoIP para incluir o atributo brEduVoIPphone
+# 20080714 - 0.0.4
+#          - Exclusao do atributo brEduPersonUniqueId
+#          - Exclusao do atributo brRelatedIdentification
+#          - Criacao do atributo brEduAffiliation
+#          - Exclusao da classe brEduPersonAffiliation
+#          - Exclusao da classe brEduRelatedInfo
+#          - Alteracao da classe brEduPerson  
+# 20080401 - Versao inicial
+#
+#----------------------------------------------------------------------
+
+#----------------------------------------------------------------------
+# Atributos
+#----------------------------------------------------------------------
+
+# brPersonCPF
+# Descrip: Documento que identifica contribuinte pessoa fisica perante a Secret. da Receita Federal do Brasil.
+# Format: Free string.
+# Example: brcpf: 757065432-33
+attributetype ( 1.3.6.1.4.1.15996.100.1.1.1.1 
+    NAME ( 'brPersonCPF' 'brcpf')
+    DESC 'Cadastro Pessoa Fisica' 
+    EQUALITY caseIgnoreMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 
+    SINGLE-VALUE )
+
+# brPersonPassport
+# Descrip: Documento emitido por um governo nacional.
+# O valor desse atributo é complementado pela informação no atributo ``país de cidadania''.
+# Format: Free string.
+# Example: brpassport: 1234456ZF
+attributetype ( 1.3.6.1.4.1.15996.100.1.1.1.2 
+    NAME ( 'brPersonPassport' 'brpassport')
+    DESC 'Numero do passaporte' 
+    EQUALITY caseIgnoreMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 
+    SINGLE-VALUE )
+
+# brEduAffiliationType
+# Descrip: Tipo de vinculo que a pessoa possui com a instituicao.
+# Format: Free string.
+# Common values: faculty, student, staff, position, scholarshipawardee, other
+# Example: brafftype: student 
+attributetype ( 1.3.6.1.4.1.15996.100.1.1.2.1
+    NAME ( 'brEduAffiliationType' 'brafftype')
+    DESC 'Tipo de vinculo com a instituicao'
+    EQUALITY caseIgnoreMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 
+    SINGLE-VALUE )
+
+# brEntranceDate
+# Descrip: Data de inicio do vinculo da pessoa com a instituicao 
+# Format: Numeric value YYYYMMDD, using 4 digits for year, 2 digits
+#          for month and 2 digits for day as described in RFC 3339.
+# Example: brentr: 19660412
+attributetype ( 1.3.6.1.4.1.15996.100.1.1.2.2
+    NAME ( 'brEntranceDate' 'brentr')
+    DESC 'Data de inicio do vinculo com a instituicao'
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.36 
+    SINGLE-VALUE )
+
+# brExitDate
+# Descrip: Data de fim do vinculo da pessoa com a instituicao.
+# Format: Numeric value YYYYMMDD, using 4 digits for year, 2 digits
+#          for month and 2 digits for day as described in RFC 3339.
+# Example: brexit: 20000512
+attributetype ( 1.3.6.1.4.1.15996.100.1.1.2.3
+    NAME ( 'brExitDate' 'brexit')
+    DESC 'Data de fim do vinculo com a instituicao'
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.36 
+    SINGLE-VALUE )
+
+# brEduAffiliation
+# Descrip: Identificador unico de um vinculo com a instituicao.
+# Format: Integer.
+# Example: braff: 3
+attributetype ( 1.3.6.1.4.1.15996.100.1.1.2.4
+    NAME ( 'brEduAffiliation' 'braff')
+    DESC 'Identificador unico de um vinculo com a instituicao'
+    EQUALITY IntegerMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+    SINGLE-VALUE )
+
+# brCaptureDate
+# Descrip: Representa a data de captura do dado biometrico da pessoa.
+# Format: Numeric value YYYYMMDD, using 4 digits for year, 2 digits
+#          for month and 2 digits for day as described in RFC 3339.
+# Example: brcapt: 20060509
+attributetype ( 1.3.6.1.4.1.15996.100.1.1.3.1
+    NAME ( 'brCaptureDate' 'brcapt')
+    DESC 'Data de captura do dado biometrico da pessoa'
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.36 
+    SINGLE-VALUE )
+
+# brBiometricSource
+# Descrip: Representa uma fonte biometrica da pessoa.
+# Format: Free string.
+# Common values: left-thumb, left-index, left-middle, left-ring, left-little, 
+# right-thumb, right-index, right-middle, right-ring, right-little.
+# Example: brbiosrc: left-middle
+attributetype ( 1.3.6.1.4.1.15996.100.1.1.3.2
+    NAME ( 'brBiometricSource' 'brbiosrc')
+    DESC 'Fonte biometrica da pessoa'
+    EQUALITY caseIgnoreMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+    SINGLE-VALUE )
+
+# brBiometricData
+# Descrip: Representa o dado capturado de uma fonte biometrica da pessoa.
+# Format: Binary.
+# Example: brbiodata: ?
+attributetype ( 1.3.6.1.4.1.15996.100.1.1.3.3
+    NAME ( 'brBiometricData' 'brbiodata')
+    DESC 'Dado capturado de uma fonte biometrica da pessoa'
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.5 )
+
+# brEduVoIPalias
+# Descrip: Numero do telefone IP.
+# Format: Numeric string.
+# Example: brvoipalias: 5780
+attributetype ( 1.3.6.1.4.1.15996.100.1.1.4.1
+    NAME ( 'brEduVoIPalias' 'brvoipalias')
+    DESC 'Numero do telefone IP'
+    EQUALITY numericStringMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.36 
+    SINGLE-VALUE )
+
+# brEduVoIPtype
+# Descrip: Categoria do usuario para tratamento diferenciado.
+# Format: Free string.
+# Common values: pstn, celular, ?
+# Example: brvoiptype: pstn
+attributetype ( 1.3.6.1.4.1.15996.100.1.1.4.2
+    NAME ( 'brEduVoIPtype' 'brvoiptype')
+    DESC 'Tipo do telefone IP'
+    EQUALITY caseIgnoreMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 
+    SINGLE-VALUE )
+
+# brEduVoIPadmin
+# Descrip: DN do responsavel pela criacao do telefone do usuario.
+# Format: Distinguished Name.
+# Example: brvoipadmin:
+attributetype ( 1.3.6.1.4.1.15996.100.1.1.4.3
+    NAME ( 'brEduVoIPadmin' 'brvoipadmin')
+    DESC 'Administrador responsavel por telefone VoIP'
+    EQUALITY distinguishedNameMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 )
+
+# brEduVoIPcallForward
+# Descrip: Telefone comum para redirecao de chamada caso o usuario nao esteja online.
+# Format: International form of telephone numbers.
+# Example: brvoipfwr: +55 21 3456 3456
+attributetype ( 1.3.6.1.4.1.15996.100.1.1.4.4
+    NAME ( 'brEduVoIPcallforward' 'brvoipfwr')
+    DESC 'Numero do telefone comum para redirecao de chamada'
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.50 )
+
+# brEduVoIPaddress
+# Descrip: Registra um endereço IP autorizado para telefone VoIP.
+# Format: 
+# Example: brvoipaddr: 200.1.345.234
+attributetype ( 1.3.6.1.4.1.15996.100.1.1.4.5
+    NAME ( 'brEduVoIPaddress' 'brvoipaddr')
+    DESC 'Endereco IP do telefone'
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{128} )
+
+# brEduVoIPexpiryDate
+# Descrip: Ao atribuir um telefone IP, o administrador pode determinar uma data de expiracao para a atribuicao.
+# A existencia desse campo com data anterior a data atual identifica uma conta obsoleta.
+# Caso o campo nao exista ou contenha data posterior a atual, supoe-se que a conta esteja ativa.
+# Format: Numeric value YYYYMMDD, using 4 digits for year, 2 digits
+#          for month and 2 digits for day as described in RFC 3339.
+# Example: brvoipexpiry: 20060509
+attributetype ( 1.3.6.1.4.1.15996.100.1.1.4.6
+    NAME ( 'brEduVoIPexpiryDate' 'brvoipexpiry')
+    DESC 'Data de expiracao do telefone IP'
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.36 
+    SINGLE-VALUE )
+
+# brEduVoIPbalance
+# Descrip: Creditos restantes em um telefone IP (em segundos).
+# Format: Integer.
+# Example: brvoipbalance: 250000
+attributetype ( 1.3.6.1.4.1.15996.100.1.1.4.7
+    NAME ( 'brEduVoIPbalance' 'brvoipbalance')
+    DESC 'Creditos restantes em um telefone IP (em segundos)'
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+    SINGLE-VALUE )
+
+# brEduVoIPcredit
+# Descrip: Total de creditos aos quais o usuario tera direito (em segundos).
+# Format: Integer.
+# Example: brvoipcredit: 360000
+attributetype ( 1.3.6.1.4.1.15996.100.1.1.4.8
+    NAME ( 'brEduVoIPcredit' 'brvoipcredit')
+    DESC 'Total de creditos do usuario (em segundos)'
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+    SINGLE-VALUE )
+
+# brEduVoIPphone
+# Descrip: Identificador unico de um telefone do usuario.
+# Format: Integer.
+# Example: brvoipphone: 4
+attributetype ( 1.3.6.1.4.1.15996.100.1.1.4.9
+    NAME ( 'brEduVoIPPhone' 'brvoipphone')
+    DESC 'Identificador unico de telefone'
+    EQUALITY IntegerMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+    SINGLE-VALUE )
+
+#----------------------------------------------------------------------
+# ObjectClasses
+#----------------------------------------------------------------------
+
+# brPerson
+objectclass ( 1.3.6.1.4.1.15996.100.1.2.1
+    NAME 'brPerson'
+    DESC 'Atributos sobre pessoas nascidas ou residentes no Brasil, nao se restringe somente ao ambito educacional'
+    SUP 'top'
+    AUXILIARY
+    MAY ( brcpf $ brpassport ) )
+
+# brEduPerson
+objectclass ( 1.3.6.1.4.1.15996.100.1.2.2
+    NAME 'brEduPerson'
+    DESC 'Atributos referentes a uma pessoa com insercao em instituicao brasileira de ensino ou pesquisa'
+    SUP 'top'
+    STRUCTURAL
+    MUST ( braff $ brafftype)
+    MAY ( brentr $ brexit ) )
+
+# brBiometricData
+objectclass ( 1.3.6.1.4.1.15996.100.1.2.3
+    NAME 'brBiometricData'
+    DESC 'Atributos sobre dados biometricos das pessoas'
+    SUP 'top'
+    STRUCTURAL
+    MUST ( brbiosrc $  brbiodata )
+    MAY (  brcapt ) )
+
+# brEduVoIP
+objectclass ( 1.3.6.1.4.1.15996.100.1.2.4
+    NAME 'brEduVoIP'
+    DESC 'Atributos com dados relativos a um telefone IP'
+    SUP 'top'
+    STRUCTURAL
+    MUST ( brvoipphone $ brvoipalias $  brvoiptype $  brvoipadmin )
+    MAY (  brvoipfwr $  brvoipaddr $  brvoipexpiry $  brvoipbalance $  brvoipcredit ) )
+
+

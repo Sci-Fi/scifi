@@ -1,0 +1,17 @@
+define host {
+        host_name   APxxxx
+        alias       APxxxx@DEVLOCATION
+        address     DEVICE
+        use         generic-ap
+        parents	    CONNECTED2
+# remove remark when groups routine is finished        
+#        hostgroups  TAGS
+        }
+
+# Monitor uptime via SNMP
+define service{
+        use                     generic-service ; Inherit values from a template
+        host_name               APxxxx
+        service_description     Uptime
+        check_command           check_snmp!-C public -o sysUpTime.0
+        }

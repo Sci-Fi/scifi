@@ -1,0 +1,355 @@
+@charset "utf-8";
+/* CSS Document */
+
+body {
+    background-image:url(../figuras/fundoSobreTopo.png);
+    background-repeat:repeat-x;
+    background-color:#e0e0e0;
+    font-family:Arial, Helvetica, sans-serif;
+    color:#22375d;
+    font-size:14px;
+}
+
+#tudo {
+    background-image:url(../figuras/menu/fundoMenu.png);
+    background-repeat:repeat-y;
+    position:relative;
+    margin:10px 0px 5px 0px;
+    background-color:#FFF;
+}
+
+a {
+    color:#22375d;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+a:hover{
+    color:#555d6b;
+}
+
+table {
+    border: 1px solid #22375d;
+    border-collapse: collapse;
+    background-color:#e1e2ea;
+    width: 100%;
+    text-align: center;
+}
+
+td table td {
+    border: 0px;
+    border-collapse: collapse;
+}
+
+td table {
+    border: 0px;
+}
+
+.tableFinal td{
+    border: 0px;
+}
+
+caption{
+    border: 0px solid none;
+    font-weight:bold;
+    padding: 15px;
+    font-size: 16px;
+    background-color: #fff;
+    text-align: left;
+}
+
+th{
+    background-color: #22375d;
+    border: 1px solid #8996ac;
+    padding: 15px;
+    color: #e1e2ea;
+}
+th a{
+    color: #e1e2ea;
+}
+
+th a:hover{
+    color: #fff;
+}
+
+td{
+    border: 1px solid #22375d;
+    padding: 5px;
+}
+
+.infoMessage, .errorMessage
+{
+    padding: 0;
+    color: red;
+    list-style: none;
+    font-size: 0.8em;
+}
+
+.infoSize
+{
+    width: 10px;
+}
+
+/*---------------------TOPO----------------------*/
+
+#topo {
+    background-image:url(../figuras/fundoTopo.png);
+    background-repeat:repeat-y;
+    background-color:#9eadc7;
+    padding: 0px;
+    height:115px;
+    position:relative;
+}
+
+#barraTopo {
+    height:7px;
+    background-image:url(../figuras/barraTopo.png);
+    background-position:center;
+    background-repeat:repeat-y;
+    background-color:#bfc6d3;
+
+}
+
+#logo{
+    background-image:url(../figuras/mrtg.png);
+    background-repeat:no-repeat;
+    background-position: center;
+    position:absolute;
+    margin:0px;
+    padding:0px;
+    top: 10px;
+    left: 45px;
+    width:265px;
+    height:89px;
+}
+
+#logo ul{
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+    width:127px;
+    height:89px;
+}
+
+#logo li{
+    float: left;
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+}
+
+#logo a{
+    width:127px;
+    height:89px;
+    border: 0 none;
+    display: block;
+}
+
+#figuraTopo{
+    background-image:url(../figuras/figuraTopo.png);
+    background-repeat:no-repeat;
+    position:absolute;
+    margin:-5px 0px 0px 0px;
+    width:361px;
+    height:120px;
+    right:0px;
+    top:0px;
+}
+
+#info_unreachable a {
+    color: red;
+    text-decoration: none;
+}
+
+#info_unreachable img {
+    visibility: hidden;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+#table_unreachable {
+    float: right;
+}
+
+/*---------------------END TOPO----------------------*/
+
+/*---------------------CONTEUDO----------------------*/
+
+#coluna_dir {
+    margin-left: 140px;
+    height:100%;
+    padding: 0px;
+    background-color:#FFF;
+}
+
+#coluna_central { /*usado em paginas sem menu*/
+    margin-left: 0px;
+    height:100%;
+    padding: 0px;
+    background-color:#FFF;
+}
+
+#titulo{
+    background-color:#d9dbe0;
+    height:15px;
+    font-size:16px;
+    padding:15px 15px 15px 20px;
+    background-image:url(../figuras/fundoTopoConteudo.png);
+    background-repeat:repeat-y;
+    font-weight: bold;
+}
+
+#conteudo {
+    padding:15px 10px 15px 5px;
+    text-align: center;
+    line-height: 25px;
+    padding-bottom: 40px;
+}
+
+#conteudo h4 {
+    text-align: left;
+}
+
+.conteudo{
+    padding:15px 10px 15px 5px;
+    text-align: center;
+}
+
+.barraConteudo {
+    background-color:#8996d3;
+    background-image:url(../figuras/barraConteudo.png);
+    background-repeat:repeat-y;
+    height:3px;
+}
+
+/*-------END CONTEUDO------*/
+
+/*------------------------MENU------------------------*/
+
+#coluna_esq{
+    float:left;
+    width:140px;
+    height: 100%;
+    margin:0px;
+    border:0px;
+    padding:0px;
+}
+
+#menuTopo {
+    height:15px;
+    padding:15px 0px 15px 26px;
+    font-size:16px;
+    color:#FFF;
+    margin:0px;
+    border:0px;
+}
+
+.barraMenu {
+    background-color:#FFF;
+    height:3px;
+    margin:0px;
+    border:0px;
+    padding:0px;
+}
+
+#menu{
+    position:relative;
+    margin:0px;
+    border:0px;
+    padding:0px;
+    width: 50px !important;
+}
+
+#menu ul {
+    list-style: none;
+    margin:0px;
+    border:0px;
+    padding:13px 0px 13px 10px;
+    z-index: 1;
+}
+
+#menu ul li {
+    *height:80px;
+    width:80px;
+    margin:0px 0px 10px 0px;
+    border:0px;
+    padding:0px;
+}
+
+#menu ul li a{
+    color: white;
+    margin:0px;
+    border:0px;
+    padding:0px;
+    display:block;
+    *height:80px;
+    width:80px;
+}
+
+
+
+/*------------------MENU----------------*/
+
+/*-------------RODAPE------------------*/
+
+#rodape{
+    height:100px;
+    background-image: url(../figuras/fundoRodape.png);
+    background-repeat:repeat-y;
+    background-color:#22375d;
+    background-position:center;
+    border-top: #bfc6d3 solid 7px;
+    clear: both;
+}
+
+#rodape ul {
+    margin: 0 auto;
+    width: 625px;
+    list-style: none;
+    height:100px;
+    border:0px;
+    padding:0px;
+}
+
+#rodape li {
+    float:left;
+    margin-right:0px;
+    margin-left:20px;
+}
+
+#rodape a{
+    border:0px;
+    display:block;
+    background-repeat:no-repeat;
+    background-position:center;
+    background-repeat:no-repeat;
+    height:100px;
+}
+
+.uff a{
+    background-image:url(../figuras/logos/uff.png);
+    width:61px;
+}
+
+.midiacom a{
+    background-image:url(../figuras/logos/midiacom.png);
+    width:120px;
+}
+
+.computacao a{
+    background-image:url(../figuras/logos/computacao.png);
+    width:110px;
+}
+
+.engenharia a{
+    background-image:url(../figuras/logos/engenharia.png);
+    width:91px;
+}
+
+.rnp a{
+    background-image:url(../figuras/logos/rnp.png);
+    width:116px;
+}
+
+/*-------------END RODAPE------------------*/

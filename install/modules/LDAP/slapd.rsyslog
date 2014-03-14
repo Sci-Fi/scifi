@@ -1,0 +1,3 @@
+# Send slapd(8c) logs to /var/log/slapd.log
+if $programname == 'slapd' then /var/log/slapd.log
+& ~

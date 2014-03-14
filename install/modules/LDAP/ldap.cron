@@ -1,0 +1,1 @@
+45       22      *       *       *	root       fazbkp.sh >> /var/log/backup-ok.log 2> /var/log/backup-erro.log 

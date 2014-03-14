@@ -1,0 +1,1 @@
+../SCIFIAPI/current/scifi-coordinates.sh

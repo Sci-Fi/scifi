@@ -1,0 +1,42 @@
+define host {
+	use			generic-ap
+	host_name		DISPOSITIVO
+	alias			ALIAS
+	address			DISPOSITIVO
+#	contact_groups		Redes,admins
+	parents			PAI
+	hostgroups		aps, picos, ssh-servers
+}
+
+# Monitor sysName via SNMP
+define service{
+        use                     generic-service ; Inherit values from a template
+        host_name               DISPOSITIVO
+        service_description     sysName
+        check_command           check_snmp!-C public -o sysName.0
+        }
+
+# Monitor sysLocation via SNMP
+define service{
+        use                     generic-service ; Inherit values from a template
+        host_name               DISPOSITIVO
+        service_description     sysLocation
+        check_command           check_snmp!-C public -o sysLocation.0
+        }
+
+# Monitor uptime via SNMP
+define service{
+        use                     generic-service ; Inherit values from a template
+        host_name               DISPOSITIVO
+        service_description     Uptime
+        check_command           check_snmp!-C public -o sysUpTime.0
+        }
+
+# Monitor bandwidth via MRTG logs
+define service{
+        use                     generic-service ; Inherit values from a template
+        host_name               DISPOSITIVO
+        service_description     Port 1 Usage
+        check_command           check_local_mrtgtraf!/var/www/mrtg/DISPOSITIVO/DISPOSITIVO_4227626.log!AVG!1000000,1000000!5000000,5000000!10
+        }
+

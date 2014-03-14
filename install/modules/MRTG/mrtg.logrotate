@@ -1,0 +1,12 @@
+# /etc/logrotate.d/mrtg
+#
+# Rotate mrtg log file.
+#
+# Cosme Corrêa
+
+/var/log/mrtg/mrtg.log {
+compress
+missingok
+copytruncate
+}
+
