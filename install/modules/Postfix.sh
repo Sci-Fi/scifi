@@ -4,7 +4,7 @@
 # Configuration Tool for an Easy Life
 # Version 20130918
 #
-# Pstfix module
+# Postfix module
 #
 # Cosme Faria Corrêa
 # John Doe
