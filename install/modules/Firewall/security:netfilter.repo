@@ -1,0 +1,7 @@
+[security_netfilter]
+name=Netfilter project software and core networking (RHEL_6)
+type=rpm-md
+baseurl=http://download.opensuse.org/repositories/security:/netfilter/RHEL_6/
+gpgcheck=1
+gpgkey=http://download.opensuse.org/repositories/security:/netfilter/RHEL_6/repodata/repomd.xml.key
+enabled=1

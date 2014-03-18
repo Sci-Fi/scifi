@@ -32,20 +32,43 @@ EOF
 
 read
 
-# Install Firewall
+#1 Install repo FirewallB
+cd /tmp
 wget http://www.fwbuilder.org/PACKAGE-GPG-KEY-fwbuilder.asc
 rpm --import PACKAGE-GPG-KEY-fwbuilder.asc
 cp -f $ModDir/Firewall/fwbuilder.repo /etc/yum.repos.d/fwbuilder.repo
+
+#2 Install repo FirewallB
 yum install fwbuilder -y
 
+#3 Setup FirewallB
 cp -p $ModDir/Firewall/firewall /etc/init.d/
 cp -p $ModDir/Firewall/FW-SCIFI.fw /etc/init.d/
 cp -p $ModDir/Firewall/FW-SCIFI.fwb /usr/share/scifi/scripts
 
-#4
+#4 start FB
 chkconfig firewall on
 chkconfig iptables 0ff
 chkconfig ip6tables 0ff
+
+#5 Install repo netfilter
+cd /etc/yum.repos.d/
+wget http://download.opensuse.org/repositories/security:netfilter/RHEL_6/security:netfilter.repo
+
+#6 Install netfilter
+yum install libnetfilter_conntrack3 -y
+yum install conntrack-tools -y
+
+#7 Install as a service
+
+
+#8 Setup log 
+
+#9 Setup logrotate
+
+
+
+
 #service firewall start
 
 cat <<-EOF
