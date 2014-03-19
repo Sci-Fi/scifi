@@ -1,0 +1,71 @@
+#!/bin/bash
+##       /etc/rc.d/init.d/conntrack
+## Run the Conntrack script
+#
+# chkconfig: - 31 34
+# description: Conntrack Script
+# processname: none
+# Source function library.
+#
+# Cosme Correa
+#set -xv
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+CNTR=/usr/sbin/conntrack
+
+lockfile=/var/lock/subsys/conntrack
+logfile=/var/log/conntrack.log
+pidfile=/var/run/conntrack.pid
+OPTIONS='-o timestamp -Ee NEW --any-nat'
+RETVAL=0
+
+
+case $1 in
+
+start)
+        if [ -x $CNTR ] ; then
+            echo "Program problem."
+            exit 5
+        fi
+	if [ $UID -ne 0 ] ; then
+            echo "User has insufficient privilege."
+            exit 4
+        fi
+        echo -n "Starting conntrack: "
+        daemon $CNTR $OPTIONS >> $logfile
+        RETVAL=$?
+        echo
+        [ $RETVAL -eq 0 ] && touch $lockfile
+stop)
+        if test "x`pidfileofproc conntrack`" != x; then
+            echo -n "Shutting down conntrack: "
+            killproc conntrack
+        fi
+        RETVAL=$?
+        echo
+        [ $RETVAL -eq 0 ] && rm -f $lockfile $pidfile
+        ;;
+restart)
+        cntr_stop
+        cntr_start
+        RETVAL=$?
+        ;;
+status)
+        $CNTR -L
+        $CNTR -S
+        RETVAL=$?
+        ;;
+*)
+        echo "     Use:"
+        echo "     sh $0 (start | stop | restart | status)"
+        echo
+        echo "       start   - Start conntrack"
+        echo "       stop    - Stop conntrack"
+        echo "       restart - Restart conntrack"
+        echo "       status  - Show status"
+        exit 2
+esac
+
+exit $RETVAL

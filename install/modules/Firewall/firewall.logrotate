@@ -1,0 +1,13 @@
+#
+# Rotate iptables log file.
+#
+# Cosme Corrêa
+
+/var/log/iptables.log {
+compress
+delaycompress
+ifempty
+postrotate
+    /sbin/service rsyslog restart > /dev/null 2>/dev/null || true
+endscript
+}

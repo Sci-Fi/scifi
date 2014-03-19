@@ -24,7 +24,8 @@ cat <<-EOF
   1) Install packets for FirewallB
   2) Setup FirewallB
   3) Install FW
-  4) Start
+  4) Setup firewall logrotate
+  5) Start
 
   Press <Enter> key
 
@@ -46,30 +47,15 @@ cp -p $ModDir/Firewall/firewall /etc/init.d/
 cp -p $ModDir/Firewall/FW-SCIFI.fw /etc/init.d/
 cp -p $ModDir/Firewall/FW-SCIFI.fwb /usr/share/scifi/scripts
 
-#4 start FB
+#4 Setup logrotate
+rm /etc/logrotate.d/iptables
+cp -p $ModDir/Firewall/iptables.logrotate /etc/logrotate.d/iptables
+
+#5 start FB
 chkconfig firewall on
 chkconfig iptables 0ff
 chkconfig ip6tables 0ff
 
-#5 Install repo netfilter
-cd /etc/yum.repos.d/
-wget http://download.opensuse.org/repositories/security:netfilter/RHEL_6/security:netfilter.repo
-
-#6 Install netfilter
-yum install libnetfilter_conntrack3 -y
-yum install conntrack-tools -y
-
-#7 Install as a service
-
-
-#8 Setup log 
-
-#9 Setup logrotate
-
-
-
-
-#service firewall start
 
 cat <<-EOF
 

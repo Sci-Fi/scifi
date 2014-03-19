@@ -20,8 +20,8 @@ fw_start()
 fw_stop()
 {
         echo;echo
-        echo "Finalizando o Firewall ..."
-        echo "Excluindo Todas as Formas de Seguranca..."
+        echo "Stoping Firewall ..."
+        echo "Cleaning all..."
         $IPT -t filter -P INPUT       ACCEPT
         $IPT -t filter -P FORWARD     ACCEPT
         $IPT -t filter -P OUTPUT      ACCEPT
@@ -43,7 +43,7 @@ fw_stop()
         $IPT -t nat    -Z
         $IPT -t mangle -Z
         $IPT -F 
-        echo "Firewall Finalizado..."
+        echo "Stoping Firewall..."
 }
 
 fw_status()
@@ -54,14 +54,14 @@ fw_status()
 fw_usage()
 {
         echo
-        echo "     Utilize o Firewall da seguinte forma:"
+        echo "     Use:"
         echo "     sh $0 (start | stop | restart | clear | status)"
         echo
-        echo "       start   - Ativa o firewall"
-        echo "       stop    - Desativa o firewall"
-        echo "       restart - Reativa o firewall"
-        echo "       clear   - Limpa os contadores"
-        echo "       status  - Mostra as regras estabelecidas"
+        echo "       start   - Start firewall"
+        echo "       stop    - Stop firewall"
+        echo "       restart - Restart firewall"
+        echo "       clear   - Clear counters"
+        echo "       status  - Show rules"
         echo;echo;echo
 }
 

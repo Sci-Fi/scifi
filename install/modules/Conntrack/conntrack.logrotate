@@ -1,9 +1,9 @@
-/var/log/netfilter {
+/var/log/conntrack {
     missingok
     notifempty
     create 0644 root root
     postrotate
-        /sbin/service netfilter condrestart > /dev/null 2>&1 || :
+        /sbin/service conntrack condrestart > /dev/null 2>&1 || :
     endscript
 
 }
