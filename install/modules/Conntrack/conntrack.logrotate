@@ -3,7 +3,7 @@
     notifempty
     create 0644 root root
     postrotate
-        /sbin/service conntrack condrestart > /dev/null 2>&1 || :
+        /sbin/service conntrack restart > /dev/null 2>&1 || :
     endscript
 
 }
