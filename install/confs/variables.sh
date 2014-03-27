@@ -3,6 +3,8 @@
 DIRELSCIFI=/usr/share/scifi/install/ # Where ELSCIFI stay
 ModDir=$DIRELSCIFI'modules/' # Where are modules
 SCRIPTDIR=/usr/share/scifi/scripts/ # Where are scripts
+SCIFIVERION=12
+SCIFISUBVERSION=0
 # SELinux
 SELPOL=permissive # enforcing | permissive | disabled
 # Network
