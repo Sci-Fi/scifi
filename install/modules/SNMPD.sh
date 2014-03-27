@@ -2,7 +2,7 @@
 # Easy Life SCIFI
 #
 # Configuration Tool for an Easy Life
-# Version 20130918
+# Version 20140327
 #
 # SNMPD module
 #
@@ -28,6 +28,7 @@ cat <<-EOF
   4) Star processes
   5) Scripts
   6) Some subs
+  7) Accesss rights
 
   Press <Enter> key
   
@@ -59,6 +60,11 @@ ln -s $SCRIPTDIR/*.sh /usr/bin/
 echo $IGNAME > /etc/scifi/scifi-connected2.txt
 echo CONTROLLER > /etc/scifi/scifi-type.txt
 echo $IGNAME > /etc/scifi/scifi-neighborhood.txt
+echo $SCIFIVERION > /etc/scifi/scifi-version.txt
+echo $SCIFISUBVERION > /etc/scifi/scifi-subversion.txt
+
+#7 Access rights
+chmod 755 /etc/scifi -R
 
 
 echo SNMPD module finished
