@@ -5,6 +5,19 @@ ModDir=$DIRELSCIFI'modules/' # Where are modules
 SCRIPTDIR=/usr/share/scifi/scripts/ # Where are scripts
 SCIFIVERION=12
 SCIFISUBVERSION=0
+
+# SCIFI Web Interface
+SCIFIWEBUSERNAME=admin # user name to access scifi administrative web interface 
+SCIFIWEBPASSWD=admin # password to access scifi administrative web interface 
+SSHCERTIFICATEPASSWD=keystore # keypass and keystore password for HTTPS certificate
+
+# Postgresql
+POSTGRESPASSWD=postgres # password for linux user "postgres" and also for database user "postgres"
+SCIFIDBPASSWD=scifi # password for default database user "scifi"
+
+# Jboss
+JBOSSPASSWD=jboss # password for default user "jboss" to access jboss administrative interface
+
 # SELinux
 SELPOL=permissive # enforcing | permissive | disabled
 # Network
