@@ -11,11 +11,11 @@ SCIFIWEBUSERNAME=admin # user name to access scifi administrative web interface
 SCIFIWEBPASSWD=admin # password to access scifi administrative web interface 
 SSHCERTIFICATEPASSWD=keystore # keypass and keystore password for HTTPS certificate
 
-# Postgresql
+# PostgreSQL
 POSTGRESPASSWD=postgres # password for linux user "postgres" and also for database user "postgres"
 SCIFIDBPASSWD=scifi # password for default database user "scifi"
 
-# Jboss
+# JBossAS
 JBOSSPASSWD=jboss # password for default user "jboss" to access jboss administrative interface
 
 # SELinux

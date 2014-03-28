@@ -26,7 +26,7 @@ Automatic configuration with several modules:
     DenyHosts
     NTPD
     Postfix
-    ProgreSQL
+    PostgreSQL
     JBossAS
     SCIFIAPI
     SCIFIWeb
