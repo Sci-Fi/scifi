@@ -21,6 +21,7 @@ Automatic configuration with several modules:
     Nagios
     RADIUS
     Firewall
+    Conntrack
     SSHD
     DenyHosts
     NTPD
