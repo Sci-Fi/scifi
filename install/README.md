@@ -29,6 +29,7 @@ Automatic configuration with several modules:
     PostgreSQL
     JavaJDK
     JBossAS
+    SCIFIDatabase
     SCIFIAPI
     SCIFIWeb
-    SCIFIKernel
+    SCIFICore

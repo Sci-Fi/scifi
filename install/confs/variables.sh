@@ -13,6 +13,8 @@ SSHCERTIFICATEPASSWD='keystore' # keypass and keystore password for HTTPS certif
 
 # PostgreSQL
 POSTGRESPASSWD='Sql_926.' # password for linux user "postgres" and also for database user "postgres". Use only alphanumeric characters and . and _.
+
+# SCIFI Database
 SCIFIDBPASSWD='scifi' # password for default database user "scifi". Use only alphanumeric characters and . and _.
 
 # JBossAS
