@@ -27,6 +27,7 @@ Automatic configuration with several modules:
     NTPD
     Postfix
     PostgreSQL
+    JavaJDK
     JBossAS
     SCIFIAPI
     SCIFIWeb
