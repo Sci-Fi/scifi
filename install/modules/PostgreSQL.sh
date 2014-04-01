@@ -81,3 +81,6 @@ sed -i 's/host    all             all             127.0.0.1\/32            ident
 sed -i 's/host    all             all             ::1\/128                 ident/host    all             all             ::1\/128                 md5/g' /var/lib/pgsql/9.2/data/pg_hba.conf
 service postgresql-9.2 restart
 
+echo PostgreSQL module finished
+echo 'Press <Enter> to exit'
+read
