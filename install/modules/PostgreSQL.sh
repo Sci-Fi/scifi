@@ -2,10 +2,11 @@
 # Easy Life SCIFI
 #
 # Configuration Tool for an Easy Life
-# Version 20140318
+# Version 20140401
 #
-# Conntrack module
+# PostgreSQL module
 #
+# Cosme Faria Corrêa
 # helgadb 
 # 
 # ...
