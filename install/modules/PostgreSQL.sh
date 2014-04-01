@@ -42,6 +42,12 @@ string="exclude=postgresql*"
 sed -i '/exclude=postgresql*/d' $centosRepoPath
 awk -v string="$string" '/\[base\]/{print;print string;next}1;/\[updates\]/{print string;next}' $centosRepoPathOld > $centosRepoPath
 pgdgRpm="pgdg-centos92-9.2-6.noarch.rpm"
+if [ -d $ModDir'PostgreSQL/' ]
+ then
+  echo "Directory "$ModDir"PostgreSQL/ has already been created."
+ else
+  mkdir $ModDir'PostgreSQL/'
+fi
 if [ -f $ModDir'PostgreSQL/'$pgdgRpm ]; 
  then 
   echo "File $pgdgRpm has already been downloaded."
