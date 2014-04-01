@@ -7,16 +7,16 @@ SCIFIVERION=12
 SCIFISUBVERSION=0
 
 # SCIFI Web Interface
-SCIFIWEBUSERNAME=admin # user name to access scifi administrative web interface 
-SCIFIWEBPASSWD=admin # password to access scifi administrative web interface 
-SSHCERTIFICATEPASSWD=keystore # keypass and keystore password for HTTPS certificate
+SCIFIWEBUSERNAME='admin' # user name to access scifi administrative web interface 
+SCIFIWEBPASSWD='admin' # password to access scifi administrative web interface 
+SSHCERTIFICATEPASSWD='keystore' # keypass and keystore password for HTTPS certificate
 
 # PostgreSQL
-POSTGRESPASSWD=postgres # password for linux user "postgres" and also for database user "postgres"
-SCIFIDBPASSWD=scifi # password for default database user "scifi"
+POSTGRESPASSWD='Sql_357.' # password for linux user "postgres" and also for database user "postgres". Use only alphanumeric characters and . and _.
+SCIFIDBPASSWD='scifi' # password for default database user "scifi". Use only alphanumeric characters and . and _.
 
 # JBossAS
-JBOSSPASSWD=jboss # password for default user "jboss" to access jboss administrative interface
+JBOSSPASSWD='jboss' # password for default user "jboss" to access jboss administrative interface
 
 # SELinux
 SELPOL=permissive # enforcing | permissive | disabled
