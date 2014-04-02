@@ -38,11 +38,11 @@ read
 
 standalone="/usr/share/jboss-as-7.1.1.Final/standalone/configuration/standalone.xml"
 oldstandalone="/usr/share/jboss-as-7.1.1.Final/standalone/configuration/standalone.xml.old.$(date +%Y%m%d-%H%M%S)"
-su - jboss -c "mv $standalone $oldstandalone"
+su - jboss -c "cp $standalone $oldstandalone"
 
 su - jboss -c "mkdir -p /usr/share/jboss-as-7.1.1.Final/modules/org/postgresql/main"
 
-if [ -f $ModDir'SCIFIWeb/'postgresql-9.2-1002.jdbc4.jar]; 
+if [ -f $ModDir'SCIFIWeb/'postgresql-9.2-1002.jdbc4.jar ]; 
  then 
   echo "File postgresql-9.2-1002.jdbc4.jar has already been downloaded."
  else
