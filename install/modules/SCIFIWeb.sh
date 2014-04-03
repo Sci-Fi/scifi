@@ -55,7 +55,7 @@ chown -R jboss:jboss /usr/share/jboss-as-7.1.1.Final/modules/org/postgresql/main
 
 su - jboss -c "sh /usr/share/jboss-as-7.1.1.Final/bin/standalone.sh -Djboss.bind.address=0.0.0.0 -Djboss.bind.address.management=0.0.0.0 &"
 sleep 30
-su - jboss -c 'sh /usr/share/jboss-as-7.1.1.Final/bin/jboss-cli.sh --connect --commands=/subsystem=datasources/jdbc-driver=postgresql-driver:add(driver-name=postgresql-driver,driver-class-name=org.postgresql.Driver,driver-module-name=org.postgresql)'
+su - jboss -c 'sh /usr/share/jboss-as-7.1.1.Final/bin/jboss-cli.sh --connect --commands=/subsystem=datasources/jdbc-driver=postgresql-driver:add\(driver-name=postgresql-driver,driver-class-name=org.postgresql.Driver,driver-module-name=org.postgresql\)'
 
 # b) Set user name and password to access scifi administrative web interface
 
@@ -85,7 +85,7 @@ awk -v senha_keystore="$SSLCERTIFICATEPASSWD" -v senha="$senha_criptografada" '
 
 ' $oldstandalone > $standalone
 
-sed '/<connector name="http" protocol="HTTP\/1.1" scheme="http" socket-binding="http"\/>/d' $standalone
+sed -i '/<connector name="http" protocol="HTTP\/1.1" scheme="http" socket-binding="http"\/>/d' $standalone
 
 # e) Install SCIFI Web application
 ControllerWeb="ControllerWeb-svn-rev206.war"
@@ -93,6 +93,7 @@ su - jboss -c "sh /usr/share/jboss-as-7.1.1.Final/bin/jboss-cli.sh --connect --c
 su - jboss -c "sh /usr/share/jboss-as-7.1.1.Final/bin/jboss-cli.sh --connect command=:shutdown;"
 
 sleep 5
+
 echo SCIFIWeb module finished
 echo 'Press <Enter> to exit'
 read
