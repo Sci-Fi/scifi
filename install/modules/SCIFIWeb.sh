@@ -54,8 +54,8 @@ chmod -R 644  /usr/share/jboss-as-7.1.1.Final/modules/org/postgresql/main
 chown -R jboss:jboss /usr/share/jboss-as-7.1.1.Final/modules/org/postgresql/main
 
 su - jboss -c "sh /usr/share/jboss-as-7.1.1.Final/bin/standalone.sh -Djboss.bind.address=0.0.0.0 -Djboss.bind.address.management=0.0.0.0 &"
-sleep 10
-su - jboss -c "sh /usr/share/jboss-as-7.1.1.Final/bin/jboss-cli.sh --connect --commands=/subsystem=datasources/jdbc-driver=postgresql-driver:add(driver-name=postgresql-driver,driver-class-name=org.postgresql.Driver,driver-module-name=org.postgresql)"
+sleep 30
+su - jboss -c 'sh /usr/share/jboss-as-7.1.1.Final/bin/jboss-cli.sh --connect --commands=/subsystem=datasources/jdbc-driver=postgresql-driver:add(driver-name=postgresql-driver,driver-class-name=org.postgresql.Driver,driver-module-name=org.postgresql)'
 
 # b) Set user name and password to access scifi administrative web interface
 
@@ -84,6 +84,8 @@ awk -v senha_keystore="$SSLCERTIFICATEPASSWD" -v senha="$senha_criptografada" '
 	/<security-domains>/{print "<security-domain name=\042Controller\042 cache-type=\042default\042>\012  <authentication>\012   	<login-module code=\042org.jboss.security.auth.spi.UsersRolesLoginModule\042 flag=\042required\042>\012   	<module-option name=\042usersProperties\042 value=\042${jboss.server.config.dir}/controller-users.properties\042/>\012   	<module-option name=\042rolesProperties\042 value=\042${jboss.server.config.dir}/controller-roles.properties\042/>\012   	<module-option name=\042hashAlgorithm\042 value=\042SHA-1\042/>\012   	<module-option name=\042hashEncoding\042 value=\042base64\042/>\012   	</login-module>\012   </authentication>\012</security-domain>";next}
 
 ' $oldstandalone > $standalone
+
+sed '/<connector name="http" protocol="HTTP\/1.1" scheme="http" socket-binding="http"\/>/d' $standalone
 
 # e) Install SCIFI Web application
 ControllerWeb="ControllerWeb-svn-rev206.war"
