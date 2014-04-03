@@ -41,6 +41,7 @@ oldstandalone="/usr/share/jboss-as-7.1.1.Final/standalone/configuration/standalo
 su - jboss -c "cp $standalone $oldstandalone"
 
 su - jboss -c "mkdir -p /usr/share/jboss-as-7.1.1.Final/modules/org/postgresql/main"
+chmod -R 755 /usr/share/jboss-as-7.1.1.Final/modules/org/postgresql
 
 if [ -f $ModDir'SCIFIWeb/'postgresql-9.2-1002.jdbc4.jar ]; 
  then 
@@ -51,8 +52,8 @@ fi
 
 cp $ModDir'SCIFIWeb/'postgresql-9.2-1002.jdbc4.jar /usr/share/jboss-as-7.1.1.Final/modules/org/postgresql/main
 cp $ModDir'SCIFIWeb/'module.xml /usr/share/jboss-as-7.1.1.Final/modules/org/postgresql/main
-chmod -R 644  /usr/share/jboss-as-7.1.1.Final/modules/org/postgresql/main
-chown -R jboss:jboss /usr/share/jboss-as-7.1.1.Final/modules/org/postgresql/main
+chmod  644  /usr/share/jboss-as-7.1.1.Final/modules/org/postgresql/main/*
+chown -R jboss:jboss /usr/share/jboss-as-7.1.1.Final/modules/org/postgresql
 
 su - jboss -c "sh /usr/share/jboss-as-7.1.1.Final/bin/standalone.sh -Djboss.bind.address=0.0.0.0 -Djboss.bind.address.management=0.0.0.0 &"
 sleep 30
