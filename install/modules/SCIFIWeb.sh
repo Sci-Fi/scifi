@@ -49,12 +49,13 @@ if [ -f $ModDir'SCIFIWeb/'postgresql-9.2-1002.jdbc4.jar ];
   wget http://jdbc.postgresql.org/download/postgresql-9.2-1002.jdbc4.jar -O $ModDir'SCIFIWeb/'postgresql-9.2-1002.jdbc4.jar
 fi
 
-mv $ModDir'SCIFIWeb/'postgresql-9.2-1002.jdbc4.jar /usr/share/jboss-as-7.1.1.Final/modules/org/postgresql/main
+cp $ModDir'SCIFIWeb/'postgresql-9.2-1002.jdbc4.jar /usr/share/jboss-as-7.1.1.Final/modules/org/postgresql/main
 chmod -R 644  /usr/share/jboss-as-7.1.1.Final/modules/org/postgresql/main
 chown -R jboss:jboss /usr/share/jboss-as-7.1.1.Final/modules/org/postgresql/main
 
-su - jboss -c "cd /usr/share/jboss-as-7.1.1.Final/bin/;./standalone.sh -Djboss.bind.address=0.0.0.0 -Djboss.bind.address.management=0.0.0.0&;"
-su - jboss -c "cd /usr/share/jboss-as-7.1.1.Final/bin/;./jboss-cli.sh --connect --commands=/subsystem=datasources/jdbc-driver=postgresql-driver:add(driver-name=postgresql-driver,driver-class-name=org.postgresql.Driver,driver-module-name=org.postgresql);"
+su - jboss -c "sh /usr/share/jboss-as-7.1.1.Final/bin/standalone.sh -Djboss.bind.address=0.0.0.0 -Djboss.bind.address.management=0.0.0.0 &"
+sleep 10
+su - jboss -c "sh /usr/share/jboss-as-7.1.1.Final/bin/jboss-cli.sh --connect --commands=/subsystem=datasources/jdbc-driver=postgresql-driver:add(driver-name=postgresql-driver,driver-class-name=org.postgresql.Driver,driver-module-name=org.postgresql)"
 
 # b) Set user name and password to access scifi administrative web interface
 
@@ -70,12 +71,11 @@ su - jboss -c "cd /usr/share/jboss-as-7.1.1.Final/standalone/configuration; keyt
 
 # d) Configure JBossAS standalone.xml
 
-senha_criptografada=$(java org.picketbox.datasource.security.SecureIdentityLoginModule $SCIFIDBPASSWD)
+senha_criptografada='$(java org.picketbox.datasource.security.SecureIdentityLoginModule $SCIFIDBPASSWD)'
 
 awk -v senha_keystore="$SSLCERTIFICATEPASSWD" -v senha="$senha_criptografada" '
-	match($0,"<connector name=\042http\042 protocol=\042HTTP/1.1\042 scheme=\042http\042 socket-binding=\042http\042/>") == 0 {print;next}1;
 
-	/<security-domains>/{print "                <security-domain name=\042EncryptDBPassword\042>\012                   <authentication>\012                       <login-module code=\042org.picketbox.datasource.security.SecureIdentityLoginModule\042 flag=\042required\042>\012                            <module-option name=\042username\042 value=\042scifi\042/>\012                            <module-option name=\042password\042 value=\042"senha"\042/>\012                       </login-module>\012                   </authentication>\012                </security-domain>";next}
+	/<security-domains>/{print;print "                <security-domain name=\042EncryptDBPassword\042>\012                   <authentication>\012                       <login-module code=\042org.picketbox.datasource.security.SecureIdentityLoginModule\042 flag=\042required\042>\012                            <module-option name=\042username\042 value=\042scifi\042/>\012                            <module-option name=\042password\042 value=\042"senha"\042/>\012                       </login-module>\012                   </authentication>\012                </security-domain>";next}1
 
 	/<datasources>/{print "                <datasource jndi-name=\042java:/ControllerDB\042 enabled=\042true\042 pool-name=\042ControllerDB\042 use-java-context=\042true\042 >\012                    <connection-url>jdbc:postgresql://localhost:5432/controladorbd</connection-url>\012                    <driver>postgresql-driver</driver>\012                    <pool>\012                       <min-pool-size>5</min-pool-size>\012                       <max-pool-size>20</max-pool-size>\012                       <prefill>true</prefill>\012                    </pool>\012                    <security>\012                       <security-domain>EncryptDBPassword</security-domain>\012                    </security>\012                </datasource>";next}
 	
@@ -87,11 +87,10 @@ awk -v senha_keystore="$SSLCERTIFICATEPASSWD" -v senha="$senha_criptografada" '
 
 # e) Install SCIFI Web application
 ControllerWeb="ControllerWeb-svn-rev206.war"
-su - jboss -c "cp $ModDir'SCIFIWeb/'$ControllerWeb /usr/share/jboss-as-7.1.1.Final/bin/ControllerWeb.war"
-su - jboss -c "cd /usr/share/jboss-as-7.1.1.Final/bin/; ./jboss-cli.sh --connect --commands=deploy\ ControllerWeb.war;"
-rm /usr/share/jboss-as-7.1.1.Final/bin/ControllerWeb.war
-su - jboss -c "cd /usr/share/jboss-as-7.1.1.Final/bin/; ./jboss-cli.sh --connect command=:shutdown;"
+su - jboss -c "sh /usr/share/jboss-as-7.1.1.Final/bin/jboss-cli.sh --connect --commands=deploy\ $ModDir'SCIFIWeb/'$ControllerWeb;"
+su - jboss -c "sh /usr/share/jboss-as-7.1.1.Final/bin/jboss-cli.sh --connect command=:shutdown;"
 
+sleep 5
 echo SCIFIWeb module finished
 echo 'Press <Enter> to exit'
 read
