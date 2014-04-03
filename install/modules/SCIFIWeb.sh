@@ -57,10 +57,7 @@ chown -R jboss:jboss /usr/share/jboss-as-7.1.1.Final/modules/org/postgresql
 
 su - jboss -c "sh /usr/share/jboss-as-7.1.1.Final/bin/standalone.sh -Djboss.bind.address=0.0.0.0 -Djboss.bind.address.management=0.0.0.0 &"
 sleep 30
-su - jboss -c 'sh /usr/share/jboss-as-7.1.1.Final/bin/jboss-cli.sh --connect'
-echo '/subsystem=datasources/jdbc-driver=postgresql-driver:add(driver-name=postgresql-driver, driver-class-name=org.postgresql.Driver, driver-module-name=org.postgresql)'
-sleep 3
-echo 'exit'
+echo '/subsystem=datasources/jdbc-driver=postgresql-driver:add(driver-name=postgresql-driver, driver-class-name=org.postgresql.Driver, driver-module-name=org.postgresql)' | su - jboss -c 'sh /usr/share/jboss-as-7.1.1.Final/bin/jboss-cli.sh --connect'
 su - jboss -c "sh /usr/share/jboss-as-7.1.1.Final/bin/jboss-cli.sh --connect command=:shutdown;"
 sleep 5
 
