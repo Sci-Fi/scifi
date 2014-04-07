@@ -466,7 +466,7 @@ post-auth {
 	#  If you want to have a log of authentication replies,
 	#  un-comment the following line, and the 'detail reply_log'
 	#  section, above.
-#	reply_log
+	reply_log
 
 	#
 	#  After authenticating the user, do another SQL query.
