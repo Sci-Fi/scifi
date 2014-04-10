@@ -112,7 +112,7 @@ su - jboss -c "echo '$SCIFIWEBUSERNAME=$scifiwebpass' > /usr/share/jboss-as-7.1.
 su - jboss -c "echo '$SCIFIWEBUSERNAME=Admin' > /usr/share/jboss-as-7.1.1.Final/standalone/configuration/controller-roles.properties" 
 
 ControllerWeb="ControllerWeb-svn-rev206.war"
-chown jboss:jboss $ModDir'SCIFIWeb/'$ControllerWeb"
+chown jboss:jboss $ModDir'SCIFIWeb/'$ControllerWeb
 su - jboss -c "sh /usr/share/jboss-as-7.1.1.Final/bin/standalone.sh -Djboss.bind.address=0.0.0.0 -Djboss.bind.address.management=0.0.0.0 &"
 sleep 30
 echo "deploy $ModDir'SCIFIWeb/'$ControllerWeb" | su - jboss -c "sh /usr/share/jboss-as-7.1.1.Final/bin/jboss-cli.sh --connect"
