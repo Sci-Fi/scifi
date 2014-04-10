@@ -33,7 +33,7 @@ EOF
 
 read
 
-# testing if jboss and postgre are installed
+# testing if jboss, postgre and scifidb are installed
 jbossAsPath="/usr/share/jboss-as-7.1.1.Final";
 if [ !  -d "$jbossAsPath" ] 
  then
@@ -48,17 +48,24 @@ if [ !  -d "$jbossAsPath" ]
     echo "ERROR: Please install PostgreSQL module first."
     echo "**********************************************"
    else
+   scifidb=$(! su - postgres -c "psql -c \"SELECT datname FROM pg_catalog.pg_database WHERE datname='scifidb'\"" | grep scifidb &>/dev/null; echo $?)
+   if [ $scifidb -eq 0 ]
+    then
+     echo "*************************************************"
+     echo "ERROR: Please install SCIFIDatabase module first."
+     echo "*************************************************"
+    else
   
   # a) Install postgresql JDBC driver  
   standaloneOriginal="/usr/share/jboss-as-7.1.1.Final/standalone/configuration/standalone_xml_history/standalone.initial.xml"
   standalone="/usr/share/jboss-as-7.1.1.Final/standalone/configuration/standalone.xml"
   oldstandalone="/usr/share/jboss-as-7.1.1.Final/standalone/configuration/standalone.xml.old.$(date +%Y%m%d-%H%M%S)"
-  
+  ControllerWebCert="/usr/share/jboss-as-7.1.1.Final/standalone/configuration/ControllerWebCert.keystore"
   su - jboss -c "cp $standalone $oldstandalone"
 
   # restarting jbossAS configuration 
   if [ -f "$standaloneOriginal" ]; then cp $standaloneOriginal $standalone; fi;
-
+  if [ -f "$ControllerWebCert" ]; then rm $ControllerWebCert ; fi;
   su - jboss -c "mkdir -p /usr/share/jboss-as-7.1.1.Final/modules/org/postgresql/main"
   chmod -R 755 /usr/share/jboss-as-7.1.1.Final/modules/org/postgresql
 
@@ -138,6 +145,7 @@ su - jboss -c "sh /usr/share/jboss-as-7.1.1.Final/bin/jboss-cli.sh --connect com
   su - jboss -c "sh /usr/share/jboss-as-7.1.1.Final/bin/jboss-cli.sh --connect command=:shutdown;"
   sleep 5
 
+  fi
  fi
 fi
 
