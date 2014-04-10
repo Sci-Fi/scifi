@@ -41,7 +41,17 @@ if [ $psql -eq 0 ]
   echo "ERROR: Please install PostgreSQL module first."
   echo "**********************************************"
  else
-
+  
+  # making scifidb backup and resetting db configuration
+  scifidb=$(! su - postgres -c "psql -c \"SELECT datname FROM pg_catalog.pg_database WHERE datname='scifidb'\"" | grep scifidb &>/dev/null; echo $?)
+  backup="$ModDir/SCIFIDatabase/scifidb.old.backup.$(date +%Y%m%d-%H%M%S)"
+  touch $backup
+  chown postgres:postgres $backup
+  if [ $scifidb -eq 1 ]; then su - postgres -c "pg_dump --format=tar scifidb > $backup";fi;
+  su - postgres -c "psql postgres -c \"DROP DATABASE IF EXISTS scifidb\""
+  su - postgres -c "psql postgres -c \"DROP ROLE IF EXISTS scifi \""
+  
+ 
   # a) Create SCIFI default database user called "scifi" 
   su - postgres -c "psql postgres -c \"CREATE ROLE scifi WITH INHERIT LOGIN CONNECTION LIMIT -1 PASSWORD '$SCIFIDBPASSWD' VALID UNTIL 'infinity'\""
 
