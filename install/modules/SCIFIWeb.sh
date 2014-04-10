@@ -66,6 +66,7 @@ sleep 5
 export JBOSS_HOME=/usr/share/jboss-as-7.1.1.Final/
 export CLASSPATH=${JBOSS_HOME}/modules/org/picketbox/main/picketbox-4.0.7.Final.jar:${JBOSS_HOME}/modules/org/jboss/logging/main/jboss-logging-3.1.0.GA.jar:$CLASSPATH
 senha_criptografada=$(java org.picketbox.datasource.security.SecureIdentityLoginModule $SCIFIDBPASSWD | awk '{print $3}')
+standalone_temp="/usr/share/jboss-as-7.1.1.Final/standalone/configuration/standalone.xml.temp" 
 
 awk -v senha="$senha_criptografada" '
 
@@ -73,7 +74,9 @@ awk -v senha="$senha_criptografada" '
 
 	/<datasources>/{print "                <datasource jndi-name=\042java:/ControllerDB\042 enabled=\042true\042 pool-name=\042ControllerDB\042 use-java-context=\042true\042 >\012                    <connection-url>jdbc:postgresql://localhost:5432/scifidb</connection-url>\012                    <driver>postgresql-driver</driver>\012                    <pool>\012                       <min-pool-size>5</min-pool-size>\012                       <max-pool-size>20</max-pool-size>\012                       <prefill>true</prefill>\012                    </pool>\012                    <security>\012                       <security-domain>EncryptDBPassword</security-domain>\012                    </security>\012                </datasource>";next}
 
-' $oldstandalone > $standalone
+' $standalone > $standalone_temp
+
+mv $standalone_temp $standalone
 
 su - jboss -c "sh /usr/share/jboss-as-7.1.1.Final/bin/standalone.sh -Djboss.bind.address=0.0.0.0 -Djboss.bind.address.management=0.0.0.0 &"
 sleep 30
@@ -84,8 +87,6 @@ sleep 5
 # c) Configure HTTPS in JBoss AS using keytool 
 
 su - jboss -c "cd /usr/share/jboss-as-7.1.1.Final/standalone/configuration; keytool -genkey -alias ControllerWebCert -keyalg RSA -keystore ControllerWebCert.keystore -validity 10950 -storepass $SSLCERTIFICATEPASSWD -keypass $SSLCERTIFICATEPASSWD -dname cn=$MACHINE;"
-
-standalone_temp="/usr/share/jboss-as-7.1.1.Final/standalone/configuration/standalone.xml.temp" 
 
 awk -v senha_keystore="$SSLCERTIFICATEPASSWD" '
 	/<subsystem xmlns="urn:jboss:domain:web:1.1" default-virtual-server="default-host" native="false">/{print;print "            <connector name=\042http\042 protocol=\042HTTP/1.1\042 scheme=\042http\042 socket-binding=\042http\042  redirect-port=\0428443\042 />\012            <connector name=\042https\042 scheme=\042https\042 protocol=\042HTTP/1.1\042 socket-binding=\042https\042 enable-lookups=\042false\042 secure=\042true\042>\012               <ssl name=\042ControllerWeb-ssl\042 password=\042"senha_keystore"\042 protocol=\042TLSv1\042 key-alias=\042ControllerWebCert\042 certificate-key-file=\042${jboss.server.config.dir}/ControllerWebCert.keystore\042 />\012            </connector>";next}1
@@ -111,6 +112,7 @@ su - jboss -c "echo '$SCIFIWEBUSERNAME=$scifiwebpass' > /usr/share/jboss-as-7.1.
 su - jboss -c "echo '$SCIFIWEBUSERNAME=Admin' > /usr/share/jboss-as-7.1.1.Final/standalone/configuration/controller-roles.properties" 
 
 ControllerWeb="ControllerWeb-svn-rev206.war"
+chown jboss:jboss $ModDir'SCIFIWeb/'$ControllerWeb"
 su - jboss -c "sh /usr/share/jboss-as-7.1.1.Final/bin/standalone.sh -Djboss.bind.address=0.0.0.0 -Djboss.bind.address.management=0.0.0.0 &"
 sleep 30
 echo "deploy $ModDir'SCIFIWeb/'$ControllerWeb" | su - jboss -c "sh /usr/share/jboss-as-7.1.1.Final/bin/jboss-cli.sh --connect"
