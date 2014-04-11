@@ -55,9 +55,9 @@ if [ $java -eq 0 ]
     # resetting configurations
     sed -i '/sh \/usr\/share\/scifi\/StartController.sh/d' /etc/rc.local 
     # a) install SCIFI core
-    cp $ModDir/SCIFICore/* /usr/share/scifi
+    cp -r $ModDir/SCIFICore/* /usr/share/scifi
     echo $SCIFIDBPASSWD >> /usr/share/scifi/login_config
-    echo "sh /usr/share/scifi/StartController.sh" /etc/rc.local
+    echo "sh /usr/share/scifi/StartController.sh" >> /etc/rc.local
     chown scifi:scifi /usr/share/scifi/* 
 
   fi
