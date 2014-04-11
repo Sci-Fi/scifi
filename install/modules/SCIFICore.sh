@@ -66,6 +66,7 @@ if [ $java -eq 0 ]
     adduser -U scifi
     echo -e "$SCIFIPASSWD\n$SCIFIPASSWD" | passwd scifi
     chown -fR scifi:scifi /usr/share/scifi/core 
+    chmod 0600 /usr/share/scifi/core/login_config
     
   fi
  fi
