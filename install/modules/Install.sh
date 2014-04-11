@@ -37,7 +37,7 @@ yum localinstall "$ModDir"Install/epel-release-6-8.noarch.rpm -y --nogpgcheck
 
 # 2) Utilities
 echo Installing Utilities
-yum install screen vim htop tree coreutils yumex setuptool authconfig glibc-common openssl unzip java-1.7.0-openjdk-devel -y
+yum install screen vim htop tree coreutils yumex setuptool authconfig glibc-common openssl unzip -y
 
 # 3) Create directories
 mkdir -p $SCRIPTDIR
