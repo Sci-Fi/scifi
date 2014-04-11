@@ -23,6 +23,7 @@ SCIFICore Module
 
 This module will:
 a) Install SCIFI Core, rev 206 (svn) 
+b) Create linux user "scifi" and set his password 
 
 Press <Enter> key
 
@@ -55,13 +56,17 @@ if [ $java -eq 0 ]
     # resetting configurations
     rm -rf /usr/share/scifi/core
     sed -i '/sh \/usr\/share\/scifi\/core\/StartController.sh/d' /etc/rc.local 
-    # a) install SCIFI core
+    # a) Install SCIFI core
     mkdir /usr/share/scifi/core
     cp -r $ModDir/SCIFICore/* /usr/share/scifi/core
     echo $SCIFIDBPASSWD >> /usr/share/scifi/core/login_config
     echo "sh /usr/share/scifi/core/StartController.sh" >> /etc/rc.local
-    chown -R scifi:scifi /usr/share/scifi/core 
-
+    
+    # b) Create linux user "scifi" and set his password 
+    adduser -U scifi
+    echo -e "$SCIFIPASSWD\n$SCIFIPASSWD" | passwd scifi
+    chown -fR scifi:scifi /usr/share/scifi/core 
+    
   fi
  fi
 fi

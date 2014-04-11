@@ -11,6 +11,9 @@ SCIFIWEBUSERNAME='admin' # user name to access scifi administrative web interfac
 SCIFIWEBPASSWD='admin' # password to access scifi administrative web interface 
 SSLCERTIFICATEPASSWD='keystore' # keypass and keystore password for HTTPS certificate
 
+# SCIFI Core
+SCIFIPASSWD='sc1f1_206.' # password for linux user "scifi".
+
 # PostgreSQL
 POSTGRESPASSWD='Sql_926.' # password for linux user "postgres" and also for database user "postgres". Use only alphanumeric characters and . and _.
 
