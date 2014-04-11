@@ -19,7 +19,7 @@ cat <<-EOF
 =========================================
 | Easy Life for SCIFI |
 =========================================
-SCIFIWeb Module
+SCIFICore Module
 
 This module will:
 a) Install SCIFI core  
