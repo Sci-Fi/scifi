@@ -11,6 +11,6 @@ su - jboss -c "sh /usr/share/jboss-as-7.1.1.Final/bin/standalone.sh -b 0.0.0.0 &
 sleep 60
 
 # Inicialização do Núcleo Central de Processamento do SCIFI. Um servidor tcp é criado em localhost,porta 5000 para receber mensagens provenientes da interface web de gerência. 
-su - scifi -c "cd /usr/share/scifi;java -cp APController.jar loader.JLoader 127.0.0.1 5000 &"
+su - scifi -c "cd /usr/share/scifi/core;java -cp APController.jar loader.JLoader 127.0.0.1 5000 &> /dev/null"
 
 exit 0

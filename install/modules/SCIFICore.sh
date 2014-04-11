@@ -53,12 +53,14 @@ if [ $java -eq 0 ]
      echo "*************************************************"
     else
     # resetting configurations
-    sed -i '/sh \/usr\/share\/scifi\/StartController.sh/d' /etc/rc.local 
+    rm -rf /usr/share/scifi/core
+    sed -i '/sh \/usr\/share\/scifi\/core\/StartController.sh/d' /etc/rc.local 
     # a) install SCIFI core
-    cp -r $ModDir/SCIFICore/* /usr/share/scifi
-    echo $SCIFIDBPASSWD >> /usr/share/scifi/login_config
-    echo "sh /usr/share/scifi/StartController.sh" >> /etc/rc.local
-    chown scifi:scifi /usr/share/scifi/* 
+    mkdir /usr/share/scifi/core
+    cp -r $ModDir/SCIFICore/* /usr/share/scifi/core
+    echo $SCIFIDBPASSWD >> /usr/share/scifi/core/login_config
+    echo "sh /usr/share/scifi/core/StartController.sh" >> /etc/rc.local
+    chown -R scifi:scifi /usr/share/scifi/core 
 
   fi
  fi
