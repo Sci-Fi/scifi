@@ -52,7 +52,8 @@ if [ $java -eq 0 ]
      echo "ERROR: Please install SCIFIDatabase module first."
      echo "*************************************************"
     else
-
+    # reseting configurations
+    sed -i '/sh \/usr\/share\/scifi\/StartController.sh/d' /etc/rc.local 
     # a) install SCIFI core
     cp $ModDir/SCIFICore/* /usr/share/scifi
     echo $SCIFIDBPASSWD >> /usr/share/scifi/login_config
