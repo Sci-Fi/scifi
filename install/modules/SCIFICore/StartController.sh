@@ -6,11 +6,11 @@
 
 # Inicialização do Jboss. A opção -b 0.0.0.0 libera acesso à interface administrativa do scifi para qualquer IP.
 # Por padrão, o acesso à interface de gerência do servidor de aplicações Jboss é liberado apenas para localhost. Para liberar a acesso para outro ip, insira a opção -bmanagement ip.
-su - jboss -c "sh /usr/share/jboss-as-7.1.1.Final/bin/standalone.sh -b 0.0.0.0 &"
+su - jboss -c "sh /usr/share/jboss-as-7.1.1.Final/bin/standalone.sh -b 0.0.0.0 &> /dev/null &"
 
-sleep 60
+#sleep 60
 
 # Inicialização do Núcleo Central de Processamento do SCIFI. Um servidor tcp é criado em localhost,porta 5000 para receber mensagens provenientes da interface web de gerência. 
-su - scifi -c "cd /usr/share/scifi/core;java -cp APController.jar loader.JLoader 127.0.0.1 5000 &> /dev/null"
+su - scifi -c "cd /usr/share/scifi/core;java -cp APController.jar loader.JLoader 127.0.0.1 5000 &> /dev/null &"
 
 exit 0
