@@ -22,7 +22,7 @@ cat <<-EOF
 SCIFICore Module
 
 This module will:
-a) Install SCIFI core  
+a) Install SCIFI Core, rev 206 (svn) 
 
 Press <Enter> key
 
