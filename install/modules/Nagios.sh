@@ -26,9 +26,10 @@ cat <<-EOF
   2) Copy Templates
   3) SetUp Templates
   4) Setup HTTPD
-  5) Setup Start
-  6) Scripts
-  7) Put InternetGateway in /etc/hosts
+  5) Setup cron
+  6) setup Start
+  7) Scripts
+  8) Put InternetGateway in /etc/hosts
 
   Press <Enter> key
 
@@ -59,16 +60,23 @@ sed -i s/LDAPSERVER/$LDAPSERVER/g /etc/httpd/conf.d/nagios.conf
 sed -i s/LDAPSUFIX/$LDAPSUFIX/g /etc/httpd/conf.d/nagios.conf
 sed -i s/NAGIOSGROUP/$NAGIOSGROUP/g /etc/httpd/conf.d/nagios.conf
 
-#5
+#5 Setup Cron
+rm /etc/cron.d/mrtg 2> /dev/null
+cp -p $ModDir/Nagios/nagios.cron /etc/cron.d/nagios
+toutch /var/log/nagios/nagios-start.log
+chmod 755 /var/log/nagios/nagios-start.log
+chown nagios nagios /var/log/nagios/nagios-start.log
+
+#6 setup start
 chkconfig nagios on
 service nagios restart
 service httpd restart
 
-#6 Scripts
+#7 Scripts
 cp -f  $ModDir/Nagios/*.sh $SCRIPTDIR
 ln -s $SCRIPTDIR/*.sh /usr/bin/ 2>/dev/null
 
-#7 Put InternetGateway in /etc/hosts
+#8 Put InternetGateway in /etc/hosts
 sed -i s/$IGIP/'#'$IGIP/g /etc/hosts
 echo $IGIP' '$IGNAME' #'" Added by EL-SCIFI - `date +%Y%m%d-%H%M%S`" >> /etc/hosts
 
