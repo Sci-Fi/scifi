@@ -1,0 +1,1 @@
+*/5 * * * * root /usr/sbin/nagios -v /etc/nagios/nagios.cfg > /var/log/nagios/nagios-start.log && /sbin/service nagios reload
