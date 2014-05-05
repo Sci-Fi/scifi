@@ -71,7 +71,7 @@ You must:
 - restart firewall
   - service firewall restart 
 
-echo Press <Enter> to exit
+Press <Enter> to exit
 
 EOF
 read
