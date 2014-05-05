@@ -48,13 +48,13 @@ cp -p $ModDir/Firewall/FW-SCIFI.fw /etc/init.d/
 cp -p $ModDir/Firewall/FW-SCIFI.fwb /usr/share/scifi/scripts
 
 #4 Setup logrotate
-rm /etc/logrotate.d/iptables
-cp -p $ModDir/Firewall/iptables.logrotate /etc/logrotate.d/iptables
+rm /etc/logrotate.d/iptables 2> /dev/null
+cp -p $ModDir/Firewall/firewall.logrotate /etc/logrotate.d/iptables
 
 #5 start FB
 chkconfig firewall on
-chkconfig iptables 0ff
-chkconfig ip6tables 0ff
+chkconfig iptables off
+chkconfig ip6tables off
 
 
 cat <<-EOF
