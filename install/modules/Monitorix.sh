@@ -38,8 +38,8 @@ echo Setup Monitorix
 # Fix a problem
 chown 755 /etc/init.d/monitorix
 # Setup monitorix.conf
-sed -i s/'Place a title here'/$MACHINE' - Monitoring'/g /etc/monitorix.conf
-sed -i s/'enabled = y'/'enabled = n'/g /etc/monitorix.conf
+sed -i s/'Place a title here'/$MACHINE' - Monitoring'/g /etc/monitorix/monitorix.conf
+sed -i s/'enabled = y'/'enabled = n'/g /etc/monitorix/monitorix.conf
 # Setup Monitorix in HTTPD
 case "$MONITORIXAUTH" in
     [nN] )
@@ -57,6 +57,7 @@ sed -i s/LDAPSUFIX/$LDAPSUFIX/g /etc/httpd/conf.d/monitorix-apache.conf
 sed -i s/MONITORIXGROUP/$MONITORIXGROUP/g /etc/httpd/conf.d/monitorix-apache.conf
 
 # Fix a problem
+mkdir /usr/share/monitorix/imgs/
 chown apache:apache /usr/share/monitorix/imgs/ -R
 
 # Setup Monitorix start
