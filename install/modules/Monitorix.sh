@@ -57,7 +57,7 @@ sed -i s/LDAPSUFIX/$LDAPSUFIX/g /etc/httpd/conf.d/monitorix-apache.conf
 sed -i s/MONITORIXGROUP/$MONITORIXGROUP/g /etc/httpd/conf.d/monitorix-apache.conf
 
 # Fix a problem
-mkdir /usr/share/monitorix/imgs/
+mkdir -p /usr/share/monitorix/imgs/
 chown apache:apache /usr/share/monitorix/imgs/ -R
 
 # Setup Monitorix start
