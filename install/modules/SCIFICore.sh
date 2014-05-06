@@ -61,6 +61,7 @@ if [ $java -eq 0 ]
     rm -rf /usr/share/scifi/core 2> /dev/null
     sed -i '/sh \/usr\/share\/scifi\/core\/StartController.sh/d' /etc/rc.local
     if [ $(ps aux | grep -c jboss) -gt 1 ]; then su - jboss -c "sh /usr/share/jboss-as-7.1.1.Final/bin/jboss-cli.sh --connect command=:shutdown;"; fi;
+    ps aux | grep APController.jar | awk '{PID=$2; comando="kill -9 "PID; system(comando); }' 2> /dev/null
     
     # a) Install SCIFI core
     mkdir /usr/share/scifi/core
@@ -68,6 +69,7 @@ if [ $java -eq 0 ]
     rm /usr/share/scifi/core/*old* 2> /dev/null
     echo $SCIFIDBPASSWD >> /usr/share/scifi/core/login_config
     echo "sh /usr/share/scifi/core/StartController.sh" >> /etc/rc.local
+    chmod +x /usr/share/scifi/core/StartController.sh
     
     # b) Create linux user "scifi" and set his password 
     adduser -U scifi
