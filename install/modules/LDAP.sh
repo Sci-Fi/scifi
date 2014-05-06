@@ -10,7 +10,7 @@
 # John Doe
 # ...
 #
-set -xv        
+#set -xv        
 
 clear
 
