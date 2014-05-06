@@ -64,6 +64,7 @@ if [ !  -d "$jbossAsPath" ]
   su - jboss -c "cp $standalone $oldstandalone"
 
   # restarting jbossAS configuration 
+  if [ $(ps aux | grep -c jboss) -gt 1 ]; then su - jboss -c "sh /usr/share/jboss-as-7.1.1.Final/bin/jboss-cli.sh --connect command=:shutdown;"; fi;
   if [ -f "$standaloneOriginal" ]; then cp $standaloneOriginal $standalone; fi;
   if [ -f "$ControllerWebCert" ]; then rm $ControllerWebCert ; fi;
   su - jboss -c "mkdir -p /usr/share/jboss-as-7.1.1.Final/modules/org/postgresql/main"
