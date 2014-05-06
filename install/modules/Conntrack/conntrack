@@ -38,10 +38,12 @@ start)
         RETVAL=$?
         echo
         [ $RETVAL -eq 0 ] && touch $lockfile
+        ;;
 stop)
         if test "x`pidfileofproc conntrack`" != x; then
             echo -n "Shutting down conntrack: "
-            killproc conntrack
+#            killproc conntrack
+		pkill conntrack
         fi
         RETVAL=$?
         echo
