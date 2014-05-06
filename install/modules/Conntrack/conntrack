@@ -50,8 +50,8 @@ stop)
         [ $RETVAL -eq 0 ] && rm -f $lockfile $pidfile
         ;;
 restart)
-        cntr_stop
-        cntr_start
+        stop
+        start
         RETVAL=$?
         ;;
 status)
