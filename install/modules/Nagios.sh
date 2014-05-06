@@ -34,7 +34,7 @@ cat <<-EOF
   Press <Enter> key
 
 EOF
-
+read
 #1 Install Nagios
 yum  install nagios nagios-plugins-all -y
 
