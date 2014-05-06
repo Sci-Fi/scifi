@@ -47,12 +47,12 @@ cp -p $ModDir/Conntrack/conntrack /etc/init.d/
 
 
 #4 Setup logrotate
-rm /etc/logrotate.d/conntrack
+rm /etc/logrotate.d/conntrack 2>/dev/null
 cp -p $ModDir/Conntrack/conntrack.logrotate /etc/logrotate.d/conntrack
 
 #5 start
 chkconfig conntrack on
 
 
-echo Press <Enter> to exit
+echo 'Press <Enter> to exit'
 read
