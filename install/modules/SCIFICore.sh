@@ -59,7 +59,9 @@ if [ $java -eq 0 ]
     if [ -f /usr/share/scifi/core/controller_key ]; then cp /usr/share/scifi/core/controller_key $ModDir/SCIFICore/controller_key.old.$(date +%Y%m%d-%H%M%S);fi; 
     if [ -f /usr/share/scifi/core/authorized_keys ]; then cp /usr/share/scifi/core/authorized_keys $ModDir/SCIFICore/authorized_keys.old.$(date +%Y%m%d-%H%M%S);fi; 
     rm -rf /usr/share/scifi/core 2> /dev/null
-    sed -i '/sh \/usr\/share\/scifi\/core\/StartController.sh/d' /etc/rc.local 
+    sed -i '/sh \/usr\/share\/scifi\/core\/StartController.sh/d' /etc/rc.local
+    if [ $(ps aux | grep -c jboss) -gt 1 ]; then su - jboss -c "sh /usr/share/jboss-as-7.1.1.Final/bin/jboss-cli.sh --connect command=:shutdown;"; fi;
+    
     # a) Install SCIFI core
     mkdir /usr/share/scifi/core
     cp -r $ModDir/SCIFICore/* /usr/share/scifi/core
