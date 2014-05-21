@@ -59,6 +59,7 @@ sed -i s/MONITORIXGROUP/$MONITORIXGROUP/g /etc/httpd/conf.d/monitorix-apache.con
 # Fix a problem
 mkdir -p /usr/share/monitorix/imgs/
 chown apache:apache /usr/share/monitorix/imgs/ -R
+chown apache:apache /var/lib/monitorix/www/imgs/ -R
 
 # Setup Monitorix start
 chkconfig monitorix on
