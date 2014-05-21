@@ -36,7 +36,7 @@ read
 yum install postfix -y
 
 #2
-mv /etc/postfix/main.cf /etc/postfix/maif.cf.`date +%Y%m%d-%H%M%S`
+mv /etc/postfix/main.cf /etc/postfix/main.cf.`date +%Y%m%d-%H%M%S`
 mv /etc/postfix/sasl_passwd /etc/postfix/sasl_passwd.`date +%Y%m%d-%H%M%S`
 cp -rp $ModDir/Postfix/main.cf /etc/postfix/
 cp -rp $ModDir/Postfix/sasl_passwd /etc/postfix/
