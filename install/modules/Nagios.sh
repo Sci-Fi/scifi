@@ -30,6 +30,7 @@ cat <<-EOF
   6) setup Start
   7) Scripts
   8) Put InternetGateway in /etc/hosts
+  9) Our Icons
 
   Press <Enter> key
 
@@ -80,6 +81,9 @@ ln -s $SCRIPTDIR/*.sh /usr/bin/ 2>/dev/null
 #8 Put InternetGateway in /etc/hosts
 sed -i s/$IGIP/'#'$IGIP/g /etc/hosts
 echo $IGIP' '$IGNAME' #'" Added by EL-SCIFI - `date +%Y%m%d-%H%M%S`" >> /etc/hosts
+
+#9 Our icons
+cp -f  $ModDir/Nagios/wifi.png usr/share/nagios/html/images/logos/ 2>/dev/null
 
 echo Nagios module finished
 echo 'Press <Enter> to exit'
