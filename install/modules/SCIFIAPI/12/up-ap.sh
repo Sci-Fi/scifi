@@ -1,5 +1,3 @@
-#!/bin/sh                           
-# version 20131104
 # Update API in APs
 # Cosme Corrêa - cosmefc@id.uff.br
 # uncomment for debug
@@ -17,29 +15,40 @@ exit
 }
 
 # Test # of parameters
-if [ "$#" -ne "0" ]
-	then
-	echo 'Error, wrong # of parameters';
-	ERRO;
-	exit;
+if [ "$#" -eq "0" ]
+        then
+        echo 'Error, wrong # of parameters';
+        ERRO;
+        exit;
 fi
 
 if [ "`/usr/share/scifi/scripts/scifi-type.sh`" = "CONTROLLER" ]
-	then
-#	copy pacakge to ap
-	scp -pri /etc/scifi/controller_key /etc/scifi/SCIFIAPI root@$1:/tmp/
-#	execute it remotely
-	ssh -i /etc/scifi/controller_key  root@$1 '/tmp/SCIFIAPI/up-ap.sh'
-	else
-#	export PATH=/bin:/sbin:/usr/bin:/usr/sbin;
-#	preserve old directory
-	mv /usr/share/scifi/scripts/ /usr/share/scifi/scripts/.`date +%Y%m%d-%H%M%S` 2>/dev/null
-	mkdir /usr/share/scifi/scripts/
-#	copy this
-	copy -f /tmp/SCIFIAPI/*.sh /usr/share/scifi/scripts/
-	copy -f /tmp/SCIFIAPI/scifi-version.txt /etc/scifi/
-	copy -f /tmp/SCIFIAPI/scifi-subversion.txt /etc/scifi/
-	chmod 700 /usr/share/scifi/scripts/ -R
+        then
+#       copy pacakge to ap
+        scp -pri /etc/scifi/controller_key /etc/scifi/SCIFIAPI root@$1:/tmp/
+#       execute it remotely
+        ssh -i /etc/scifi/controller_key  root@$1 '/tmp/SCIFIAPI/up-ap.sh 1'
+        else
+#       AP
+#       export PATH=/bin:/sbin:/usr/bin:/usr/sbin;
+        mkdir /etc/scifi
+        mkdir /usr/share/scifi
+        mkdir /usr/share/scifi/scripts
+        mv /etc/dropbear/authorized_keys /etc/scifi
+        ln -s /etc/scifi/authorized_keys /etc/dropbear/
+        sh /etc/scripts/ap_type.sh > /etc/scifi/scifi-type.txt
+        > /etc/scifi/scifi-connected2.txt
+        > /etc/scifi/scifi-coordinates.txt
+        > /etc/scifi/scifi-tags.txt
+        > /etc/scifi/scifi-neighborhood.txt
+        mv /etc/scripts/* /usr/share/scifi/scripts 2>/dev/null
+        ln -s /usr/share/scifi/scripts/* /etc/scripts
+#       copy this
+        cp -f /tmp/SCIFIAPI/*.sh /usr/share/scifi/scripts/
+        cp -f /tmp/SCIFIAPI/scifi-version.txt /etc/scifi/
+        cp -f /tmp/SCIFIAPI/scifi-subversion.txt /etc/scifi/
+        cp -f /tmp/SCIFIAPI/snmpd /etc/config/snmpd
+        chmod 700 /usr/share/scifi/scripts/ -R
 fi
 
-exit 0 
+exit 0
