@@ -1,0 +1,121 @@
+config agent
+	option agentaddress UDP:161
+
+config com2sec public
+	option secname ro
+	option source default
+	option community public
+
+config com2sec private
+	option secname ro
+	option source localhost
+	option community private
+
+config group public_v1
+	option group public
+	option version v1
+	option secname ro
+
+config group public_v2c
+	option group public
+	option version v2c
+	option secname ro
+
+config group public_usm
+	option group public
+	option version usm
+	option secname ro
+
+config group private_v1
+	option group private
+	option version v1
+	option secname ro
+
+config group private_v2c
+	option group private
+	option version v2c
+	option secname ro
+
+config group private_usm
+	option group private
+	option version usm
+	option secname ro
+
+config view all
+	option viewname all
+	option type included
+	option oid .1
+
+config access public_access
+	option group public
+	option context none
+	option version any
+	option level noauth
+	option prefix exact
+	option read all
+	option write none
+	option notify none
+
+config access private_access
+	option group private
+	option context none
+	option version any
+	option level noauth
+	option prefix exact
+	option read all
+	option write none
+	option notify all
+
+#config exec
+#	option name	filedescriptors
+#	option prog	/bin/cat
+#	option args	/proc/sys/fs/file-nr
+#	option miboid	1.2.3.4
+
+config system                               
+        option sysLocation      'desalocado'
+        option sysContact       'helgadb@midiacom.uff.br'
+        option sysName          'SCIFI9120481441'                 
+#       option sysServices      72                       
+#       option sysDescr         'adult playground'       
+#       option sysObjectID      '1.2.3.4'                
+                                                         
+config exec                                              
+       option name     SCIFI-VERSION                            
+       option prog     /bin/sh                           
+       option args     /usr/share/scifi/scripts/scifi-version.sh             
+                                                         
+config exec                                              
+       option name     SCIFI-SUBVERSION                   
+       option prog     /bin/sh                           
+       option args     /usr/share/scifi/scripts/scifi-subversion.sh              
+                                                         
+config exec                                              
+       option name     SCIFI-USERS                           
+       option prog     /bin/sh                           
+       option args     /usr/share/scifi/scripts/scifi-users.sh
+        
+config exec
+       option name	SCIFI-TYPE 
+       option prog      /bin/sh
+       option args	/usr/share/scifi/scripts/scifi-type.sh
+
+config exec
+       option name	SCIFI-COORDINATES
+       option prog	/bin/sh
+       option args	/usr/share/scifi/scripts/scifi-coordinates.sh
+
+config exec
+       option name	SCIFI-TAGS 
+       option prog	/bin/sh
+       option args	/usr/share/scifi/scripts/scifi-tags.sh
+
+config exec
+       option name	SCIFI-CONNECTED2
+       option prog	/bin/sh
+       option args	/usr/share/scifi/scripts/scifi-connected2.sh
+
+config exec
+       option name	SCIFI-NEIGHBORHOOD
+       option prog	/bin/sh
+       option args	/usr/share/scifi/scripts/scifi-neighborhood.sh
