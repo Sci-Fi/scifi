@@ -1,5 +1,6 @@
 # Update API in APs
 # Cosme Corrêa - cosmefc@id.uff.br
+# Glauco Quintino glaucoq@id.uff.br
 # uncomment for debug
 #set -xv
 
