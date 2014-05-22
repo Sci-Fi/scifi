@@ -65,6 +65,7 @@ rm /etc/cron.d/mrtg 2> /dev/null
 cp -p $ModDir/Nagios/nagios.cron /etc/cron.d/nagios
 touch /var/log/nagios/nagios-start.log
 chmod 755 /var/log/nagios/nagios-start.log
+chmod 755 /var/log/nagios
 chown nagios:nagios /var/log/nagios/nagios-start.log
 
 #6 setup start
