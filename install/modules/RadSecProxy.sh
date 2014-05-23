@@ -52,15 +52,19 @@ mv /etc/raddb/clients.conf /etc/raddb/clients.conf.$now
 mv /etc/raddb/proxy.conf /etc/raddb/proxy.conf.$now
 mv /etc/radsecproxy.conf /etc/radsecproxy.conf.$now
 # new confs
-cp -Rf ./RNP/clients.conf /etc/raddb/clients.conf
-cp -Rf ./RNP/proxy.conf /etc/raddb
-cp -Rf ./RNP/radsecproxy.conf /etc
+cp -Rf $ModDir/RadSecProxy/RNP/clients.conf /etc/raddb/clients.conf
+cp -Rf $ModDir/RadSecProxy/RNP/proxy.conf /etc/raddb
+cp -Rf $ModDir/RadSecProxy/RNP/radsecproxy.conf /etc
 #  Certs
-cp -Rf ./RNP/*.crt /etc/raddb/certs
-cp -Rf ./RNP/*.key /etc/raddb/certs
+cp -Rf $ModDir/RadSecProxy/RNP/*.crt /etc/raddb/certs
+cp -Rf $ModDir/RadSecProxy/RNP/*.key /etc/raddb/certs
+# scifi net
+cat $ModDir/RadSecProxy/scifi.txt >> /etc/raddb/clients.conf
+sed -i s/RADIUSPASS/$RADIUSPASS/g /etc/raddb/clients.conf
 
 #4 Start
 cp $ModDir/RadSecProxy/radsecproxy /etc/init.d/
+chmod 755 $ModDir/RadSecProxy/
 chkconfig radsecproxy on
 service radsecproxy restart
 service radiusd restart
