@@ -1,0 +1,18 @@
+#!/bin/bash
+# Modified by Cosme Corrêa - cosmefc@id.uff.br
+#
+echo Fazendo backup dos arquivos de configuracao ....................
+now=`date +%Y%m%d-%H%M%S`
+mv /etc/raddb/clients.conf /etc/raddb/clients.conf.$now
+mv /etc/raddb/proxy.conf /etc/raddb/proxy.conf.$now
+mv /etc/radsecproxy.conf /etc/radsecproxy.conf.$now
+echo Atualizando arquivos de configuracao existentes ................
+cp -Rf ./clients.conf /etc/raddb/clients.conf
+cp -Rf ./proxy.conf /etc/raddb
+cp -Rf ./radsecproxy.conf /etc
+echo Copiando certificados ..........................................
+cp -Rf ./*.crt /etc/raddb/certs
+cp -Rf ./*.key /etc/raddb/certs
+echo  Reiniciando servicos ..........................................
+/etc/init.d/raddb restart
+/etc/init.d/radsecproxy restart

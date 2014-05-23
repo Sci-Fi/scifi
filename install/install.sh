@@ -17,7 +17,7 @@ if [ $locat = $locid ]; then
 	#ModDir=$CurDir'/modules/'
 	CFGFile=$CurDir'/confs/variables.sh'
 	Start=`date +%Y%m%d-%H%M%S`
-	    Steps='Variables Install SELinux Network SNMPD Logs LDAP Apache Monitorix DNSMasq MRTG Nagios RADIUS Firewall Conntrack SSHD DenyHosts NTPD Postfix PostgreSQL JavaJDK JBossAS SCIFIDatabase SCIFIAPI SCIFIWeb SCIFICore Exit' 
+	    Steps='Variables Install SELinux Network SNMPD Logs LDAP Apache Monitorix DNSMasq MRTG Nagios RADIUS RadSecProxy Firewall Conntrack SSHD DenyHosts NTPD Postfix PostgreSQL JavaJDK JBossAS SCIFIDatabase SCIFIAPI SCIFIWeb SCIFICore Exit' 
 	while true ; do
 	  clear
 	  . $CFGFile

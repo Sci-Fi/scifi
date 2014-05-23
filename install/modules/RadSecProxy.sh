@@ -1,0 +1,70 @@
+#!/bin/bash
+# Easy Life SCIFI
+#
+# Configuration Tool for an Easy Life
+# Version 20140522
+#
+# RadSecProxy module
+#
+# Cosme Faria Corrêa
+# John Doe
+# ...
+#
+#set -xv        
+
+clear
+
+
+cat <<-EOF
+  =========================================
+  |           Easy Life for SCIFI         |
+  =========================================
+               RadSecProxy Module
+
+  This module will:
+  1) Install Packets
+  2) Compile radsec
+  3) Setup
+  4) Start
+
+  Press <Enter> key
+  
+EOF
+read
+
+#Uninished
+exit
+
+#1 Install Packets
+yum install gcc openssl openssl-devel -y
+
+#2 Compile radsec
+cp $ModDir/RadSecProxy/radsecproxy-1.6.5.tar.gz /tmp/
+cd /tmp
+tar -xvf radsecproxy-1.6.5.tar.gz
+cd radsecproxy-1.6.5
+./configure && make && make install
+
+#3 Setup
+# some bkps
+now=`date +%Y%m%d-%H%M%S`
+mv /etc/raddb/clients.conf /etc/raddb/clients.conf.$now
+mv /etc/raddb/proxy.conf /etc/raddb/proxy.conf.$now
+mv /etc/radsecproxy.conf /etc/radsecproxy.conf.$now
+# new confs
+cp -Rf ./RNP/clients.conf /etc/raddb/clients.conf
+cp -Rf ./RNP/proxy.conf /etc/raddb
+cp -Rf ./RNP/radsecproxy.conf /etc
+#  Certs
+cp -Rf ./RNP/*.crt /etc/raddb/certs
+cp -Rf ./RNP/*.key /etc/raddb/certs
+
+#4 Start
+cp $ModDir/RadSecProxy/radsecproxy /etc/init.d/
+chkconfig radsecproxy on
+service radsecproxy restart
+service radiusd restart
+
+echo RadSecProxy  module finished
+echo 'Press <Enter> to exit'
+read
