@@ -64,7 +64,7 @@ sed -i s/RADIUSPASS/$RADIUSPASS/g /etc/raddb/clients.conf
 
 #4 Start
 cp $ModDir/RadSecProxy/radsecproxy /etc/init.d/
-chmod 755 $ModDir/RadSecProxy/
+chmod 755 /etc/init.d/radsecproxy
 chkconfig radsecproxy on
 service radsecproxy restart
 service radiusd restart
