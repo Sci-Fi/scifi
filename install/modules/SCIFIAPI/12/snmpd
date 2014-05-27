@@ -119,3 +119,9 @@ config exec
        option name	SCIFI-NEIGHBORHOOD
        option prog	/bin/sh
        option args	/usr/share/scifi/scripts/scifi-neighborhood.sh
+
+config exec
+       option name	SCIFI-UPTIME
+       option prog	/bin/sh
+       option args	/usr/share/scifi/scripts/scifi-uptime.sh
+
