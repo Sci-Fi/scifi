@@ -33,7 +33,7 @@ read
 
 # 1) EPEL
 echo Installing EPEL
-yum localinstall "$ModDir"Install/epel-release-6-8.noarch.rpm -y --nogpgcheck
+yum localinstall "$ModDir"Base/epel-release-6-8.noarch.rpm -y --nogpgcheck
 
 # 2) Utilities
 echo Installing Utilities
