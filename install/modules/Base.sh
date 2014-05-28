@@ -4,7 +4,7 @@
 # Configuration Tool for an Easy Life
 # Version 20130819
 #
-# Install module
+# Base module
 #
 # Cosme Faria Corrêa
 # John Doe
@@ -17,7 +17,7 @@ cat <<-EOF
   =========================================
   |           Easy Life for SCIFI         |
   =========================================
-                  Install Module
+                  Base Module
 
   This module will install:
   1) EPEL
