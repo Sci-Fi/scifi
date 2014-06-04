@@ -31,6 +31,11 @@ if [ "`/usr/share/scifi/scripts/scifi-type.sh`" = "CONTROLLER" ]
         ssh -i /etc/scifi/controller_key  root@$1 '/tmp/SCIFIAPI/up-ap.sh 1'
         else
 #       AP
+        if [ "`/usr/share/scifi/scripts/scifi-version.sh`" = "SCIFI 12" ]
+        then
+        echo 'O AP já esta atualizado'
+        else
+
 #       export PATH=/bin:/sbin:/usr/bin:/usr/sbin;
         mkdir /etc/scifi
         mkdir /usr/share/scifi
@@ -51,5 +56,5 @@ if [ "`/usr/share/scifi/scripts/scifi-type.sh`" = "CONTROLLER" ]
         cp -f /tmp/SCIFIAPI/snmpd /etc/config/snmpd
         chmod 700 /usr/share/scifi/scripts/ -R
 fi
-
+fi
 exit 0
