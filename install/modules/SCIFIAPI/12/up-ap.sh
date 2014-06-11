@@ -37,6 +37,8 @@ if [ "`/usr/share/scifi/scripts/scifi-type.sh`" = "CONTROLLER" ]
         else
 
 #       export PATH=/bin:/sbin:/usr/bin:/usr/sbin;
+        LOCATION=$(cat /etc/config/snmpd |grep sysLocation)
+        NAME=$(cat /etc/config/snmpd |grep sysName)
         mkdir /etc/scifi
         mkdir /usr/share/scifi
         mkdir /usr/share/scifi/scripts
@@ -54,7 +56,10 @@ if [ "`/usr/share/scifi/scripts/scifi-type.sh`" = "CONTROLLER" ]
         cp -f /tmp/SCIFIAPI/scifi-version.txt /etc/scifi/
         cp -f /tmp/SCIFIAPI/scifi-subversion.txt /etc/scifi/
         cp -f /tmp/SCIFIAPI/snmpd /etc/config/snmpd
+        sed -i "76s/^.*/$LOCATION /" /etc/config/snmpd
+        sed -i "78s/^.*/$NAME /" /etc/config/snmpd
         chmod 700 /usr/share/scifi/scripts/ -R
+        /etc/init.d/snmpd restart
 fi
 fi
 exit 0
