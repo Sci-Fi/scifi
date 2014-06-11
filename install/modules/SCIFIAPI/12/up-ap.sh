@@ -60,6 +60,9 @@ if [ "`/usr/share/scifi/scripts/scifi-type.sh`" = "CONTROLLER" ]
         sed -i "78s/^.*/$NAME /" /etc/config/snmpd
         chmod 700 /usr/share/scifi/scripts/ -R
         /etc/init.d/snmpd restart
+        rm -f /etc/snmp/snmpd.conf
+        ln -s /var/run/snmpd.conf /etc/snmp/
+      
 fi
 fi
 exit 0
