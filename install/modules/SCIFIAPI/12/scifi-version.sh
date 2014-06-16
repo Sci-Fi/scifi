@@ -12,4 +12,4 @@ SYSTEM='SCIFI'
 VERSION=`cat /etc/scifi/scifi-version.txt 2>/dev/null`
 
 echo $SYSTEM $VERSION
-exit
+exit $VERSION
