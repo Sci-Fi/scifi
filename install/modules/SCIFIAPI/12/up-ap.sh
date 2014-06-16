@@ -31,7 +31,7 @@ if [ "`/usr/share/scifi/scripts/scifi-type.sh`" = "CONTROLLER" ]
         ssh -i /etc/scifi/controller_key  root@$1 '/tmp/SCIFIAPI/up-ap.sh 1'
         else
 #       AP
-        if [ "`/usr/share/scifi/scripts/scifi-version.sh`" = "SCIFI 12" ]
+        if [ "`/usr/share/scifi/scripts/scifi-version.sh >/dev/null; echo $?`" = "12" ]
         then
         echo 'O AP já esta atualizado'
         else
