@@ -51,7 +51,7 @@ if [ "`/usr/share/scifi/scripts/scifi-type.sh`" = "CONTROLLER" ]
 			rm -f /etc/scripts/nsta.sh
 			rm -f /etc/scripts/ap_type.sh
 			rm -f /etc/scripts/SCIFI.sh
-        		mv /etc/scripts/* /usr/share/scifi/scripts 2>/dev/null
+        		rm -f /etc/scripts/* 
 #       		copy this
         		cp -f /tmp/SCIFIAPI/*.sh /usr/share/scifi/scripts/
         		rm -f /usr/share/scifi/scripts/up-ap.sh
