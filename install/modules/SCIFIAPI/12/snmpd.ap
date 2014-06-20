@@ -81,47 +81,52 @@ config system
 #       option sysObjectID      '1.2.3.4'                
                                                          
 config exec                                              
+       option name     SCIFI-ID                            
+       option prog     /bin/sh                           
+       option args     /usr/share/scifi/scripts/scifi-api.sh ID
+            
+config exec                                              
        option name     SCIFI-VERSION                            
        option prog     /bin/sh                           
-       option args     /usr/share/scifi/scripts/scifi-version.sh             
+       option args     /usr/share/scifi/scripts/scifi-api.sh VERSION        
                                                          
 config exec                                              
        option name     SCIFI-SUBVERSION                   
        option prog     /bin/sh                           
-       option args     /usr/share/scifi/scripts/scifi-subversion.sh              
-                                                         
-config exec                                              
-       option name     SCIFI-USERS                           
-       option prog     /bin/sh                           
-       option args     /usr/share/scifi/scripts/scifi-users.sh
-        
-config exec
-       option name	SCIFI-TYPE 
-       option prog      /bin/sh
-       option args	/usr/share/scifi/scripts/scifi-type.sh
+       option args     /usr/share/scifi/scripts/scifi-api.sh SUBVERSION
 
+config exec
+       option name	SCIFI-DEVICE 
+       option prog      /bin/sh
+       option args	/usr/share/scifi/scripts/scifi-api.sh DEVICE         
+                                                                 
 config exec
        option name	SCIFI-COORDINATES
        option prog	/bin/sh
-       option args	/usr/share/scifi/scripts/scifi-coordinates.sh
+       option args	/usr/share/scifi/scripts/scifi-api.sh COORDINATES
 
 config exec
        option name	SCIFI-TAGS 
        option prog	/bin/sh
-       option args	/usr/share/scifi/scripts/scifi-tags.sh
+       option args	/usr/share/scifi/scripts/scifi-api.sh TAGS
 
 config exec
        option name	SCIFI-CONNECTED2
        option prog	/bin/sh
-       option args	/usr/share/scifi/scripts/scifi-connected2.sh
+       option args	/usr/share/scifi/scripts/scifi-api.sh CONNECTED2
+
+config exec                                              
+       option name     SCIFI-USERS                           
+       option prog     /bin/sh                           
+       option args     /usr/share/scifi/scripts/scifi-api.sh USERS
 
 config exec
        option name	SCIFI-NEIGHBORHOOD
        option prog	/bin/sh
-       option args	/usr/share/scifi/scripts/scifi-neighborhood.sh
+       option args	/usr/share/scifi/scripts/scifi-api.sh NEIGHBORHOOD
 
 config exec
        option name	SCIFI-UPTIME
        option prog	/bin/sh
-       option args	/usr/share/scifi/scripts/scifi-uptime.sh
+       option args	/usr/share/scifi/scripts/scifi-api.sh UPTIME
 
