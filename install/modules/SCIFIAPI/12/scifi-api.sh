@@ -1,5 +1,5 @@
 #!/bin/sh
-# version 20140620
+# version 20140621
 # Central script for SCIFI-API
 #
 # Luiz Magalhaes
@@ -11,13 +11,16 @@
 
 case "$1" in
 
+# Calls # 1,2,3,4,5,6 and 7
 ID | VERSION | SUBVERSION | DEVICE | COORDINATES | TAGS | CONNECTED2)
 awk -F'=' -v search=$1 '{if ($1==search) print $2;}' /etc/scifi/scifi.conf
         ;;
 
+# Call #8
 USERS) iw wlan0 station dump | grep -c Station
         ;;
 
+# Call #9
 NEIGHBORHOOD) if [ -f "/tmp/scifi-neighborhood.txt"];
                 then
                  cat /tmp/scifi-neighborhood.txt
@@ -26,6 +29,7 @@ NEIGHBORHOOD) if [ -f "/tmp/scifi-neighborhood.txt"];
                 fi
         ;;
 
+# Call #10
 UPTIME) echo $((`cut -d'.' -f1 /proc/uptime`/60))
 
         ;;
