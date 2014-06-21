@@ -20,9 +20,9 @@ USERS) iw wlan0 station dump | grep -c Station
 
 NEIGHBORHOOD) if [ -f "/tmp/scifi-neighborhood.txt"];
                 then
-                cat /tmp/scifi-neighborhood.txt
-#                else
-#                echo "0"
+                 cat /tmp/scifi-neighborhood.txt
+                else
+                 echo "0"
                 fi
         ;;
 
