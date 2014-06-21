@@ -6,6 +6,7 @@
 #
 # RadSecProxy module
 #
+# Luiz Magalhaes
 # Cosme Faria Corrêa
 # John Doe
 # ...
@@ -33,6 +34,8 @@ EOF
 read
 
 #Uninished
+# de acordo com o report, o exit abaixo está impedindo (obviamente) que o script continue...
+
 exit
 
 #1 Install Packets
