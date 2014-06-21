@@ -1,6 +1,7 @@
 # Scan AP neighborhood
-# Version 20140618
+# Version 20140620
 # Helga
+# Schara schara (at) telecom.uff.br
 # Cosme Corrêa - cosmefc@id.uff.br
 # Glauco Quintino glaucoq@id.uff.br
 # uncomment for debug
@@ -18,5 +19,5 @@ if [ "$err" -eq 1 ]
 fi
 iwlist wlan1 scan > /tmp/scan.txt
 # Make
-grep /tmp/scan.txt Cell | awk '{print $5;}' | sort -u | awk '{printf ( $1",") > "/tmp/scifi-neighborhood.txt"}'
+grep Cell /tmp/scan.txt | awk '{print $5;}' | sort -u | awk '{printf ( $1",") > "/tmp/scifi-neighborhood.txt"}'
 exit 0
