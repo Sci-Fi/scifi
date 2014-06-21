@@ -3,6 +3,9 @@
 # # of system users
 # Cosme Corrêa
 # cosmefc@id.uff.br
+# Luiz Magalhaes
+# schara (at) telecom.uff.br
+#
 #  Descomente para debug
 #set -xv
 
@@ -41,8 +44,8 @@ if [ "$#" -ne "0" ]
 	exit;
 fi
 
-if [ "`/usr/share/scifi/scripts/scifi-type.sh`" = "CONTROLLER" ]
-	then
+#if [ "`/usr/share/scifi/scripts/scifi-type.sh`" = "CONTROLLER" ]
+#	then
 	# make APs list
 	LISTA=`cut -d'/' -f5 /etc/mrtg/devices.inc | grep ap`
 	for AP in $LISTA
@@ -53,12 +56,12 @@ if [ "`/usr/share/scifi/scripts/scifi-type.sh`" = "CONTROLLER" ]
 		USU=${USU/' '/}
 		TOTAL=$(( TOTAL + USU ))
 		done
-	else
+#	else
 #	export PATH=/bin:/sbin:/usr/bin:/usr/sbin;
 	# total of connected clients,  2 wireless interfaces
-	nsta1=$(iw wlan0 station dump | grep -c Station)
-	nsta2=$(iw wlan0-1 station dump | grep -c Station)
-	TOTAL=$(($nsta1+$nsta2))
-fi
+#	nsta1=$(iw wlan0 station dump | grep -c Station)
+#	nsta2=$(iw wlan0-1 station dump | grep -c Station)
+#	TOTAL=$(($nsta1+$nsta2))
+#fi
 echo $TOTAL
 exit $TOTAL
