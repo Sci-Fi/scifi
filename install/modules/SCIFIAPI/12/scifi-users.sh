@@ -1,5 +1,5 @@
 #!/bin/sh                           
-# version 20130703
+# version 20140620
 # # of system users
 # Cosme Corrêa
 # cosmefc@id.uff.br
