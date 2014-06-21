@@ -33,6 +33,8 @@ EOF
 
 read
 
+# wget  http://ufpr.dl.sourceforge.net/project/fwbuilder/Current_Packages/5.1.0/fwbuilder-5.1.0.3599-1.el6.x86_64.rpm
+
 #1 Install repo FirewallB
 cd /tmp
 wget http://www.fwbuilder.org/PACKAGE-GPG-KEY-fwbuilder.asc
