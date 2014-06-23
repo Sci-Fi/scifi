@@ -2,11 +2,11 @@
 # Easy Life SCIFI
 #
 # Configuration Tool for an Easy Life
-# Version 20130819
+# Version 20140623
 #
 # Firewall module
 #
-# Cosme Faria Corrêa
+# Cosme Faria Corrêa - cosmefc@id.uff.br
 # John Doe
 # ...
 #
@@ -21,9 +21,9 @@ cat <<-EOF
                   Firewall Module
 
   This module will:
-  1) Install packets for FirewallB
-  2) Setup FirewallB
-  3) Install FW
+  1) Download FirewallB
+  2) Install FirewallB
+  3) Setup FW
   4) Setup firewall logrotate
   5) Start
 
@@ -33,16 +33,12 @@ EOF
 
 read
 
-# wget  http://ufpr.dl.sourceforge.net/project/fwbuilder/Current_Packages/5.1.0/fwbuilder-5.1.0.3599-1.el6.x86_64.rpm
-
-#1 Install repo FirewallB
+#1 Download FirewallB
 cd /tmp
-wget http://www.fwbuilder.org/PACKAGE-GPG-KEY-fwbuilder.asc
-rpm --import PACKAGE-GPG-KEY-fwbuilder.asc
-cp -f $ModDir/Firewall/fwbuilder.repo /etc/yum.repos.d/fwbuilder.repo
+wget  http://ufpr.dl.sourceforge.net/project/fwbuilder/Current_Packages/5.1.0/fwbuilder-5.1.0.3599-1.el6.x86_64.rpm
 
-#2 Install repo FirewallB
-yum install fwbuilder -y
+#2 Install FirewallB
+yum localinstall fwbuilder-5.1.0.3599-1.el6.x86_64.rpm -y
 
 #3 Setup FirewallB
 cp -p $ModDir/Firewall/firewall /etc/init.d/
