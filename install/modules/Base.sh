@@ -6,7 +6,7 @@
 #
 # Base module
 #
-# Cosme Faria Corrêa
+# Cosme Faria Corrêa - cosmefc@id.uff.br
 # John Doe
 # ...
 #
@@ -23,8 +23,7 @@ cat <<-EOF
   1) EPEL
   2) Some utilities
   3) Create Directories
-  4) Copy conf files
-  5) arp table setup
+  4) arp table setup
 
   Press <Enter> key
 
@@ -43,15 +42,12 @@ yum install git screen vim htop tree coreutils yumex setuptool authconfig glibc-
 mkdir -p $SCRIPTDIR
 mkdir /etc/scifi
 
-# 4) Copy conf files
-cp -f $ModDir/Install/etcscifi/* /etc/scifi/
-
-#5) arp table setup
+#4) arp table setup
 echo 'net.ipv4.neigh.default.gc_thresh1 = 4096' >> /etc/sysctl.conf
 echo 'net.ipv4.neigh.default.gc_thresh2 = 8192' >> /etc/sysctl.conf
 echo 'net.ipv4.neigh.default.gc_thresh3 = 8192' >> /etc/sysctl.conf
 
 
-echo Install module finished
+echo Base module finished
 echo 'Press <Enter> to exit'
 read
