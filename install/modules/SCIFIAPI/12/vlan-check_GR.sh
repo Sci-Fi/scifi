@@ -12,13 +12,49 @@
 
 export PATH=/bin:/sbin:/usr/bin:/usr/sbin;
 
-
 function turn_on_wifi {
 
 # Parameters:
 # $1 -> interface : wlan0, wlan0-1, wlan0-2
 # 
+case $1 of
 
+wlan0)
+uci set wireless.@wifi-iface[0].disabled=0
+;;
+"wlan0-1")
+uci set wireless.@wifi-iface[1].disabled=0
+;;
+"wlan0-2")
+uci set wireless.@wifi-iface[2].disabled=0
+;;
+esac
+uci commit wireless
+wifi
+
+	}
+
+
+function turn_off_wifi {
+
+# Parameters:
+# $1 -> interface : wlan0, wlan0-1, wlan0-2
+# 
+case $1 of
+
+wlan0)
+uci set wireless.@wifi-iface[0].disabled=1
+;;
+"wlan0-1")
+uci set wireless.@wifi-iface[1].disabled=1
+;;
+"wlan0-2")
+uci set wireless.@wifi-iface[2].disabled=1
+;;
+esac
+
+uci commit wireless
+wifi
 
 	}
 
@@ -80,7 +116,7 @@ if  [$(! /sbin/ifconfig $1 |/bin/grep UP| /usr/bin/wc -l  )="0"];
 	2) if [ $2= "0" ];
 		then
 			logger SCIFI - The AP can not communicate with the server. Turning off $1
- 			ifconfig $1 down
+ 			turn_off_wifi $1
 
 		else 
 			echo "0"> /tmp/status$1
