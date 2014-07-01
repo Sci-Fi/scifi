@@ -1,5 +1,5 @@
 #!/bin/sh
-# version 20140630
+# version 20140701
 # This files switches off wifi interfaces if there is no wired (vlan) access
 #
 # Luiz Magalhaes
@@ -11,129 +11,6 @@
 #set -xv
 
 export PATH=/bin:/sbin:/usr/bin:/usr/sbin;
-
-function turn_on_wifi {
-
-# Parameters:
-# $1 -> interface : wlan0, wlan0-1, wlan0-2
-# 
-case $1 of
-
-wlan0)
-uci set wireless.@wifi-iface[0].disabled=0
-;;
-"wlan0-1")
-uci set wireless.@wifi-iface[1].disabled=0
-;;
-"wlan0-2")
-uci set wireless.@wifi-iface[2].disabled=0
-;;
-esac
-uci commit wireless
-wifi
-
-	}
-
-
-function turn_off_wifi {
-
-# Parameters:
-# $1 -> interface : wlan0, wlan0-1, wlan0-2
-# 
-case $1 of
-
-wlan0)
-uci set wireless.@wifi-iface[0].disabled=1
-;;
-"wlan0-1")
-uci set wireless.@wifi-iface[1].disabled=1
-;;
-"wlan0-2")
-uci set wireless.@wifi-iface[2].disabled=1
-;;
-esac
-
-uci commit wireless
-wifi
-
-	}
-
-
-
-function InterfaceStatus {
-
-# Parameters:	
-# $1 -> interface : wlan0, wlan0-1, wlan0-2
-# $2 -> 0/1, 0 if not pinging server through vlan, 1 if pinging
-
-if  [$(! /sbin/ifconfig $1 |/bin/grep UP| /usr/bin/wc -l  )="0"];
-	then 
-
-# desligado
-
-  	if  [$2="1"]; 
-  		then
-
-# pinging, turn on interface, zero status
-# ligar interface, colocar zero no status
-
-		turn_on_wifi $1
-     		logger SCIFI - Communication with server is ok. Turning $1 on.
-
-		echo "0"> /tmp/status$1
-		fi
-
-  	else
-  	
-# not pinging
-
-	Case `cat /tmp/status$1` of
-
-# está ligado, está respondendo a ping?
-
-	0) if [$2="0"];
-		then
- 		echo "1"> /tmp/status$1
-		logger SCIFI - The AP can not communicate with server. Warning 1 $1
-		fi
-
-		;;
-
-	1) if [ $2="0" ];
-
- 		then 
- 			echo "2"> /tmp/status$1
-			logger SCIFI - The AP can not communicate with server. Warning 2 $1
-
-		else 
-			echo "0"> /tmp/status$1
-			logger SCIFI - Communication with the server is ok.
-
-		fi
-
-		;;
-
-	2) if [ $2= "0" ];
-		then
-			logger SCIFI - The AP can not communicate with server. Turning off $1
- 			turn_off_wifi $1
-
-		else 
-			echo "0"> /tmp/status$1
-			logger SCIFI - Communication with server is ok. 
-
-		fi
-
-		;;
-
-	esac
-	fi
-  fi
-fi
-}
-
-
-# Main PROGRAM
 
 # random number to randomize wait time to prevent address collision and to generate temporary addresses
 
@@ -156,15 +33,105 @@ WIFI2= "wlan0-2"
 
 # verificando comunicacao na br-205 (em bridge com wlan0)
 
-InterfaceStatus $WIFI0 $ping205
+#InterfaceStatus $WIFI0 $ping205
 
 # verificando comunicacao na br-203 (em bridge com wlan0-1)
 
-InterfaceStatus $WIFI1 $ping203
+#InterfaceStatus $WIFI1 $ping203
 
 # verificando comunicacao na br-204 (em bridge com wlan0-2)
 
-InterfaceStatus $WIFI2 $ping204
+#InterfaceStatus $WIFI2 $ping204
 
+# function InterfaceStatus {
+
+# Parameters:	
+# $1 -> interface : wlan0, wlan0-1, wlan0-2
+# $2 -> 0/1, 0 if not pinging server through vlan, 1 if pinging
+
+for loopcount in 1 2 3; do
+	case loopcount in
+	
+	1) interface= "wlan0"
+	   pngst= $ping205
+	   ;;
+	2) interface= "wlan0-1"
+	   pngst= $ping203
+	   ;;
+	3) interface= "wlan0-2"
+	   pngst= $ping203
+	   ;;
+    	esac
+	if  [$(! /sbin/ifconfig $interface |/bin/grep UP| /usr/bin/wc -l  )="0"];
+	  then 
+# desligado
+  	  if  [$pngst = "1"]; 
+  		then
+# pinging, turn on interface, zero status
+# ligar interface, colocar zero no status
+#		turn_on_wifi $1
+		case $interface in
+		wlan0)
+		uci set wireless.@wifi-iface[0].disabled=0
+		;;
+		"wlan0-1")
+		uci set wireless.@wifi-iface[1].disabled=0
+		;;
+		"wlan0-2")
+		uci set wireless.@wifi-iface[2].disabled=0
+		;;
+		esac
+		uci commit wireless
+		wifi
+     		logger SCIFI - Communication with server is ok. Turning $interface on.
+		echo "0"> /tmp/status$interface
+		fi
+  		else
+# not pinging
+		Case `cat /tmp/status$interface` in
+# está ligado, está respondendo a ping?
+
+			0) if [$pngst = "0"];
+				then
+ 				echo "1"> /tmp/status$interface
+				logger SCIFI - The AP can not communicate with server. Warning 1 $interface
+				fi
+				;;
+
+			1) if [ $pngst = "0" ];
+ 				then 
+ 				echo "2"> /tmp/status$interface
+				logger SCIFI - The AP can not communicate with server. Warning 2 $interface
+				else 
+				echo "0"> /tmp/status$interface
+				logger SCIFI - Communication with the server is ok. $interface
+				fi
+				;;
+
+			2) if [ $pngst = "0" ];
+				then
+				logger SCIFI - The AP can not communicate with server. Turning off $interface
+# turn_off_wifi $1
+				case $interface in
+					wlan0) uci set wireless.@wifi-iface[0].disabled=1
+					;;
+					"wlan0-1") uci set wireless.@wifi-iface[1].disabled=1
+					;;
+					"wlan0-2") uci set wireless.@wifi-iface[2].disabled=1
+					;;
+				esac
+				uci commit wireless
+				wifi
+				else 
+				echo "0"> /tmp/status$interface
+				logger SCIFI - Communication with server is ok. $interface
+				fi
+				;;
+			esac
+			fi
+  		fi
+	fi
+# }
+done
 
 exit 0
