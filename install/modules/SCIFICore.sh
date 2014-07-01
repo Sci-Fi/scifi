@@ -27,8 +27,7 @@ This module will:
 *) Create SSH key for communication between the APs and scifi
 *) Initialize SCIFI core and web
 
-Press <Enter> key
-
+Press <Enter> to continue
 EOF
 
 read

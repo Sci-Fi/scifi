@@ -32,7 +32,7 @@ cat <<-EOF
   *) Put InternetGateway in /etc/hosts
   *) Our Icons
 
-  Press <Enter> key
+  Press <Enter> to continue
 
 EOF
 read

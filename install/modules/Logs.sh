@@ -24,7 +24,7 @@ cat <<-EOF
   *) Install LogRotate
   *) Setup LogRotate
 
-  Press <Enter> key
+  Press <Enter> to continue
 
 EOF
 read

@@ -29,7 +29,7 @@ cat <<-EOF
   *) Setup Apache
   *) Setup NTPD
 
-  Press <Enter> key
+  Press <Enter> to continue
 
 EOF
 read

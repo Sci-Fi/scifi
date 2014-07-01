@@ -33,7 +33,7 @@ cat <<-EOF
   *) Setup Log
   *) Start
 
-  Press <Enter> key
+  Press <Enter> to continue
 
 EOF
 read

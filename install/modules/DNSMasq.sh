@@ -24,7 +24,7 @@ cat <<-EOF
   *) Install packets for DNSMasq
   *) Setup DNSMasq
 
-  Press <Enter> key
+  Press <Enter> to continue
 
 EOF
 

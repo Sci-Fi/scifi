@@ -27,7 +27,7 @@ cat <<-EOF
   *) Some setup
   
 
-  Press <Enter> key
+  Press <Enter> to continue
 
 EOF
 read

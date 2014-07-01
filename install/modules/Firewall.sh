@@ -27,7 +27,7 @@ cat <<-EOF
   *) Setup firewall logrotate
   *) Start
 
-  Press <Enter> key
+  Press <Enter> to continue
 
 EOF
 

@@ -24,8 +24,7 @@ JavaJDK Module
 This module will:
 *) Install Java OpenJdk 1.7.0
 
-Press <Enter> key
-
+Press <Enter> to continue
 EOF
 
 read

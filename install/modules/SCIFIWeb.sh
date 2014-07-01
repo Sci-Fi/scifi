@@ -27,8 +27,7 @@ This module will:
 *) Configure HTTPS in JBoss AS using keytool
 *) Install SCIFI Web application
 
-Press <Enter> key
-
+Press <Enter> to continue
 EOF
 
 read

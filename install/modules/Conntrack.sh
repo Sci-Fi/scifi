@@ -28,8 +28,7 @@ cat <<-EOF
   *) Setup Conntrack logrotate
   *) Start
 
-  Press <Enter> key
-
+   Press <Enter> to continue
 EOF
 
 read

@@ -38,7 +38,7 @@ cat <<-EOF
 
    
 
-  Press <Enter> key
+  Press <Enter> to continue
 
 EOF
 echo "10.0.0.1 $MACHINE.$DOMAINWIFI" >> /etc/hosts

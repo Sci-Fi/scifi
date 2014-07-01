@@ -23,7 +23,7 @@ cat <<-EOF
   *) Install Monitorix
   *) Setup Monitorix
 
-  Press <Enter> key
+  Press <Enter> to continue
 
 EOF
 read

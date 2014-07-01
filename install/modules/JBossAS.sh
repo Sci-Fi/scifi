@@ -26,8 +26,7 @@ This module will:
 *) Create linux user "jboss" and set his password
 *) Create administrative jboss user called "jboss" and set his password
 
-Press <Enter> key
-
+Press <Enter> to continue
 EOF
 
 read

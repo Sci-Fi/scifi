@@ -25,7 +25,7 @@ cat <<-EOF
   *) Create Directories
   *) arp table setup
 
-  Press <Enter> key
+  Press <Enter> to continue
 
 EOF
 read

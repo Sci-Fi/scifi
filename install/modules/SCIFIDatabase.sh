@@ -25,8 +25,7 @@ This module will:
 *) Create SCIFI default database user called "scifi" 
 *) Create scifi database called "scifidb"
 
-Press <Enter> key
-
+Press <Enter> to continue
 EOF
 
 read

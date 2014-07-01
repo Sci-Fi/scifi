@@ -26,7 +26,7 @@ cat <<-EOF
   *) Setup SELinux
 
 
-  Press <Enter> key
+  Press <Enter> to continue
 EOF
 read
 

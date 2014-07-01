@@ -27,7 +27,7 @@ cat <<-EOF
   *) Setup
   *) Start
 
-  Press <Enter> key
+  Press <Enter> to continue
 
 EOF
 read

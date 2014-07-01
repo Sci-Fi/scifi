@@ -31,7 +31,7 @@ cat <<-EOF
   *) Scripts
   *) Start Apache
   
-  Press <Enter> key
+  Press <Enter> to continue
 
 EOF
 read

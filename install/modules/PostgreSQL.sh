@@ -29,8 +29,7 @@ This module will:
 *) Configure password for user postgres
 *) Configure pg_hba.conf
 
-Press <Enter> key
-
+Press <Enter> to continue
 EOF
 
 read

@@ -25,7 +25,7 @@ cat <<-EOF
   *) Install Apache
   *) Start Apache
 
-    Press <Enter> key
+    Press <Enter> to continue
 
 EOF
 read

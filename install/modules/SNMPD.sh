@@ -30,7 +30,7 @@ cat <<-EOF
   *) Some subs
   *) Accesss rights
 
-  Press <Enter> key
+  Press <Enter> to continue
   
 EOF
 read
