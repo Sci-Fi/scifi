@@ -78,7 +78,7 @@ if  [$(! /sbin/ifconfig $1 |/bin/grep UP| /usr/bin/wc -l  )="0"];
 # ligar interface, colocar zero no status
 
 		turn_on_wifi $1
-     		logger SCIFI - Communication with the server is ok. Turning $1 on.
+     		logger SCIFI - Communication with server is ok. Turning $1 on.
 
 		echo "0"> /tmp/status$1
 		fi
@@ -94,7 +94,7 @@ if  [$(! /sbin/ifconfig $1 |/bin/grep UP| /usr/bin/wc -l  )="0"];
 	0) if [$2="0"];
 		then
  		echo "1"> /tmp/status$1
-		logger SCIFI - The AP can not communicate with the server. Warning 1 $1
+		logger SCIFI - The AP can not communicate with server. Warning 1 $1
 		fi
 
 		;;
@@ -103,7 +103,7 @@ if  [$(! /sbin/ifconfig $1 |/bin/grep UP| /usr/bin/wc -l  )="0"];
 
  		then 
  			echo "2"> /tmp/status$1
-			logger SCIFI - The AP can not communicate with the server. Warning 2 $1
+			logger SCIFI - The AP can not communicate with server. Warning 2 $1
 
 		else 
 			echo "0"> /tmp/status$1
@@ -115,12 +115,12 @@ if  [$(! /sbin/ifconfig $1 |/bin/grep UP| /usr/bin/wc -l  )="0"];
 
 	2) if [ $2= "0" ];
 		then
-			logger SCIFI - The AP can not communicate with the server. Turning off $1
+			logger SCIFI - The AP can not communicate with server. Turning off $1
  			turn_off_wifi $1
 
 		else 
 			echo "0"> /tmp/status$1
-			logger SCIFI - Communication with the server is ok. 
+			logger SCIFI - Communication with server is ok. 
 
 		fi
 
