@@ -21,8 +21,8 @@ cat <<-EOF
                 DNSMasq Module
 
   This module will:
-  1) Install packets for DNSMasq
-  2) Setup DNSMasq
+  *) Install packets for DNSMasq
+  *) Setup DNSMasq
 
   Press <Enter> key
 

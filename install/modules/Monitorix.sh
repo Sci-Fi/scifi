@@ -20,8 +20,8 @@ cat <<-EOF
                 Monitorix Module
 
   This module will:
-  1) Install Monitorix
-  2) Setup Monitorix
+  *) Install Monitorix
+  *) Setup Monitorix
 
   Press <Enter> key
 

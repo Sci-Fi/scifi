@@ -22,15 +22,15 @@ cat <<-EOF
                   Nagios
 
   This module will:
-  1) Install Nagios
-  2) Copy Templates
-  3) SetUp Templates
-  4) Setup HTTPD
-  5) Setup cron
-  6) setup Start
-  7) Scripts
-  8) Put InternetGateway in /etc/hosts
-  9) Our Icons
+  *) Install Nagios
+  *) Copy Templates
+  *) SetUp Templates
+  *) Setup HTTPD
+  *) Setup cron
+  *) setup Start
+  *) Scripts
+  *) Put InternetGateway in /etc/hosts
+  *) Our Icons
 
   Press <Enter> key
 

@@ -22,11 +22,11 @@ cat <<-EOF
                DenyHosts Module
 
   This module will:
-  1) Install DenyHosts
-  2) Copy Templates
-  3) Setup Denyhosts
-  4) Setup Logrotate
-  5) Setup Start
+  *) Install DenyHosts
+  *) Copy Templates
+  *) Setup Denyhosts
+  *) Setup Logrotate
+  *) Setup Start
 
   Press <Enter> key
 

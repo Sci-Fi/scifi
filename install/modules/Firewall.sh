@@ -21,11 +21,11 @@ cat <<-EOF
                   Firewall Module
 
   This module will:
-  1) Download FirewallB
-  2) Install FirewallB
-  3) Setup FW
-  4) Setup firewall logrotate
-  5) Start
+  *) Download FirewallB
+  *) Install FirewallB
+  *) Setup FW
+  *) Setup firewall logrotate
+  *) Start
 
   Press <Enter> key
 

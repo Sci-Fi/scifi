@@ -22,16 +22,16 @@ cat <<-EOF
                   LDAP Module
 
   This module will:
-  0) Install LDAP
-  1) Copy scripts
-  2) Create BKP structure
-  3) Insert BKP in cron
-  4) Copy Schemas
-  5) Setup slapd.conf
-  6) Populate LDAP
-  7) Setup Auth
-  8) Setup Log
-  9) Start
+  *) Install LDAP
+  *) Copy scripts
+  *) Create BKP structure
+  *) Insert BKP in cron
+  *) Copy Schemas
+  *) Setup slapd.conf
+  *) Populate LDAP
+  *) Setup Auth
+  *) Setup Log
+  *) Start
 
   Press <Enter> key
 

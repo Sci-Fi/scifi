@@ -22,10 +22,10 @@ cat <<-EOF
 SCIFIWeb Module
 
 This module will:
-a) Install postgresql JDBC driver  
-b) Configure JBoss AS connection to PostgreSQL database 
-c) Configure HTTPS in JBoss AS using keytool
-d) Install SCIFI Web application
+*) Install postgresql JDBC driver  
+*) Configure JBoss AS connection to PostgreSQL database 
+*) Configure HTTPS in JBoss AS using keytool
+*) Install SCIFI Web application
 
 Press <Enter> key
 

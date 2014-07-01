@@ -20,10 +20,10 @@ cat <<-EOF
                   Base Module
 
   This module will install:
-  1) EPEL
-  2) Some utilities
-  3) Create Directories
-  4) arp table setup
+  *) EPEL
+  *) Some utilities
+  *) Create Directories
+  *) arp table setup
 
   Press <Enter> key
 

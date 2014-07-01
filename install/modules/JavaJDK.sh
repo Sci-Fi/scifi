@@ -22,7 +22,7 @@ cat <<-EOF
 JavaJDK Module
 
 This module will:
-a) Install Java OpenJdk 1.7.0
+*) Install Java OpenJdk 1.7.0
 
 Press <Enter> key
 

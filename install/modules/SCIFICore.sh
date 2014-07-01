@@ -22,10 +22,10 @@ cat <<-EOF
 SCIFICore Module
 
 This module will:
-a) Install SCIFI Core, rev 206 (svn) 
-b) Create linux user "scifi" and set his password 
-c) Create SSH key for communication between the APs and scifi
-d) Initialize SCIFI core and web
+*) Install SCIFI Core, rev 206 (svn) 
+*) Create linux user "scifi" and set his password 
+*) Create SSH key for communication between the APs and scifi
+*) Initialize SCIFI core and web
 
 Press <Enter> key
 

@@ -22,14 +22,14 @@ cat <<-EOF
                   MRTG Module
 
   This module will:
-  1) Install MRTG
-  2) Copy Templates
-  3) Setup Cron
-  4) Setup Log
-  5) Setup Apache
-  6) Setup MRTG
-  7) Scripts
-  8) Start Apache
+  *) Install MRTG
+  *) Copy Templates
+  *) Setup Cron
+  *) Setup Log
+  *) Setup Apache
+  *) Setup MRTG
+  *) Scripts
+  *) Start Apache
   
   Press <Enter> key
 

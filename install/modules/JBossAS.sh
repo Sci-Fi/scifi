@@ -22,9 +22,9 @@ cat <<-EOF
 JBossAS Module
 
 This module will:
-a) Install JBossAS 7.1.1 Final
-b) Create linux user "jboss" and set his password
-c) Create administrative jboss user called "jboss" and set his password
+*) Install JBossAS 7.1.1 Final
+*) Create linux user "jboss" and set his password
+*) Create administrative jboss user called "jboss" and set his password
 
 Press <Enter> key
 

@@ -20,9 +20,9 @@ cat <<-EOF
                   LogRotate Module
 
   This module will:
-  0) Setup rsyslog
-  1) Install LogRotate
-  2) Setup LogRotate
+  *) Setup rsyslog
+  *) Install LogRotate
+  *) Setup LogRotate
 
   Press <Enter> key
 

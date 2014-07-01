@@ -22,10 +22,10 @@ cat <<-EOF
                 Postfix Module
 
   This module will:
-  1) Install Postfix
-  2) Copy Templates
-  3) Setup
-  5) Start
+  *) Install Postfix
+  *) Copy Templates
+  *) Setup
+  *) Start
 
   Press <Enter> key
 

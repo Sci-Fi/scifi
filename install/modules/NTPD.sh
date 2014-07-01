@@ -22,12 +22,12 @@ cat <<-EOF
                   NTPD Module
 
   This module will:
-  1) Install NTPD
-  2) Copy Templates
-  3) Setup Cron
-  4) Setup Log
-  5) Setup Apache
-  6) Setup NTPD
+  *) Install NTPD
+  *) Copy Templates
+  *) Setup Cron
+  *) Setup Log
+  *) Setup Apache
+  *) Setup NTPD
 
   Press <Enter> key
 

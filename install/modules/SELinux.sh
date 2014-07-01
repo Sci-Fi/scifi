@@ -22,8 +22,8 @@ cat <<-EOF
                  SELinux Module
 
   This module will:
-  1) Copy Templates
-  2) Setup SELinux
+  *) Copy Templates
+  *) Setup SELinux
 
 
   Press <Enter> key

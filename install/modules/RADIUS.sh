@@ -22,11 +22,11 @@ cat <<-EOF
                  RADIUS Module
 
   This module will:
-  1) Install RADIUS
-  2) Compatibility setup
-  3) Copy Templates
-  4) Setup
-  5) Start
+  *) Install RADIUS
+  *) Compatibility setup
+  *) Copy Templates
+  *) Setup
+  *) Start
 
   Press <Enter> key
   

@@ -22,13 +22,13 @@ cat <<-EOF
                   SNMPD Module
 
   This module will:
-  1) Install SNMPD
-  2) Copy Template
-  3) Setup SNMPD
-  4) Star processes
-  5) Scripts
-  6) Some subs
-  7) Accesss rights
+  *) Install SNMPD
+  *) Copy Template
+  *) Setup SNMPD
+  *) Star processes
+  *) Scripts
+  *) Some subs
+  *) Accesss rights
 
   Press <Enter> key
   

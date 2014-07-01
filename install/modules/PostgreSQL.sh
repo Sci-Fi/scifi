@@ -22,12 +22,12 @@ cat <<-EOF
 PostgreSQL Module
 
 This module will:
-a) Install PostgreSQL PGDG v9.2 Repository
-b) Install PostgreSQL v9.2
-c) Install pgAdmin3 v1.16
-d) Initialize PostgreSQL
-e) Configure password for user postgres
-f) Configure pg_hba.conf
+*) Install PostgreSQL PGDG v9.2 Repository
+*) Install PostgreSQL v9.2
+*) Install pgAdmin3 v1.16
+*) Initialize PostgreSQL
+*) Configure password for user postgres
+*) Configure pg_hba.conf
 
 Press <Enter> key
 

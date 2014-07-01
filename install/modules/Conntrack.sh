@@ -22,11 +22,11 @@ cat <<-EOF
                   Conntrack Module
 
   This module will:
-  1) Install repo for Conntrack
-  2) Install packets for Conntrack
-  3) Setup Conntrack
-  4) Setup Conntrack logrotate
-  5) Start
+  *) Install repo for Conntrack
+  *) Install packets for Conntrack
+  *) Setup Conntrack
+  *) Setup Conntrack logrotate
+  *) Start
 
   Press <Enter> key
 

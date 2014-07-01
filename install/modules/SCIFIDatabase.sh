@@ -22,8 +22,8 @@ cat <<-EOF
 SCIFIDatabase Module
 
 This module will:
-a) Create SCIFI default database user called "scifi" 
-b) Create scifi database called "scifidb"
+*) Create SCIFI default database user called "scifi" 
+*) Create scifi database called "scifidb"
 
 Press <Enter> key
 

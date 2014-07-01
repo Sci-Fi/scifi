@@ -22,9 +22,9 @@ cat <<-EOF
                 SCIFIAPI Module
 
   This module will:
-  1) Copy scripts
-  2) Create links
-  3) Some setup
+  *) Copy scripts
+  *) Create links
+  *) Some setup
   
 
   Press <Enter> key

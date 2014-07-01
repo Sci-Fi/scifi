@@ -22,10 +22,10 @@ cat <<-EOF
                  SSHD Module
 
   This module will:
-  1) Install SSHD
-  2) Copy Template
-  3) Setup
-  4) Start
+  *) Install SSHD
+  *) Copy Template
+  *) Setup
+  *) Start
 
   Press <Enter> key
 

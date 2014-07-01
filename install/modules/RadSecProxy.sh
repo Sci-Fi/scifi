@@ -23,10 +23,10 @@ cat <<-EOF
                RadSecProxy Module
 
   This module will:
-  1) Install Packets
-  2) Compile radsec
-  3) Setup
-  4) Start
+  *) Install Packets
+  *) Compile radsec
+  *) Setup
+  *) Start
 
   Press <Enter> key
   
