@@ -29,22 +29,8 @@ ifconfig br-204 0.0.0.0
 ifconfig br-205 0.0.0.0
 
 # verificando comunicacao na br-205 (em bridge com wlan0)
-
-#InterfaceStatus $WIFI0 $ping205
-
 # verificando comunicacao na br-203 (em bridge com wlan0-1)
-
-#InterfaceStatus $WIFI1 $ping203
-
 # verificando comunicacao na br-204 (em bridge com wlan0-2)
-
-#InterfaceStatus $WIFI2 $ping204
-
-# function InterfaceStatus {
-
-# Parameters:	
-# $1 -> interface : wlan0, wlan0-1, wlan0-2
-# $2 -> 0/1, 0 if not pinging server through vlan, 1 if pinging
 
 for loopcount in "1" "2" "3"; do
 	
@@ -71,7 +57,6 @@ for loopcount in "1" "2" "3"; do
 		then
 # pinging, turn on interface, zero status
 # ligar interface, colocar zero no status
-#		turn_on_wifi $1
 		case "$interface" in
 			"wlan0")
 			uci set wireless.@wifi-iface[0].disabled=0
@@ -116,7 +101,6 @@ for loopcount in "1" "2" "3"; do
 		   if [ $pngst = "0" ];
 			then
 				logger SCIFI - The AP can not communicate with server. Turning off $interface
-# turn_off_wifi $1
 				case $interface in
 					wlan0) uci set wireless.@wifi-iface[0].disabled=1
 					;;
@@ -136,7 +120,5 @@ for loopcount in "1" "2" "3"; do
 		;;
 		esac
 		fi
-#	fi
-# }
 done
 exit 0
