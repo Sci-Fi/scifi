@@ -8,16 +8,14 @@
 # Glaudco
 # 
 # uncomment for debug
-set -xv
+#set -xv
 
 export PATH=/bin:/sbin:/usr/bin:/usr/sbin;
 
 # random number to randomize wait time to prevent address collision and to generate temporary addresses
 
 random=`head /dev/urandom | tr -dc "0123456789" | head -c2`
-
-# tirei para testes
-# sleep $random 
+sleep $random 
 
 ifconfig br-203 192.168.0.1$random netmask 255.255.128.0
 ifconfig br-204 192.168.128.1$random netmask 255.255.128.0
@@ -49,35 +47,31 @@ ifconfig br-205 0.0.0.0
 # $2 -> 0/1, 0 if not pinging server through vlan, 1 if pinging
 
 for loopcount in "1" "2" "3"; do
-	echo "loopcount " $loopcount
 	
 	case "$loopcount" in
 	
-		"1") echo "1"
+		"1")
 		   interface="wlan0"
-		   echo "interface" $interface
 		   pngst=$ping205
 	   	   ;;
-   	   	"2") echo "2" 
+   	   	"2") 
    	   	   interface="wlan0-1"
    		   pngst=$ping203
 	   	   ;;
-   	   	"3") echo "3"
+   	   	"3")
    	   	   interface="wlan0-2"
-   		   pngst=$ping203
+   		   pngst=$ping204
 	   	   ;;
    	       	esac
-   	echo " interface " $interface " pngst" $pngst
+	
 	if  [ $(! /sbin/ifconfig $interface |/bin/grep UP| /usr/bin/wc -l  ) = "0" ];
 	  then 
 # desligado
-echo "ping status" $pngst
-    	  if  [ $pngst = "1" ]; 
+    	  if  [ $pngst -gt 1 ]; 
 		then
 # pinging, turn on interface, zero status
 # ligar interface, colocar zero no status
 #		turn_on_wifi $1
-echo $interface
 		case "$interface" in
 			"wlan0")
 			uci set wireless.@wifi-iface[0].disabled=0
@@ -89,18 +83,17 @@ echo $interface
 			uci set wireless.@wifi-iface[2].disabled=0
 			;;
 		esac
+     		logger SCIFI - Communication with server is ok. Turning $interface on.
 		uci commit wireless
 		wifi
-     		logger SCIFI - Communication with server is ok. Turning $interface on.
 		echo "0"> /tmp/status$interface
 		fi
 	else
-	echo "ping status" $pngst
 # not pinging
 	case `cat /tmp/status$interface` in
 #  está ligado, está respondendo a ping?
 
-		0) echo "status 0"
+		0)
 		   if [ $pngst = "0" ];
 			then
 			echo "1"> /tmp/status$interface
@@ -108,7 +101,7 @@ echo $interface
 			fi
 		;;
 
-		1) echo "status 1"
+		1)
 		   if [ $pngst = "0" ];
 			then 
 				echo "2"> /tmp/status$interface
@@ -119,7 +112,7 @@ echo $interface
 			fi
 		;;
 			   	   		   	   		   	       			    	    																												     						  											 																			 				 																												
-		2) echo "status 2"
+		2)
 		   if [ $pngst = "0" ];
 			then
 				logger SCIFI - The AP can not communicate with server. Turning off $interface
