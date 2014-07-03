@@ -1,9 +1,25 @@
 #!/bin/bash                           
-# version 20131017                     
+# version 20140627                     
 # Include devices for MRTG
 # Cosme Corrêa
 # cosmefc@id.uff.br
 # modified by schara@midiacom.uff.br
+# 
+# Schara 27/06/2014
+# This implementation deals with two versions of the SCIFI MIB
+#
+# one is 11.5, which uses OID 1.3.6.1.4.1.2021.8.1.101.2 (or 100.2) for # of users
+#
+# the other is 12, which uses OID .1.3.6.1.4.1.2021.8.1.101.8 for # of users.
+#
+# monitoring of wlan is turned off
+#
+
+
+
+
+
+
 # Uncomment for debug
 # set -xv
 
@@ -15,7 +31,7 @@ echo
 echo sintax:    $0 DEVICE [TEMPLATE  -f]
 echo 
 echo "exemples:  $0 ap0009"
-echo "           $0 ap0009 TL-740N -f"
+echo "           $0 ap0009 TL-WR740N -f"
 echo 
 echo 'Templates List:'
 ls  --format=single-column $DirTemplates | grep -v '.html' | grep -v '.php'
@@ -65,12 +81,17 @@ case $# in
 		;;
 esac
 
-# Is this a SCIFI devive?
-[ $SCIFIlabel != `snmpget -v 2c -c $COMMUNITY $DISPOSITIVO $SCIFIlabelOID | cut -d" " -f4-` ] && ERRO "This is not a SCIFI device"
 
-# Is this a right version od SCIFI?
-[ $SCIFIver != `snmpget -v 2c -c $COMMUNITY $DISPOSITIVO $SCIFIverOID | cut -d" " -f4-` ] && ERRO 'Wrong version of SCIFI device' 
-
+# this section is commented pending implementation of version
+# schara 07/03/2014
+## Is this a SCIFI devive?
+#
+#[ $SCIFIlabel != `snmpget -v 2c -c $COMMUNITY $DISPOSITIVO $SCIFIlabelOID | cut -d" " -f4-` ] && ERRO "This is not a SCIFI device"
+#
+## Is this a right version od SCIFI?
+#[ $SCIFIver != `snmpget -v 2c -c $COMMUNITY $DISPOSITIVO $SCIFIverOID | cut -d" " -f4-` ] && ERRO 'Wrong version of SCIFI device' 
+#
+# end of commented section schara 07/03/2014
 # Testa se MODEDLO existe em DirTemplates
 if ! [ -a $DirTemplates$TEMPLATE ]
 	then
@@ -78,6 +99,33 @@ if ! [ -a $DirTemplates$TEMPLATE ]
 	ERRO;
 	exit;
 fi
+
+
+# Checking version
+# schara 27/06/2014
+#
+# currently this sets the userfield (last digit) of the OID
+
+scifiversion=`snmpget -v 2c -c $COMMUNITY $DISPOSITIVO $SCIFIlabelOID | cut -d" " -f4-`
+
+echo "scifiversion " $scifiversion
+
+case $scifiversion in
+SCIFI.11.1) echo $scifiversion
+	userfield="2"
+	;;
+SCIFI.11.5) echo $scifiversion
+	userfield="2"
+	;;
+SCIFI) echo $scifiversion
+	userfield="8"
+	;;
+*) echo "Versao desconhecida: " $scifiversion
+;;
+esac
+
+
+
 
 # Get name using SNMP
 #NOME=`snmpget -v 1 -c public $DISPOSITIVO sysName.0 | cut -d" " -f4-`
@@ -89,19 +137,20 @@ LOCAL=`snmpget -v 1 -c public $DISPOSITIVO sysLocation.0 | cut -d" " -f4-`
 # adicionei a linha abaixo - sch 27/07/2013
 LOCALTXT=`snmpget -v 1 -c public $DISPOSITIVO sysLocation.0 | cut -d" " -f4- | awk -F "_-22." '{print $1}'`
 
-echo 1
-# pega o indice da interface wlan0
-lista=`snmpwalk -v 2c -c public $DISPOSITIVO 1.3.6.1.2.1.2.2.1.2 | grep wlan0 | awk -F "." '{print $2}'| awk '{print $1}'`
-
-echo 2
-
-for b in $lista ;
-do
-         if [ `/usr/bin/snmpget -v 1 -c public $DISPOSITIVO 1.3.6.1.2.1.2.2.1.7.$b |grep -c up`!=0 ]; then
-                oidwlan=$b
-        fi 
-done
-echo 3
+#retirando wlan... sch 27/06/2014
+#echo 1
+## pega o indice da interface wlan0
+#lista=`snmpwalk -v 2c -c public $DISPOSITIVO 1.3.6.1.2.1.2.2.1.2 | grep wlan0 | awk -F "." '{print $2}'| awk '{print $1}'`
+#
+#echo 2
+#
+#for b in $lista ;
+#do
+#         if [ `/usr/bin/snmpget -v 1 -c public $DISPOSITIVO 1.3.6.1.2.1.2.2.1.7.$b |grep -c up`!=0 ]; then
+#                oidwlan=$b
+#        fi 
+#done
+#echo 3
 
 # Arquivo de Configuração ##########
 ARQCONF=$DirConfMRTG$PNOME'.cfg'
@@ -122,9 +171,16 @@ UPNOME=`echo $PNOME | tr [:lower:] [:upper:]`
         sed -i s/YYYYY/$LOCALTXT/g $ARQCONF
 echo 5
 
+
+# retirado 27/06/2014 schara
 # Ajuste OID do WLAN
-sed -i s/ZZZZZ/$oidwlan/g $ARQCONF
-echo 6
+#sed -i s/ZZZZZ/$oidwlan/g $ARQCONF
+#echo 6
+
+# adjust # of users OID for version 
+# schara 27/06/2014
+sed -i s/UUUUU/$userfield/g $ARQCONF
+
 
 # Ajusta Local
 sed -i "s/LOCAL/$LOCAL/" $ARQCONF
