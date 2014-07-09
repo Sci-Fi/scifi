@@ -19,5 +19,5 @@ if [ "$err" -eq 1 ]
 fi
 iwlist wlan1 scan > /tmp/scan.txt
 # Make
-grep Cell /tmp/scan.txt | awk '{print $5;}' | sort -u | awk 'NR != nlines {printf ( $1",")}' | sed 's/,*$//' > /tmp/scifi-neighborhood.txt
+grep Cell /tmp/scan.txt | awk '{print $5;}' | sort -u | awk '{printf ( $1",")}' | sed 's/,*$//' > /tmp/scifi-neighborhood.txt
 exit 0
