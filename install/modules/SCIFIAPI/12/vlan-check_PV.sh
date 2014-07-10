@@ -19,7 +19,7 @@ sleep $random
 
 ifconfig br-203 192.168.0.1$random netmask 255.255.128.0
 ifconfig br-204 192.168.128.1$random netmask 255.255.128.0
-ifconfig br-205 10.2.0.1$random netmask 255.255.0.0
+ifconfig br-205 10.1.0.1$random netmask 255.255.0.0
 ping203=$(ping -I br-203 -w10 192.168.0.1 |  grep loss | awk '{print $4;exit}')
 ping204=$(ping -I br-204 -w10 192.168.128.1 |  grep loss | awk '{print $4;exit}')
 pinglan=$(ping -I br-lan -w10 172.17.0.1 |  grep loss | awk '{print $4;exit}')
