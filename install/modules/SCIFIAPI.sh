@@ -40,7 +40,7 @@ ln -s /usr/share/scifi/SCIFIAPI/current/up-ap.sh /usr/share/scifi/scripts/
 ln -s $SCRIPTDIR/up-ap.sh /usr/bin/
 
 #3
-chmod 700 /usr/share/scifi/SCIFAPI/*
+chmod 700 /usr/share/scifi/SCIFIAPI/*
 
 echo SCIFIAPI module finished
 echo 'Press <Enter> to exit'
