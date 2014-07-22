@@ -29,6 +29,8 @@ if [ -e $nome ];
         echo " <H2>  AP $mac ja foi configurado </H2> "
         echo "<pre> "
         cat $nome
+	   echo ""
+	   grep "NAP=" $nome | awk -F"&" '{ printf (" Numero do AP: %s\n Sigla do campus: %s \n %s \n %s \n %s \n %s \n %s \n %s \n\n", $1, $2, $3, $4, $5, $6, $7, $8, $9)}'
         echo "</pre>"
         else
         echo "<H2> Por favor configure o AP </H2> "

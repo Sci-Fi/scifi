@@ -35,6 +35,19 @@ if [ `ifconfig br-lan | grep UP | awk '{print $1}'` = "UP" ];
         then echo " <H2> A rede esta funcionando </H2>"
         else echo " <H2> Por favor verifique a rede cabeada </H2>"
         fi
+
+nome="dados"$mac
+
+if [ -e $nome ];
+        then
+        echo " <H2>  AP $mac ja foi configurado </H2> <br> "
+	   echo " preencher novamente irá sobre-escrever o arquivo <br>"
+        echo "<pre> "
+        cat $nome
+	   echo ""
+	   grep "NAP=" $nome | awk -F"&" '{ printf (" Numero do AP: %s\n Sigla do campus: %s \n %s \n %s \n %s \n %s \n %s \n %s \n\n", $1, $2, $3, $4, $5, $6, $7, $8, $9)}'
+        echo "</pre>"
+
 echo ""
 echo "<br>"
 echo ""

@@ -34,6 +34,8 @@ echo "</pre>"
 read QUERY_STRING
 echo $QUERY_STRING
 echo ""
+echo $QUERY_STRING |  awk -F"&" '{ printf (" Numero do AP: %s\n Sigla do campus: %s \n Departamento: %s \n Local: %s \n %s \n %s \n %s \n %s \n", $1, $2, $3, $4, $5, $6, $7, $8, $9)}'
+echo ""
 echo ""
 mac=$(ifconfig eth0|grep HWaddr|cut -c39-55)
 ifconfig br-lan | grep -A2 br-lan > "dados"$mac
