@@ -1,0 +1,19 @@
+BEGIN {
+estado = 1;
+} 
+/linha1/ { if (estado!=1) print "";
+	   printf ("%s ", $2); 
+	   estado = 2; 
+	}
+/linha2/ { if (estado==2) printf ("%s %s ", $2, $3 ); else printf ("erro 2\n"); 
+estado=3;}
+/linha3/ {   if (estado==2) printf ("%s MAC  %s \n", $2, $3);
+	     if (estado==3) printf ("%s\n", $3); 
+	     estado=1; } 
+[root@wifi viz5]# cat viz2.awk 
+
+/Address:/  {printf( "%s ", $5);}
+/Channel:/  {printf( "%s ", $1) ;}
+/ESSID/ {printf("%s\n",$0);}
+ 
+

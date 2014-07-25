@@ -1,0 +1,12 @@
+BEGIN {
+estado = 1;
+} 
+/linha1/ { if (estado!=1) print "";
+	   printf ("%s ", $2); 
+	   estado = 2; 
+	}
+/linha2/ { if (estado==2) printf ("%s %s ", $2, $3 ); else printf ("erro 2\n"); 
+estado=3;}
+/linha3/ {   if (estado==2) printf ("%s MAC  %s \n", $2, $3);
+	     if (estado==3) printf ("%s\n", $3); 
+	     estado=1; } 

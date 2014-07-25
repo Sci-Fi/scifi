@@ -1,0 +1,19 @@
+BEGIN {
+AP=0;
+}
+{
+if ($2 == "=") {
+	AP=0;
+	print(" "$4);
+	}
+	else {
+	if (AP == 0){
+		AP=1;
+		}
+		else {
+		print "";
+		}
+	printf("%s", $1);
+        }
+
+}
