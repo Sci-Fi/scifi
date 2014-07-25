@@ -19,7 +19,6 @@ echo ""
 echo ""
 echo ""
 echo "<pre>"
-#env
 echo "Dados de rede: "
 echo " "
 ifconfig br-lan | grep -A2 br-lan
@@ -37,9 +36,27 @@ echo ""
 echo $QUERY_STRING |  awk -F"&" '{ printf (" Numero do AP: %s\n Sigla do campus: %s \n Departamento: %s \n Local: %s \n %s \n %s \n %s \n %s \n", $1, $2, $3, $4, $5, $6, $7, $8, $9)}'
 echo ""
 echo ""
-mac=$(ifconfig eth0|grep HWaddr|cut -c39-55)
+mac=$(ifconfig br-lan|grep HWaddr|cut -c39-55)
 ifconfig br-lan | grep -A2 br-lan > "dados"$mac
 echo "" >> "dados"$mac
 ifconfig wlan0 | grep -A2 wlan0 >> "dados"$mac
 echo "" >> "dados"$mac
 echo $QUERY_STRING >> "dados"$mac
+echo “”
+
+ip=$(ifconfig br-lan| grep "inet addr:" | awk -F":" '{print $2}'| awk '{print $1}')
+
+STATUS=$(awk '{print $1}' status.txt)
+if [ $STATUS -lt 2 ]; 
+	then
+	STATUS1=“3”
+	STATUS2=“1”
+	else
+	STATUS1=“5”
+	STATUS2=“4”
+fi
+
+if [ `ifconfig br-lan | grep UP | awk '{print $1}'` = "UP" ];
+	then echo $STATUS1 ” " $ip " " $mac > status.txt
+        else echo $STATUS2 “ " $ip " " $mac > status.txt                          
+fi    

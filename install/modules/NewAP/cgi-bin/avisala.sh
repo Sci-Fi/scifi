@@ -24,13 +24,24 @@ PORT="2048"
                                                                                       
 #                                                                                     
                                                                                       
-if [ -e status.txt ]; then                                                            
+if [ -e status.txt ]; then
+	                                                            
         STATUS=$(awk '{print $1}' status.txt)                                         
+	if [ `ifconfig br-lan | grep UP | awk '{print $1}'` = "UP" ];
+		then if [ $STATUS -eq 0 ];
+			then 
+			STATUS=2
+			sed -i “s/0/2/“ status.txt 
+			fi
+		     if [ $STATUS -eq 1 ];
+			then
+			STATUS=3
+			sed -i “s/1/3/“ status.txt
+			fi	
+		else STATUS=1
+	fi	
         if [ $STATUS -gt 1 ]; then                                                    
-                DR=$(route -n | awk '{ if ($1=="0.0.0.0") print $2}')                 
-                                                                                      
-#               echo $DR $PORT                                                        
-                                                                                      
+                DR=$(route -n | awk '{ if ($1=="0.0.0.0") print $2}')                                                                         
                 nc -w1 $DR $PORT < status.txt &                                       
                 sleep 1                                                               
                 for d in `ps | grep "nc -w1" | awk '{print$1}'`; do kill -HUP $d; done
