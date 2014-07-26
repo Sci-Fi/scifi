@@ -8,8 +8,7 @@
 # Schara 16/07/2014
 # This implementation deals with three versions of the SCIFI MIB
 #
-# one is 11 (.1,.2,.3,.4,.5), which uses OID 1.3.6.1.4.1.2021.8.1.101.2 (or 100.
-2) for # of users
+# one is 11 (.1,.2,.3,.4,.5), which uses OID 1.3.6.1.4.1.2021.8.1.101.2 (or 100.2) for # of users
 #
 # another is 12, which uses OID .1.3.6.1.4.1.2021.8.1.101.8 for # of users.
 #
@@ -56,11 +55,8 @@ ARQINC=$DirMRTG"devices.inc"
 
 case $# in
 	1)
-		#TEMPLATE=`snmpget -v 2c -c $COMMUNITY $DISPOSITIVO .1.3.6.1.4.1
-.2021.8.1.101.3` || ( echo "Someting is wrong about $DISPOSITIVO, test it" ; ERR
-O ; exit )
-		TEMPLATE=`snmpget -v 2c -c $COMMUNITY $DISPOSITIVO .1.3.6.1.4.1.
-2021.8.1.101.4`
+		#TEMPLATE=`snmpget -v 2c -c $COMMUNITY $DISPOSITIVO .1.3.6.1.4.1.2021.8.1.101.3` || ( echo "Someting is wrong about $DISPOSITIVO, test it" ; ERRO ; exit )
+		TEMPLATE=`snmpget -v 2c -c $COMMUNITY $DISPOSITIVO .1.3.6.1.4.1.2021.8.1.101.4`
 		if [ "$TEMPLATE" == "" ]
 			then
 			echo "Someting is wrong about $DISPOSITIVO, test it" ;
@@ -104,8 +100,7 @@ esac
 # currently this sets the userfield (last digit) of the OID
 # and the template in case of version 11, as 12 is now the default (23/07/2014)
 
-scifiversion=`snmpget -v 2c -c $COMMUNITY $DISPOSITIVO $SCIFIlabelOID | cut -d" 
-" -f4-`
+scifiversion=`snmpget -v 2c -c $COMMUNITY $DISPOSITIVO $SCIFIlabelOID | cut -d" " -f4-`
 
 echo "scifiversion " $scifiversion
 
@@ -113,8 +108,7 @@ case $scifiversion in
 "SCIFI.11.1"|"SCIFI.11.2"|"SCIFI.11.3"|"SCIFI.11.4"|"SCIFI.11.5") 
 	echo $scifiversion
         userfield="2"
-	TEMPLATE=`snmpget -v 2c -c $COMMUNITY $DISPOSITIVO .1.3.6.1.4.1.2021.8.1
-.101.4 | cut -d" " -f4-`
+	TEMPLATE=`snmpget -v 2c -c $COMMUNITY $DISPOSITIVO .1.3.6.1.4.1.2021.8.1.101.4 | cut -d" " -f4-`
 	echo $TEMPLATE
         ;;
 SCIFI) echo $scifiversion
@@ -156,15 +150,13 @@ wk -F "_-22." '{print $1}'`
 #retirando wlan... sch 27/06/2014
 #echo 1
 ## pega o indice da interface wlan0
-#lista=`snmpwalk -v 2c -c public $DISPOSITIVO 1.3.6.1.2.1.2.2.1.2 | grep wlan0 |
- awk -F "." '{print $2}'| awk '{print $1}'`
+#lista=`snmpwalk -v 2c -c public $DISPOSITIVO 1.3.6.1.2.1.2.2.1.2 | grep wlan0 | awk -F "." '{print $2}'| awk '{print $1}'`
 #
 #echo 2
 #
 #for b in $lista ;
 #do
-#         if [ `/usr/bin/snmpget -v 1 -c public $DISPOSITIVO 1.3.6.1.2.1.2.2.1.7
-.$b |grep -c up`!=0 ]; then
+#         if [ `/usr/bin/snmpget -v 1 -c public $DISPOSITIVO 1.3.6.1.2.1.2.2.1.7.$b |grep -c up`!=0 ]; then
 #                oidwlan=$b
 #        fi 
 #done
