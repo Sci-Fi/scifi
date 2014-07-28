@@ -1,5 +1,5 @@
 #!/bin/sh
-# version 20140722
+# version 20140728
 # Script for dynamically generating the page for 
 # showing network and configuration status of new APs
 #
@@ -47,5 +47,12 @@ echo " dados das interfaces de rede"
 echo ""
 ifconfig
 echo "</pre>"
+
+
+echo "Para testar a comunicação, use o comando abaixo: <br>"
+echo " <form name=\"ping\" action=\"/cgi-bin/ping.sh/\" method=\"post\">"
+echo "IP: <input type=\"text\" name=\"IP\" value=\"10.0.0.1\" maxlength=\"16\"> <br>"
+echo "<input type=\"submit\" value=\"Ping!\">"
+
 
 echo "</body>"
