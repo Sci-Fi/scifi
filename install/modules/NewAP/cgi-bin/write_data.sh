@@ -42,21 +42,21 @@ echo "" >> "dados"$mac
 ifconfig wlan0 | grep -A2 wlan0 >> "dados"$mac
 echo "" >> "dados"$mac
 echo $QUERY_STRING >> "dados"$mac
-echo “”
+echo ""
 
 ip=$(ifconfig br-lan| grep "inet addr:" | awk -F":" '{print $2}'| awk '{print $1}')
 
 STATUS=$(awk '{print $1}' status.txt)
 if [ $STATUS -lt 2 ]; 
 	then
-	STATUS1=“3”
-	STATUS2=“1”
+	STATUS1="3"
+	STATUS2="1"
 	else
-	STATUS1=“5”
-	STATUS2=“4”
+	STATUS1="5"
+	STATUS2="4"
 fi
 
 if [ `ifconfig br-lan | grep UP | awk '{print $1}'` = "UP" ];
-	then echo $STATUS1 ” " $ip " " $mac > status.txt
-        else echo $STATUS2 “ " $ip " " $mac > status.txt                          
+	then echo $STATUS1 " " $ip " " $mac > status.txt
+        else echo $STATUS2 " " $ip " " $mac > status.txt                          
 fi    
