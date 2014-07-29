@@ -1,31 +1,28 @@
-<!--
-# version 20140726
-# Base page for web configuration of new APs
-#
-# Luiz Magalhaes
-# schara (at) telecom.uff.br
-#
-# This file is located in the /www directory, and calls other scripts in /www/cgi-bin
-# 
-# before using this, the image should contain, or the administrator should install 
-# the uhttp package, so there is a web server, and it should be running
-#
--->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Configurar AP para rede Wifi-UFF</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Configurar AP para rede Wifi-UFF</title>
+        <link href="estilo.css" rel="stylesheet" type="text/css" />
 </head>
+
 <body>
-<H1>
-SCIFI - Configurar AP para Rede WIFI-UFF <br> <br> 
-Escolha um dos links: <br> <br>
-</H1>
-
-<H2>
-<a href="/cgi-bin/status.sh/">Status do AP</a> <br> <br> <br>
-<a href="/cgi-bin/config.sh/">Configurar o AP</a>
-</H2>
-
-
-<br> <br><br>
-laboratorio MidiaCom
+   <div id="tudo">
+        <div id="topo">
+             <div id="logo"><ul><li><a href="index.html" title="Home"></a></li></ul></div>
+        </div>
+        <div id="barraTopo"></div>
+        <div id="coluna_central">
+          <div id="titulo">Controlador SciFi - Configurar AP</div>
+          <div class="barraConteudo"></div>
+          <div id="conteudo">
+               <h1> <a href="/cgi-bin/status.sh/">Status do AP</a> </h1><br/><br/>
+               <h1> <a href="/cgi-bin/config.sh/">Configurar o AP</a> </h1>
+          </div>
+        </div>
+        <div id="rodape">
+	  <img src="midiacom.png" alt="Lab Midiacom" width="180" />
+        </div>
+   </div>
 </body>
+</html>

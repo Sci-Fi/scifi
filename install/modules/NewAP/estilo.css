@@ -1,0 +1,137 @@
+@charset "utf-8";
+/* CSS Document */
+
+body {
+    background-color:#e0e0e0;
+    font-family:Arial, Helvetica, sans-serif;
+    color:#22375d;
+    font-size:35px;  
+}
+
+#tudo {
+    position:relative;
+    margin:10px 0px 5px 0px;
+    background-color:#FFF;
+}
+
+a {
+    color:#22375d;
+    text-decoration: underline;
+    cursor: pointer;    
+}
+
+a:hover{
+    color:#555d6b;
+}
+
+.submit {
+    background-color: #fff;
+    border: 2px solid #22375D;
+    color: #22375D;
+    cursor: pointer;
+    font-weight: bold;
+    height: 26px;
+    padding: 0 5px;
+    vertical-align: middle;
+}
+
+.submit:hover{
+    background-color: #9EADC7;
+    border: 2px solid #22375D;
+    color: #22375D;
+    cursor: pointer;
+    font-weight: bold;
+    height: 26px;
+    padding: 0 5px;
+    vertical-align: middle;
+}
+
+/*-----TOPO-----*/
+
+#topo {
+    background-color:#9eadc7;
+    padding: 0px;
+    height:115px;
+    position:relative;
+}
+
+#barraTopo {
+    height:7px;
+    background-color:#bfc6d3;
+
+}
+
+#logo{
+    background-image:url(logo.png);
+    background-repeat:no-repeat;
+    background-position: center;
+    background-size:   cover;
+    position:absolute;
+    margin:0px;
+    padding:0px;
+    top: 10px;
+    left: 45px;
+    width:127px;
+    height:89px;
+}
+
+#logo ul{
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+    width:127px;
+    height:89px;
+}
+
+#logo li{
+    float: left;
+    margin: 0px;  
+    padding: 0px;
+    border: 0px;
+}
+
+#logo a{
+    width:127px;
+    height:89px;  
+    border: 0 none;
+    display: block;
+}
+
+/*----------CONTEUDO----------*/
+
+#coluna_central { /*usado em paginas sem menu*/
+    margin-left: 0px; 
+    height:100%;
+    padding: 0px;
+    background-color:#FFF;
+}
+
+#titulo{
+    background-color:#d9dbe0;
+    height:45px;
+    font-size:35px;
+    padding:15px 0px 15px 20px;
+    font-weight: bold;
+}
+
+#conteudo {
+    padding:100px 0px 100px 0px;
+    text-align: center;
+    line-height: 25px;
+}
+
+.barraConteudo {
+    background-color:#8996d3;
+    height:3px;
+}
+
+#rodape{
+    padding-top: 40px;
+    text-align: center;
+    height:100px;
+    background-color:#22375d;
+    border-top: #bfc6d3 solid 7px;
+    clear: both;
+}
+
