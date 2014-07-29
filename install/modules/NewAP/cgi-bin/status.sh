@@ -21,7 +21,7 @@ echo "<body>"
 
 echo "<H1> Status do AP </H1>"
 
-mac=$(ifconfig eth0|grep HWaddr|cut -c39-55)
+mac=$(ifconfig -a eth0|grep HWaddr|cut -c39-55)
 nome="dados"$mac
 
 if [ -e $nome ];
