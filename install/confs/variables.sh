@@ -1,4 +1,7 @@
 #!/bin/bash
+# Linux
+SOVERSION=`cut -d' ' -f4 /etc/redhat-release | cut -d'.' -f1`
+
 # SCIFI
 DIRELSCIFI=/usr/share/scifi/install/ # Where ELSCIFI stay
 ModDir=$DIRELSCIFI'modules/' # Where are modules

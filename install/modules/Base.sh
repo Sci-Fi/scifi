@@ -2,7 +2,7 @@
 # Easy Life SCIFI
 #
 # Configuration Tool for an Easy Life
-# Version 20130819
+# Version 20140729
 #
 # Base module
 #
@@ -10,7 +10,7 @@
 # John Doe
 # ...
 #
-# set -xv        
+set -xv        
 
 clear
 cat <<-EOF
@@ -32,7 +32,14 @@ read
 
 # 1) EPEL
 echo Installing EPEL
-yum localinstall "$ModDir"Base/epel-release-6-8.noarch.rpm -y --nogpgcheck
+if [ $SOVERSION -eq 7 ] 
+	then
+	EPEL='epel-release-7-0.2.noarch.rpm'
+	else
+	EPEL='epel-release-6-8.noarch.rpm';
+fi
+
+yum localinstall $ModDir"Base/"$EPEL  -y --nogpgcheck
 
 # 2) Utilities
 echo Installing Utilities
