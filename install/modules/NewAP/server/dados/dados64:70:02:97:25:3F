@@ -1,0 +1,9 @@
+br-lan    Link encap:Ethernet  HWaddr 64:70:02:97:25:41  
+          inet addr:10.0.35.122  Bcast:10.255.255.255  Mask:255.0.0.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+
+wlan0     Link encap:Ethernet  HWaddr 64:70:02:97:25:40  
+          inet addr:192.168.0.5  Bcast:192.168.0.255  Mask:255.255.255.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+
+NAP=000&campi=GR&Dept=BLOCO+X&sala=Sala+YYY&OBS=+%0D%0A&Latitude=-22.903xxx&Longitude=-43.132yyy&Altura=3
