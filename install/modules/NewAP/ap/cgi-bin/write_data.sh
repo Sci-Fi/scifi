@@ -43,6 +43,8 @@ ifconfig wlan0 | grep -A2 wlan0 >> "dados"$maceth0
 echo "" >> "dados"$maceth0
 echo $QUERY_STRING >> "dados"$maceth0
 echo ""
+device=$(cat device.txt)
+echo "device $device" >> "dados"$maceth0
 
 ip=$(ifconfig br-lan| grep "inet addr:" | awk -F":" '{print $2}'| awk '{print $1}')
 
