@@ -39,6 +39,7 @@ if [ -e $nome ];
 
 echo "<h3>"
 echo "Mac eth0: " $maceth0
+echo "<br>"
 echo "Mac wlan0: " $macwlan0
 # ifconfig eth0|grep HWaddr|cut -c39-
 

@@ -51,6 +51,8 @@ if [ -e $nome ];
 	   echo ""
 	   grep "NAP=" $nome | awk -F"&" '{ printf (" Numero do AP: %s\n Sigla do campus: %s \n %s \n %s \n %s \n %s \n %s \n %s \n %s \n %s \n %s \n\n", $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)}'
         echo "</pre>"
+else
+        echo " <H2>  AP wlan0 $macwlan0 ainda nao foi configurado </H2> <br> "
 fi
 echo ""
 echo "<br>"
