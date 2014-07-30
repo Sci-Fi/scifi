@@ -2,7 +2,7 @@
 # Easy Life SCIFI
 #
 # Configuration Tool for an Easy Life
-# Version 20130820
+# Version 20140730
 #
 # Cosme Faria Corrêa
 # Caio Gagliano Vieira
@@ -15,7 +15,7 @@ locid="/usr/share/scifi/install"
 if [ $locat = $locid ]; then
 	CurDir='/usr/share/scifi/install'
 	#ModDir=$CurDir'/modules/'
-	CFGFile=$CurDir'/confs/variables.sh'
+	CFGFile=$CurDir'/confs/variables'
 	Start=`date +%Y%m%d-%H%M%S`
 	    Steps='Variables Base SELinux Network SNMPD Logs LDAP Apache Monitorix DNSMasq MRTG Nagios RADIUS RadSecProxy Firewall Conntrack SSHD DenyHosts NTPD Postfix PostgreSQL JavaJDK JBossAS SCIFIDatabase SCIFIAPI SCIFIWeb SCIFICore Exit' 
 	while true ; do

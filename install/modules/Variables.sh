@@ -2,7 +2,7 @@
 # Easy Life SCIFI
 #
 # Configuration Tool for an Easy Life
-# Version 20130819
+# Version 20140730
 #
 # Variables module
 #
@@ -22,7 +22,7 @@ cat <<-EOF
   =========================================
                 Variables Module
 
-  There are a lot of necessary informations.
+  There are a lot of necessary information.
   You must setup the variables by yourself.
 
   Press <Enter> key
