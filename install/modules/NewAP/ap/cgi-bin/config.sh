@@ -22,6 +22,8 @@ echo ""
 echo ""
 #echo -n " Mac: "
 #ifconfig eth0|grep HWaddr|cut -c39-
+device=$(cat device.txt)
+echo "<H1> Status do AP <br> $device </H1>"
 echo "<H1> Rede: "
 echo "</H1>"
 echo "<pre>"
@@ -36,16 +38,18 @@ if [ `ifconfig br-lan | grep UP | awk '{print $1}'` = "UP" ];
         else echo " <H2> Por favor verifique a rede cabeada </H2>"
         fi
 
-nome="dados"$mac
+maceth0=$(ifconfig -a eth0|grep HWaddr|cut -c39-55)
+macwlan0=$(ifconfig -a wlan0|grep HWaddr|cut -c39-55)
+nome="dados"$maceth0
 
 if [ -e $nome ];
         then
-        echo " <H2>  AP $mac ja foi configurado </H2> <br> "
-	   echo " preencher novamente ir� sobre-escrever o arquivo <br>"
+        echo " <H2>  AP wlan0 $macwlan0 ja foi configurado </H2> <br> "
+	   echo " preencher novamente ira sobre-escrever o arquivo <br>"
         echo "<pre> "
         cat $nome
 	   echo ""
-	   grep "NAP=" $nome | awk -F"&" '{ printf (" Numero do AP: %s\n Sigla do campus: %s \n %s \n %s \n %s \n %s \n %s \n %s \n\n", $1, $2, $3, $4, $5, $6, $7, $8, $9)}'
+	   grep "NAP=" $nome | awk -F"&" '{ printf (" Numero do AP: %s\n Sigla do campus: %s \n %s \n %s \n %s \n %s \n %s \n %s \n %s \n %s \n %s \n\n", $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)}'
         echo "</pre>"
 fi
 echo ""
@@ -74,7 +78,9 @@ echo ""
 echo "<br>"
 echo "Departamento:  <input type=\"text\" name=\"Dept\" value=\"BLOCO X\"> <br>"
 echo "Local:  <input type=\"text\" name=\"sala\" value=\"Sala YYY\"> <br>"
-echo ""
+echo "<br>"
+echo "<br>"
+echo "Tomada (patch pannel):  <input type=\"text\" name=\"Tomada\" value=\"\"> <br>"
 echo ""
 echo "<br> <br> Os campos a seguir sao opcionais: <br>"
 echo "<br>"
@@ -86,7 +92,12 @@ echo "<br>"
 echo "<textarea rows=\"4\" cols=\"40\" name=\"OBS\">"
 echo " "
 echo "</textarea>"
-echo ""
+echo "<br>"
+echo " <br> <br> <br>Switch: <br> <br>"
+echo "Porta no switch:  <input type=\"text\" name=\"SwPort\" value=\"\"> <br>"
+echo "<br>"
+echo "<br>"
+echo "IP do switch:  <input type=\"text\" name=\"SwIp\" value=\"172.30.\"> <br>"
 echo ""
 echo " <br> <br> <br>GPS: <br> <br>"
 echo ""

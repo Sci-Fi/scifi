@@ -1,4 +1,4 @@
-﻿#!/bin/sh
+#!/bin/sh
 # version 20140728
 # Script for testing connectivity by pinging an IP
 #
