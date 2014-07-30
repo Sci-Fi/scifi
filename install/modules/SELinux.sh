@@ -10,7 +10,7 @@
 # John Doe
 # ...
 #
-#set -xv        
+#set -xv
 
 clear
 
@@ -33,7 +33,7 @@ read
 
 #1 Copy Templates
 mv /etc/selinux/config /etc/selinux/config.`date +%Y%m%d-%H%M%S`
-cp -pr $ModDir/SELinux/config /etc/selinux/config
+cp -pr "$ModDir"SELinux/config /etc/selinux/config
 
 #2 Setup SELinux
 sed  -i s/SELPOL/$SELPOL/g /etc/selinux/config
