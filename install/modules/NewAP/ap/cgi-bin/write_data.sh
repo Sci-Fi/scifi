@@ -61,4 +61,5 @@ fi
 if [ `ifconfig br-lan | grep UP | awk '{print $1}'` = "UP" ];
 	then echo $STATUS1 " " $ip " " $maceth0 > status.txt
         else echo $STATUS2 " " $ip " " $maceth0 > status.txt                          
-fi    
+fi 
+cd /www;/bin/sh cgi-bin/avisala.sh   
