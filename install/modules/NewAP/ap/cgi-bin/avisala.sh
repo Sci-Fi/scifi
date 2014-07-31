@@ -31,12 +31,12 @@ if [ -e status.txt ]; then
 		then if [ $STATUS -eq 0 ];
 			then 
 			STATUS=2
-			sed -i “s/0/2/“ status.txt 
+			sed -i "s/0/2/" status.txt 
 			fi
 		     if [ $STATUS -eq 1 ];
 			then
 			STATUS=3
-			sed -i “s/1/3/“ status.txt
+			sed -i "s/1/3/" status.txt
 			fi	
 		else STATUS=1
 	fi	
