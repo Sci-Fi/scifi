@@ -10,7 +10,7 @@
 #
 # one is 11 (.1,.2,.3,.4,.5), which uses OID 1.3.6.1.4.1.2021.8.1.101.2 (or 100.2) for # of users
 #
-# another is 12 and 13, which use OID .1.3.6.1.4.1.2021.8.1.101.8 for # of users.
+# anothers are 12 and 13, which use OID .1.3.6.1.4.1.2021.8.1.101.8 for # of users.
 #
 # and added last is 10, which uses OID 1.3.6.1.4.1.2021.8.1.101.1 
 #
