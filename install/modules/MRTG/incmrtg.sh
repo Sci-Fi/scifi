@@ -6,19 +6,24 @@
 # modified by schara@midiacom.uff.br
 # 
 # Schara 16/07/2014
-# This implementation deals with three versions of the SCIFI MIB
+# This implementation deals with four versions of the SCIFI MIB
 #
 # one is 11 (.1,.2,.3,.4,.5), which uses OID 1.3.6.1.4.1.2021.8.1.101.2 (or 100.2) for # of users
 #
-# another is 12, which uses OID .1.3.6.1.4.1.2021.8.1.101.8 for # of users.
+# another is 12 and 13, which use OID .1.3.6.1.4.1.2021.8.1.101.8 for # of users.
 #
 # and added last is 10, which uses OID 1.3.6.1.4.1.2021.8.1.101.1 
 #
 # monitoring of wlan is turned off
 #
 
-# Uncomment for debugging
-#set -xv
+
+
+
+
+
+# Uncomment for debug
+# set -xv
 
 ERRO () {
 echo $1
@@ -83,12 +88,10 @@ esac
 # schara 07/03/2014
 ## Is this a SCIFI device?
 #
-#[ $SCIFIlabel != `snmpget -v 2c -c $COMMUNITY $DISPOSITIVO $SCIFIlabelOID | cut
- -d" " -f4-` ] && ERRO "This is not a SCIFI device"
+#[ $SCIFIlabel != `snmpget -v 2c -c $COMMUNITY $DISPOSITIVO $SCIFIlabelOID | cut -d" " -f4-` ] && ERRO "This is not a SCIFI device"
 #
 ## Is this a right version od SCIFI?
-#[ $SCIFIver != `snmpget -v 2c -c $COMMUNITY $DISPOSITIVO $SCIFIverOID | cut -d"
- " -f4-` ] && ERRO 'Wrong version of SCIFI device' 
+#[ $SCIFIver != `snmpget -v 2c -c $COMMUNITY $DISPOSITIVO $SCIFIverOID | cut -d" " -f4-` ] && ERRO 'Wrong version of SCIFI device' 
 #
 # end of commented section schara 07/03/2014
 
@@ -108,7 +111,7 @@ case $scifiversion in
 "SCIFI.11.1"|"SCIFI.11.2"|"SCIFI.11.3"|"SCIFI.11.4"|"SCIFI.11.5") 
 	echo $scifiversion
         userfield="2"
-	TEMPLATE=`snmpget -v 2c -c $COMMUNITY $DISPOSITIVO .1.3.6.1.4.1.2021.8.1.101.4 | cut -d" " -f4-`
+	TEMPLATE=`snmpget -v 2c -c $COMMUNITY $DISPOSITIVO .1.3.6.1.4.1.2021.8.1.101.3 | cut -d" " -f4-`
 	echo $TEMPLATE
         ;;
 SCIFI) echo $scifiversion
@@ -128,6 +131,9 @@ SCIFI) echo $scifiversion
 esac
 
 # Testa se MODEDLO existe em DirTemplates
+#
+# Como a partir da versão 12 o modelo carrega o número da versão, foram adicionados mais templates
+#
 if ! [ -a $DirTemplates$TEMPLATE ]
 	then
 	echo "Model '$TEMPLATE' does not exist";
@@ -144,8 +150,7 @@ PNOME=`echo $NOME | cut -d"." -f1`
 # Pega local por SNMP
 LOCAL=`snmpget -v 1 -c public $DISPOSITIVO sysLocation.0 | cut -d" " -f4-`
 # adicionei a linha abaixo - sch 27/07/2013
-LOCALTXT=`snmpget -v 1 -c public $DISPOSITIVO sysLocation.0 | cut -d" " -f4- | a
-wk -F "_-22." '{print $1}'`
+LOCALTXT=`snmpget -v 1 -c public $DISPOSITIVO sysLocation.0 | cut -d" " -f4- | awk -F "_-22." '{print $1}'`
 
 #retirando wlan... sch 27/06/2014
 #echo 1
@@ -244,4 +249,3 @@ echo .
 
 
 exit
-
