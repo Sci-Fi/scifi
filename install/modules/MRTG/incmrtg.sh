@@ -241,7 +241,7 @@ cp $DirTemplates$TEMPLATE'.php'  $ARQINDIP
 
 # Inclui na Lista
 if [ `grep -c $PNOME $ARQINC` -eq 0 ] ; then
-	echo 'Include: '$ARQCONF >> $ARQINC
+	echo 'include: '$ARQCONF >> $ARQINC
 fi
 
 echo Success including $PNOME
