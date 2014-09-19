@@ -1,0 +1,34 @@
+Este script atualiza os APs da rev 12.0 e 12.1 para rev 13.0.
+
+- Insere em /usr/share/scifi/scripts/ o script ping_snmp.sh
+- Atualiza o script scifi-api.sh com as novas entradas da API:
+        Call #13 num de Leases
+        Call #14 ping_enable
+        Call #15 ping loss na vlan de dados
+        Call #16 ping delay na vlan de dados
+        Call #17 campus
+        Call #18 departamento
+        Call #19 status da vlan de dados
+        Call #20 status da vlan de cadastro
+        Call #21 status da vlan de visitantes
+        Call #22 data tx da wlan de dados
+        Call #23 data rx da wlan de dados
+        Call #24 data tx da wlan de cadastro
+        Call #25 data rx da wlan de cadastro
+        Call #26 data tx da wlan de visitantes
+        Call #27 data rx da wlan de visitantes
+        Call #28 data tx da wlan com ssid igual ao hostname
+        Call #29 data rx da wlan com ssid igual ao hostname
+
+- Atualiza o arquivo de configuração do scifi /etc/scifi/scifi.conf com
+  PING_ENABLE, CAMPUS e DEPARTMENT
+- Atualiza o cron para rodar o script ping_snmp.sh de 5 em 5 minutos
+- Atualiza o cron para reiniciar o snmpd na madrugada, para corrigir o bug do
+  excesso de interfaces criadas cada vez que o wifi é reiniciado.
+- Atualiza o /etc/config/snmpd com as novas OIDs da API e reinicia o snmpd
+- Desabilita o switch dos APs e derruba a eth0, para evitar cascateamento
+  indesejado.
+- Atualiza o script vlan_check.sh com a nova versão que realiza testes na vlan
+  de
+  controle e desliga todas as wlans caso não esteja ok, já que, sem esta vlan,
+o AP não realiza autenticação em nenhuma das wlans.
