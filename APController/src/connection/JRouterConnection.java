@@ -58,8 +58,10 @@ public class JRouterConnection
     protected static boolean scpFrom(JAPInfo apInfo, String strHostFile, File fileLocal, int nCurrentTry)
     {
         String strHost = apInfo.getIP();
+        InetAddress addressAp = InetAddress.getByName(strHost);
         // se o número da tentativa atual é maior do que o máximo de tentativas permitido,
-        if(nCurrentTry > NUMBER_OF_RETRIES)
+        // e o ap está respondendo ping -- schara
+        if((nCurrentTry > NUMBER_OF_RETRIES) && (addressAp.isReachable(1000)))
         {
             // Insere no banco de dados que o AP está sem conexão (Reachable = 0)
             JDataManagement.addReachableInfoToDB(apInfo.getMAC(), 0);
@@ -144,8 +146,10 @@ public class JRouterConnection
     protected static boolean execCommand(String strCommand, JAPInfo apInfo, int nCurrentTry)
     {
         String strHost = apInfo.getIP();
+        InetAddress addressAp = InetAddress.getByName(strHost);
         // Se o número da tentativa de execução do comando atual é maior do que o limite máximo,
-        if(nCurrentTry > NUMBER_OF_RETRIES)
+        // e o AP está respondendo ping --schara
+        if((nCurrentTry > NUMBER_OF_RETRIES) && (addressAp.isReachable(1000)))
         {
             // Insere no banco de dados que o AP está sem conexão (Reachable = 0)
             JDataManagement.addReachableInfoToDB(apInfo.getMAC(), 0);
