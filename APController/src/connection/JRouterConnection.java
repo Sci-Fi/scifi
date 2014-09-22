@@ -15,13 +15,14 @@ import util.JMail;
 /**
  * Esta classe é responsável pela conexão entre o controlador e os pontos de acesso, execução de comandos e cópia de arquivo via SCP.
  * @author Felipe Rolim
+ * updated by schara
  */
 
 public class JRouterConnection
 {
     public static final String USERNAME = "root";
-    public static final int TIMEOUT = 30;
-    public static final int NUMBER_OF_RETRIES = 3;
+    public static final int TIMEOUT = 5;
+    public static final int NUMBER_OF_RETRIES = 1;
     public static final int RETRY_INTERVAL = 5;
 
    /**
