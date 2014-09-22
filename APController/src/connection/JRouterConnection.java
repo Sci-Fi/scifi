@@ -8,9 +8,13 @@ import apcontroller.Main;
 import data.JAPInfo;
 import database.JDataManagement;
 import java.io.File;
+import java.io.IOException;
 import log.JLogger;
 import org.apache.log4j.Logger;
 import util.JMail;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.logging.Level;
 
 /**
  * Esta classe é responsável pela conexão entre o controlador e os pontos de acesso, execução de comandos e cópia de arquivo via SCP.
@@ -58,63 +62,73 @@ public class JRouterConnection
     protected static boolean scpFrom(JAPInfo apInfo, String strHostFile, File fileLocal, int nCurrentTry)
     {
         String strHost = apInfo.getIP();
-        InetAddress addressAp = InetAddress.getByName(strHost);
-        // se o número da tentativa atual é maior do que o máximo de tentativas permitido,
-        // e o ap está respondendo ping -- schara
-        if((nCurrentTry > NUMBER_OF_RETRIES) && (addressAp.isReachable(1000)))
-        {
-            // Insere no banco de dados que o AP está sem conexão (Reachable = 0)
-            JDataManagement.addReachableInfoToDB(apInfo.getMAC(), 0);
-            return false;
+        InetAddress addressAp = null;
+        try {
+            addressAp = InetAddress.getByName(strHost);
+        } catch (UnknownHostException ex) {
+            java.util.logging.Logger.getLogger(JRouterConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
-        // caso contrário,
-        else
-        {
-            // inicia uma thread para a execução do SCP.
-            JSCPThread threadExec  = new JSCPThread(strHost, strHostFile, fileLocal);
-
-            threadExec.start();
-            // aguardar para que o SCP seja executado no tempo determinado por TIMEOUT*1000 [ms]
-            try
+        try {
+            // se o número da tentativa atual é maior do que o máximo de tentativas permitido,
+            // e o ap está respondendo ping -- schara
+            if((nCurrentTry > NUMBER_OF_RETRIES) || (! addressAp.isReachable(1000)))
             {
-                threadExec.join(TIMEOUT*1000);
+                // Insere no banco de dados que o AP está sem conexão (Reachable = 0)
+                JDataManagement.addReachableInfoToDB(apInfo.getMAC(), 0);
+                return false;
             }
-            catch (InterruptedException ex)
+            // caso contrário,
+            else
             {
-                Logger.getLogger(Main.JAVA_LOG).error(JLogger.getDateTime() + " " + JLogger.getTime() + " " + ex);
-            }
-            // Se o SCP não terminou no tempo esperado,
-            if(!threadExec.isFinished())
-            {
-                // interromper a execução
-                threadExec.interrupt();
-                // limpar a thread
-                threadExec.cleanUp();
-                // guardar no Log de conexão que houve erro ao tentar copiar o arquivo.
-            }
-            //  Se o resultado do SCP é inválido (se houve erro durante a execução)
-            if(!threadExec.getResult())
-            {
-                // Aguarda RETRY_INTERVAL*1000 [ms],
+                // inicia uma thread para a execução do SCP.
+                JSCPThread threadExec  = new JSCPThread(strHost, strHostFile, fileLocal);
+                
+                threadExec.start();
+                // aguardar para que o SCP seja executado no tempo determinado por TIMEOUT*1000 [ms]
                 try
                 {
-                    Thread.sleep(RETRY_INTERVAL * 1000);
+                    threadExec.join(TIMEOUT*1000);
                 }
                 catch (InterruptedException ex)
                 {
                     Logger.getLogger(Main.JAVA_LOG).error(JLogger.getDateTime() + " " + JLogger.getTime() + " " + ex);
                 }
-                // e executa o SCP novamente com o número da tentativa atual incrementado.
-                return scpFrom(apInfo, strHostFile, fileLocal, ++nCurrentTry);
+                // Se o SCP não terminou no tempo esperado,
+                if(!threadExec.isFinished())
+                {
+                    // interromper a execução
+                    threadExec.interrupt();
+                    // limpar a thread
+                    threadExec.cleanUp();
+                    // guardar no Log de conexão que houve erro ao tentar copiar o arquivo.
+                }
+                //  Se o resultado do SCP é inválido (se houve erro durante a execução)
+                if(!threadExec.getResult())
+                {
+                    // Aguarda RETRY_INTERVAL*1000 [ms],
+                    try
+                    {
+                        Thread.sleep(RETRY_INTERVAL * 1000);
+                    }
+                    catch (InterruptedException ex)
+                    {
+                        Logger.getLogger(Main.JAVA_LOG).error(JLogger.getDateTime() + " " + JLogger.getTime() + " " + ex);
+                    }
+                    // e executa o SCP novamente com o número da tentativa atual incrementado.
+                    return scpFrom(apInfo, strHostFile, fileLocal, ++nCurrentTry);
+                }
+                // se o resultado do SCP é válido (não ocorreu erro durante a transação)
+                else
+                {
+                    // insere no banco de dados a informação de que o controlador consegue se conectar ao AP (Reachable = 1)
+                    JDataManagement.addReachableInfoToDB(apInfo.getMAC(), 1);
+                    return threadExec.getResult();
+                }
             }
-            // se o resultado do SCP é válido (não ocorreu erro durante a transação)
-            else
-            {
-                // insere no banco de dados a informação de que o controlador consegue se conectar ao AP (Reachable = 1)
-                JDataManagement.addReachableInfoToDB(apInfo.getMAC(), 1);
-                return threadExec.getResult();
-            }
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(JRouterConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return true;
     }
 
    /**
@@ -146,64 +160,74 @@ public class JRouterConnection
     protected static boolean execCommand(String strCommand, JAPInfo apInfo, int nCurrentTry)
     {
         String strHost = apInfo.getIP();
-        InetAddress addressAp = InetAddress.getByName(strHost);
-        // Se o número da tentativa de execução do comando atual é maior do que o limite máximo,
-        // e o AP está respondendo ping --schara
-        if((nCurrentTry > NUMBER_OF_RETRIES) && (addressAp.isReachable(1000)))
-        {
-            // Insere no banco de dados que o AP está sem conexão (Reachable = 0)
-            JDataManagement.addReachableInfoToDB(apInfo.getMAC(), 0);
-            
-            JMail.sendUnreachableMail(apInfo);
-            
-            return false;
+        InetAddress addressAp = null;
+        try {
+            addressAp = InetAddress.getByName(strHost);
+        } catch (UnknownHostException ex) {
+            java.util.logging.Logger.getLogger(JRouterConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
-        else
-        {
-            JExecCommandThread threadExec  = new JExecCommandThread(strCommand, strHost);
-            
-            threadExec.start();
-            // aguarda TIMEOUT*1000 [ms]
-            try
+        try {
+            // Se o número da tentativa de execução do comando atual é maior do que o limite máximo,
+            // e o AP está respondendo ping --schara
+            if((nCurrentTry > NUMBER_OF_RETRIES) || (! addressAp.isReachable(1000)))
             {
-                threadExec.join(TIMEOUT*1000);
+                // Insere no banco de dados que o AP está sem conexão (Reachable = 0)
+                JDataManagement.addReachableInfoToDB(apInfo.getMAC(), 0);
+                
+                JMail.sendUnreachableMail(apInfo);
+                
+                return false;
             }
-            catch (InterruptedException ex)
+            else
             {
-                Logger.getLogger(Main.JAVA_LOG).error(JLogger.getDateTime() + " " + JLogger.getTime() + " " + ex);
-            }
-            // Se a execução da thread não terminou no tempo desejado,
-            if(!threadExec.isFinished())
-            {
-                //interrompe e limpa a thread.
-                threadExec.interrupt();
-                threadExec.cleanUp();             
-            }
-            // se o resultado da execução é inválido,
-            if(!threadExec.getResult())
-            {
-                // Aguarda RETRY_INTERVAL*1000 [ms],
+                JExecCommandThread threadExec  = new JExecCommandThread(strCommand, strHost);
+                
+                threadExec.start();
+                // aguarda TIMEOUT*1000 [ms]
                 try
                 {
-                    Thread.sleep(RETRY_INTERVAL * 1000);
+                    threadExec.join(TIMEOUT*1000);
                 }
                 catch (InterruptedException ex)
                 {
                     Logger.getLogger(Main.JAVA_LOG).error(JLogger.getDateTime() + " " + JLogger.getTime() + " " + ex);
                 }
-                // e executa novamente o comando com o número da execução atual incrementado.
-                return execCommand(strCommand, apInfo, ++nCurrentTry);
-            }
-            // se o resultado da execução do comando foi válido (se não houve erro na execução),
-            else
-            {
-                // insere no banco de dados a informação de que o controlador consegue se conectar ao AP (Reachable = 1)
-                if(!JDataManagement.addReachableInfoToDB(apInfo.getMAC(), 1))
+                // Se a execução da thread não terminou no tempo desejado,
+                if(!threadExec.isFinished())
                 {
-                    return false;
+                    //interrompe e limpa a thread.
+                    threadExec.interrupt();
+                    threadExec.cleanUp();
                 }
-                return true;
+                // se o resultado da execução é inválido,
+                if(!threadExec.getResult())
+                {
+                    // Aguarda RETRY_INTERVAL*1000 [ms],
+                    try
+                    {
+                        Thread.sleep(RETRY_INTERVAL * 1000);
+                    }
+                    catch (InterruptedException ex)
+                    {
+                        Logger.getLogger(Main.JAVA_LOG).error(JLogger.getDateTime() + " " + JLogger.getTime() + " " + ex);
+                    }
+                    // e executa novamente o comando com o número da execução atual incrementado.
+                    return execCommand(strCommand, apInfo, ++nCurrentTry);
+                }
+                // se o resultado da execução do comando foi válido (se não houve erro na execução),
+                else
+                {
+                    // insere no banco de dados a informação de que o controlador consegue se conectar ao AP (Reachable = 1)
+                    if(!JDataManagement.addReachableInfoToDB(apInfo.getMAC(), 1))
+                    {
+                        return false;
+                    }
+                    return true;
+                }
             }
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(JRouterConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return true;
     }
 }
