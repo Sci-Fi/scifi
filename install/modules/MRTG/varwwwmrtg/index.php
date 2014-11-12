@@ -12,10 +12,10 @@
     </head>
     <body>
 
-	<?php
-		//$ds = ldap_connect('www.uff.br', 80);
-	?>
-	
+        <?php
+                //$ds = ldap_connect('www.uff.br', 80);
+        ?>
+
         <div id="tudo">
 
             <div id="topo">
@@ -40,29 +40,35 @@
                             <a id="classe" href="#" title="Gr&aacute;ficos de Compara&ccedil;&atilde;o"></a>
                             <ul>
                                 <li id="network">
-                                    <a href="index.php?page=classes&classe=network" title="Tr&aacute;fego na Rede"></a>
+                                    <a href="index.php?page=classes&classe=network&periodo=day" title="Tr&aacute;fego na Rede"></a>
                                 </li>
                                 <li id="user">
-                                    <a href="index.php?page=classes&classe=user" title="N&uacute;mero de Usu&aacute;rios"></a>
+                                    <a href="index.php?page=classes&classe=user&periodo=day" title="N&uacute;mero de Usu&aacute;rios"></a>
                                 </li>
-                                <li id="wlan">
-                                   <a href="index.php?page=classes&classe=wlan" title="WLAN"></a>
+                                <li id="uptime">
+                                   <a href="index.php?page=classes&classe=upt&periodo=day" title="UPTIME"></a>
                                 </li>
                                 <li id="memory">
-                                    <a href="index.php?page=classes&classe=memory" title="Uso de Mem&oacute;ria"></a>
+                                    <a href="index.php?page=classes&classe=memory&periodo=day" title="Uso de Mem&oacute;ria"></a>
                                 </li>
                                 <li id="cpu">
-                                    <a href="index.php?page=classes&classe=cpu" title="Uso de CPU"></a>
+                                    <a href="index.php?page=classes&classe=cpu&periodo=day" title="Uso de CPU"></a>
                                 </li>
                             </ul>
                         </li>
                         <li id="devices">
                             <a href="index.php?page=devices" title="Dispositivos"></a>
                         </li>
-			<li id="disk">
-                                   <a href="index.php?page=classes&classe=disk" title="Uso de Discos"></a>
-                                </li>
-
+                        <li class="menu_server">
+                                <a id="server" href="#" title="Informa&ccedil;&otilde;es dos Servidores"></a>
+                                <ul>
+                                        <li id="disk">
+                                         <a href="index.php?page=classes&classe=disk&periodo=day" title="Uso de Discos"></a>
+                                        </li>
+                                        <li id="leases">
+                                         <a href="index.php?page=classes&classe=leases&periodo=day" title="Numero de Leases"></a>
+                                        </li>
+                                </ul>
                     </ul>
                 </div>
             </div>
@@ -72,11 +78,15 @@
                 <div class="barraConteudo"></div>
                 <div id="conteudo">
                     <div id="pages">
-                         <?php  
-			    $page = $_GET["page"];
-			    $ap = $_GET["ap"];
+                         <?php
+                            $page = $_GET["page"];
+                            $ap = $_GET["ap"];
                             $interface = $_GET["interface"];
                             $classe = $_GET["classe"];
+                            $periodo = $_GET["periodo"];
+                            $conjunto = $_GET["conjunto"];
+
+
 
                             if($page != "") {
                                 if($ap == "" && $interface == "" && $classe == "") {
