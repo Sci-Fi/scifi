@@ -1,10 +1,28 @@
 <h3>Gr&aacute;ficos de USO DE MEM&Oacute;RIA dos dispositivos</h3>
 
+<form name="input" action="index.php" method="get">
+<input type="radio" name="periodo" value="day" checked> Di&aacuterio
+<input type="radio" name="periodo" value="week"> Semanal
+<input type="radio" name="periodo" value="month"> Mensal
+<input type="radio" name="periodo" value="year"> Anual  <br>
+<select name="conjunto">
+<option value="">Todos</option>
+<?php include_once "classes/menu_loc.html";
+?>
+</select>
+
+<input type="radio" name="page" value="classes" checked > Exibir
+
+<input type="radio" name="classe" value="memory" checked> Mem&oacuteria
+
+<input type="submit" value="Mostrar">
+</form>
+
 <ul id="listMRTG">
 <?php
     $dir = "./";
     $type_class = "mem";
-    $time_graph_class = "day";
+    $time_graph_class = $periodo;
     $sort_root = array();    
 
 	$folders = dir($dir);
