@@ -80,8 +80,9 @@ service httpd restart
 
 #8 Scripts
 cp -f  $ModDir/MRTG/*.sh $SCRIPTDIR
+cp -f $ModDir/MRTG/*.awk $SCRIPTDIR
 ln -s $SCRIPTDIR/*.sh /usr/bin/ 2>/dev/null
-
+ln -s $SCRIPTDIR/*.awk /usr/bin/ 2>/dev/null
 
 echo MRTG module finished
 echo 'Press <Enter> to exit'
