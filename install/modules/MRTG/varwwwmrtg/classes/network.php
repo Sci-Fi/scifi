@@ -1,10 +1,29 @@
 <h3>Gr&aacute;ficos de TR&Aacute;FEGO DE REDE dos dispositivos</h3>
 
+
+<form name="input" action="index.php" method="get">
+<input type="radio" name="periodo" value="day" checked> Di&aacuterio
+<input type="radio" name="periodo" value="week"> Semanal
+<input type="radio" name="periodo" value="month"> Mensal
+<input type="radio" name="periodo" value="year"> Anual  <br>
+<select name="conjunto">
+<option value="">Todos</option>
+<?php include_once "classes/menu_loc.html";
+?>
+</select>
+
+<input type="radio" name="page" value="classes" checked > Exibir
+
+<input type="radio" name="classe" value="network" checked> Rede
+
+<input type="submit" value="Mostrar">
+</form>
+
 <ul id="listMRTG">
 <?php
     $dir = "./";
     $type_class = "net";
-    $time_graph_class = "day";
+    $time_graph_class = periodo;
     $folders = dir($dir);
     $sort_root = array();
     $path_file = "";
