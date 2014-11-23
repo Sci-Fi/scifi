@@ -28,20 +28,17 @@ minor_ip=`ifconfig br-lan | grep inet | awk '{print $2}'| awk -F"\." '{print $4}
 
 pinglan=$(ping -I br-lan -w10 172.17.0.1 |  grep loss | awk '{print $4;exit}')
 
-# if  [ $pinglan -gt 1 ]; 
-#	then
-
 	ifconfig br-203 192.168.$major.$minor netmask 255.255.128.0
-	ping203=$(ping -I br-203 -w10 192.168.0.1 |  grep loss | awk '{print $4;exit}')
+	ping203=$(ping -I br-203 -w10 192.168.0.1 |  grep loss | awk '{print $4}')
 	ifconfig br-203 0.0.0.0
 
 	let majorplus=major+128
 	ifconfig br-204 192.168.$majorplus.$minor netmask 255.255.128.0
-	ping204=$(ping -I br-204 -w10 192.168.128.1 |  grep loss | awk '{print $4;exit}')
+	ping204=$(ping -I br-204 -w10 192.168.128.1 |  grep loss | awk '{print $4}')
 	ifconfig br-204 0.0.0.0
 
 	ifconfig $BRDATA $IPPREFIX$major.$minor netmask 255.255.0.0
-	pingDATA=$(ping -I $BRDATA -w10 $IPGW | grep loss | awk '{print $4;exit}')
+	pingDATA=$(ping -I $BRDATA -w10 $IPGW | grep loss | awk '{print $4}')
 	ifconfig $BRDATA 0.0.0.0
 
 
@@ -121,26 +118,50 @@ pinglan=$(ping -I br-lan -w10 172.17.0.1 |  grep loss | awk '{print $4;exit}')
 		fi
 	done
 
-
-
+if  [ $pinglan -gt 1 ]; 
+	then
+	echo "0"> /tmp/status$interface
+	
 	if [ $wifiup -eq 1 ]
  		then
 		logger 'SCIFI - Turning on wlan interfaces...'       
 		wifi
 		for interface in "wlan0" "wlan0-1" "wlan0-2";
 			do
-		
 			if [ `cat /tmp/status$interface` = "3"];
 				then ifconfig $interface down
 			fi
 			done
 		fi
 	fi
+	else
 
-# if the AP can not ping on control vlan (i.e, it can not authenticate clients via 802.1x ) it will turn off all wlans interfaces
-#	else
-#        	logger 'SCIFI - The AP can not communicate with the server via control vlan. Turning off all wlan interfaces.'
-#		wifi down
-# fi
+# if the AP can not ping on control vlan (i.e, it can not authenticate clients via 802.1x ) it will turn off all wlans interface
+	case `cat /tmp/statuslan` in
+		0)
+		echo "1"> /tmp/statuslan
+		logger SCIFI - The AP can not communicate with server on control VLAN. Warning 1 
+		;;
+
+		1)
+		echo "2"> /tmp/statuslan
+		logger SCIFI - The AP can not communicate with server on control VLAN. Warning 2
+		;;
+				
+		2)
+		echo "3"> /tmp/statuslan
+		logger 'SCIFI - The AP can not communicate with the server via control vlan. Turning off all wlan interfaces.'
+		ifconfig wlan0 down
+		ifconfig wlan0-1 down
+		ifconfig wlan0-2 down
+		;;
+					
+		3) logger SCIFI - The AP still can not communicate with server on control VLAN. Keeping interfaces off
+		;;
+				
+		*) echo "0"> /tmp/statuslan
+		;;
+	esac
+fi
 
 exit 0
