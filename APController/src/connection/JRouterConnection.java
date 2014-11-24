@@ -25,7 +25,7 @@ import java.util.logging.Level;
 public class JRouterConnection
 {
     public static final String USERNAME = "root";
-    public static final int TIMEOUT = 5;
+    public static final int TIMEOUT = 30;
     public static final int NUMBER_OF_RETRIES = 1;
     public static final int RETRY_INTERVAL = 5;
 
