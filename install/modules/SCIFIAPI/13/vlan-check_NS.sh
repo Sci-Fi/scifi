@@ -77,7 +77,7 @@ pingdata=$pinglan
 # ligar interface, colocar zero no status
 
 				wifiup=1;
-     				logger SCIFI - Communication with server is ok. Turning $interface on.
+     				logger SCIFI - Communication with server is ok. Turning $interface on if control vlan is ok.
 				echo "0"> /tmp/status$interface
 				fi
 			else
@@ -131,7 +131,9 @@ if  [ $pinglan -gt 1 ];
 		for interface in "wlan0-1" "wlan0-2";
 			do
 			if [ `cat /tmp/status$interface` = "3" ];
-				then ifconfig $interface down
+				then
+				sleep 3
+				ifconfig $interface down
 			fi
 			done
 	fi
