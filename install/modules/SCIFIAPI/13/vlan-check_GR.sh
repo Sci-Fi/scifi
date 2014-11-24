@@ -128,7 +128,7 @@ if  [ $pinglan -gt 1 ];
 		wifi
 		for interface in "wlan0" "wlan0-1" "wlan0-2";
 			do
-			if [ `cat /tmp/status$interface` = "3"];
+			if [ `cat /tmp/status$interface` = "3" ];
 				then ifconfig $interface down
 			fi
 			done

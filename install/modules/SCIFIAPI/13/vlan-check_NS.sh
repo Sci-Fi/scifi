@@ -1,5 +1,5 @@
 #!/bin/sh
-# version 20141122
+# version 20141124
 # This files switches off wifi interfaces if there is no wired (vlan) access
 #
 # Luiz Magalhaes
@@ -12,9 +12,9 @@
 
 export PATH=/bin:/sbin:/usr/bin:/usr/sbin;
 
-# Segment dependent information
+# Non-Segment data
 
-BRDATA="br-205"
+# BRDATA="br-205"
 IPPREFIX="10.1."
 IPGW="10.1.0.1"
 
@@ -37,23 +37,25 @@ pinglan=$(ping -I br-lan -w10 172.17.0.1 |  grep loss | awk '{print $4;exit}')
 	ping204=$(ping -I br-204 -w10 192.168.128.1 |  grep loss | awk '{print $4}')
 	ifconfig br-204 0.0.0.0
 
-	ifconfig $BRDATA $IPPREFIX$major_ip.$minor_ip netmask 255.255.0.0
-	pingDATA=$(ping -I $BRDATA -w10 $IPGW | grep loss | awk '{print $4}')
-	ifconfig $BRDATA 0.0.0.0
+	# ifconfig $BRDATA $IPPREFIX$major_ip.$minor_ip netmask 255.255.0.0
+	# pingDATA=$(ping -I $BRDATA -w10 $IPGW | grep loss | awk '{print $4}')
+	# ifconfig $BRDATA 0.0.0.0
+
+pingdata=$pinglan
 
 
 # if it is equal to 1, wifi will be reset
 	wifiup=0
 
-# verificando comunicacao na br-205 (em bridge com wlan0)
+
 # verificando comunicacao na br-203 (em bridge com wlan0-1)
 # verificando comunicacao na br-204 (em bridge com wlan0-2)
-# verificando comunicação na vlan de controle
+# verificando comunicação na vlan de controle/dados
 
 	for interface in "wlan0" "wlan0-1" "wlan0-2";
 		do
 		case $interface in
-		"wlan0")   pngst=$pingDATA
+		    "wlan0")   pngst=$pingDATA
 	   	   ;;
    	   	"wlan0-1") pngst=$ping203
 	   	   ;;
@@ -126,7 +128,7 @@ if  [ $pinglan -gt 1 ];
  		then
 		logger 'SCIFI - Turning on wlan interfaces...'       
 		wifi
-		for interface in "wlan0" "wlan0-1" "wlan0-2";
+		for interface in "wlan0-1" "wlan0-2";
 			do
 			if [ `cat /tmp/status$interface` = "3" ];
 				then ifconfig $interface down
