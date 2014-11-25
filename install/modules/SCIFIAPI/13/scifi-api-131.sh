@@ -1,5 +1,5 @@
 #!/bin/sh
-# version 20140630
+# version 20141125
 # Central script for SCIFI-API
 #
 # Luiz Magalhaes
@@ -19,7 +19,7 @@ awk -v search=$1 '{if ($1==search) print $2;}' /etc/scifi/scifi.conf
 # Call #8
 USERS) 
 # this version for APs only
-	nsta=0;for i in `ifconfig | grep wlan0 | awk '{print $1}'`; do let nsta=$nsta+`iw $i station dump | grep -c Station`;done;echo $nsta;	
+	nsta=0;for i in `ifconfig | grep wlan0 | awk '{print $1}'`; do let nsta=$nsta+`iw $i station dump | grep -c Station`;done; echo $nsta > /tmp/nsta.txt; echo $nsta;	
         ;;
 
 # Call #9
