@@ -172,7 +172,7 @@ fi
 
 if [ `cat /tmp/nsta.txt` -eq 0 ];
         then
-        case `cat /tmp/zero_users` in
+        case `cat /tmp/zero_users.txt` in
                 0) echo "1" > /tmp/zero_users.txt
                 ;;
                 1) echo "2" > /tmp/zero_users.txt
@@ -189,6 +189,9 @@ if [ `cat /tmp/nsta.txt` -eq 0 ];
                                 then 
                                 wifi
                                 echo "3" > /tmp/zero_users.txt
+                                sleep 3
+                                logread > /tmp/logread.txt
+                                logger 'SCIFI - watchdog reset wlan interfaces...'
                         fi
                 fi
                 ;;
