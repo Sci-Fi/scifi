@@ -4,15 +4,24 @@
 #
 # Luiz Magalhaes
 # schara (at) telecom.uff.br
-set -xv
+# set -xv
 
 /etc/init.d/snmpd restart
 sleep 10
 i=0
-while [ ($i -lt 10) && (`ps | grep -c snmpd` -lt 2) ] do 
-   /etc/init.d/snmpd restart
-   i=$i+1
-   sleep 10
-done
+while [ $i -lt 10 ];
+        do
+        while [ `ps | grep -c snmpd` -lt 2 ];
+                do
+                /etc/init.d/snmpd restart
+                sleep 10
+                if [ `ps | grep -c snmpd` -gt 1 ];
+                        then exit
+                fi
+                break
+                done
+        let i=i+1
+        done
+
 
 
