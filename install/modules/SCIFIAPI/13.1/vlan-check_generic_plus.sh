@@ -77,6 +77,8 @@ pinglan=$(ping -I br-lan -w10 172.17.0.1 |  grep loss | awk '{print $4;exit}')
 				wifiup=1;
      				logger SCIFI - Communication with server is ok. Turning $interface on if control vlan is ok.
 				echo "0"> /tmp/status$interface
+				else
+                                logger SCIFI - The AP still can not communicate with server. Keeping $interface off
 				fi
 			else
 			
@@ -105,6 +107,7 @@ pinglan=$(ping -I br-lan -w10 172.17.0.1 |  grep loss | awk '{print $4;exit}')
 					;;
 					
 					3) logger SCIFI - The AP still can not communicate with server. Keeping $interface off
+					ifconfig $interface down
 					;;
 				
 					*) echo "0"> /tmp/status$interface
