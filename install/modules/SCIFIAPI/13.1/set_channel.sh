@@ -9,5 +9,5 @@ wifi
 # turning off wireless interfaces that were previously down
 OIFS=$IFS
 IFS=";"
-for i in $wInterfaces; do awk -v i="$i" 'BEGIN{split(i,r," "); print r[1]; print r[2]; if (r[2] == 0 ) {cmd="ifconfig "r[1]" down"; print cmd ; system(cmd) } }';done;
+for i in $wInterfaces; do awk -v i="$i" 'BEGIN{split(i,r," "); if (r[2] == 0 ) {cmd="ifconfig "r[1]" down"; system(cmd) } }';done;
 IFS=$OIFS
