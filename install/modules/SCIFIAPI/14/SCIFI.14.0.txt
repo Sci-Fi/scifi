@@ -1,0 +1,18 @@
+Este script atualiza os APs da rev 13.0 para a rev 14.0.
+
+- atualizar o script vlan_check.sh para corrigir os seguintes bugs e inserir as novas funcionalidades:
+        * colocar o watchdog da condição do bug do driver (alto uso de memória, baixo uso de cpu, zero usuários - resetar o wifi)
+        * inserir histerese no teste da vlan de controle
+- Criar arquivos de status do vlan_check.sh no boot (inserir em rc.local)
+- atualizar o script set_channel.sh para derrubar as interfaces que já estavam down antes da realização da troca de canal.
+- inserir o script watchdog do snmpd para corrigir o bug do restart (ao reiniciar utilizando o restart do serviço, certas vezes o snmpd não sobe)
+- atualizar o script sta.sh para que a informação do station dump completo não  seja apagada do /tmp.
+- atualizar o script scifi-api.sh para manter a info de numeros de estações associadas no /tmp (nsta.txt)
+- mudar as SSIDS de visitantes para VisitantesUFF e de cadastro para CadastroWifiUFF
+
+- Atualiza o script scifi-api.sh com as novas entradas da API:
+        Call #30 channel #
+        Call #31 power level
+
+- Atualiza o /etc/config/snmpd com as novas OIDs da API e reinicia o snmpd
+- Atualizar o cron para redirecionar todos os comandos para &> /dev/null e para rodar o script que reinicia e faz o watchdog do snmpd

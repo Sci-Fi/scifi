@@ -1,0 +1,237 @@
+config agent
+	option agentaddress UDP:161
+
+config com2sec public
+	option secname ro
+	option source default
+	option community public
+
+config com2sec private
+	option secname ro
+	option source localhost
+	option community private
+
+config group public_v1
+	option group public
+	option version v1
+	option secname ro
+
+config group public_v2c
+	option group public
+	option version v2c
+	option secname ro
+
+config group public_usm
+	option group public
+	option version usm
+	option secname ro
+
+config group private_v1
+	option group private
+	option version v1
+	option secname ro
+
+config group private_v2c
+	option group private
+	option version v2c
+	option secname ro
+
+config group private_usm
+	option group private
+	option version usm
+	option secname ro
+
+config view all
+	option viewname all
+	option type included
+	option oid .1
+
+config access public_access
+	option group public
+	option context none
+	option version any
+	option level noauth
+	option prefix exact
+	option read all
+	option write none
+	option notify none
+
+config access private_access
+	option group private
+	option context none
+	option version any
+	option level noauth
+	option prefix exact
+	option read all
+	option write none
+	option notify all
+
+#config exec
+#	option name	filedescriptors
+#	option prog	/bin/cat
+#	option args	/proc/sys/fs/file-nr
+#	option miboid	1.2.3.4
+
+config system                               
+        option sysLocation      'desalocado'
+        option sysContact       'helgadb@midiacom.uff.br'
+        option sysName          'SCIFI9120481441'                 
+#       option sysServices      72                       
+#       option sysDescr         'adult playground'       
+#       option sysObjectID      '1.2.3.4'                
+                                                         
+config exec                                              
+       option name	SCIFI-ID                            
+       option prog	/bin/sh                           
+       option args	'/usr/share/scifi/scripts/scifi-api.sh ID'
+            
+config exec                                              
+       option name	SCIFI-VERSION                            
+       option prog	/bin/sh                           
+       option args	'/usr/share/scifi/scripts/scifi-api.sh VERSION'
+                                                         
+config exec                                              
+       option name	SCIFI-SUBVERSION                   
+       option prog	/bin/sh                           
+       option args	'/usr/share/scifi/scripts/scifi-api.sh SUBVERSION'
+
+config exec
+       option name	SCIFI-DEVICE 
+       option prog	/bin/sh
+       option args	'/usr/share/scifi/scripts/scifi-api.sh DEVICE'         
+                                                                 
+config exec
+       option name	SCIFI-COORDINATES
+       option prog	/bin/sh
+       option args	'/usr/share/scifi/scripts/scifi-api.sh COORDINATES'
+
+config exec
+       option name	SCIFI-TAGS 
+       option prog	/bin/sh
+       option args	'/usr/share/scifi/scripts/scifi-api.sh TAGS'
+
+config exec
+       option name	SCIFI-CONNECTED2
+       option prog	/bin/sh
+       option args	'/usr/share/scifi/scripts/scifi-api.sh CONNECTED2'
+
+config exec                                              
+       option name	SCIFI-USERS                           
+       option prog	/bin/sh                           
+       option args	'/usr/share/scifi/scripts/scifi-api.sh USERS'
+
+config exec
+       option name	SCIFI-NEIGHBORHOOD
+       option prog	/bin/sh
+       option args	'/usr/share/scifi/scripts/scifi-api.sh NEIGHBORHOOD'
+
+config exec
+       option name	SCIFI-UPTIME
+       option prog	/bin/sh
+       option args	'/usr/share/scifi/scripts/scifi-api.sh UPTIME'
+
+config exec
+       option name	SCIFI-SEGMENT
+       option prog	/bin/sh
+       option args	'/usr/share/scifi/scripts/scifi-api.sh SEGMENT'
+
+config exec
+       option name	SCIFI-FIRMWARE
+       option prog	/bin/sh
+       option args	'/usr/share/scifi/scripts/scifi-api.sh FIRMWARE'
+
+config exec
+       option name      SCIFI-LEASES
+       option prog      /bin/sh
+       option args      '/usr/share/scifi/scripts/scifi-api.sh LEASES'
+
+config exec
+       option name      SCIFI-PING_ENABLE
+       option prog      /bin/sh
+       option args      '/usr/share/scifi/scripts/scifi-api.sh PING_ENABLE'
+                    
+config exec
+       option name      SCIFI-LOSS
+       option prog      /bin/sh
+       option args      '/usr/share/scifi/scripts/scifi-api.sh LOSS'
+
+config exec
+       option name      SCIFI-DELAY
+       option prog      /bin/sh
+       option args      '/usr/share/scifi/scripts/scifi-api.sh DELAY'
+
+config exec
+       option name      SCIFI-CAMPUS
+       option prog      /bin/sh
+       option args      '/usr/share/scifi/scripts/scifi-api.sh CAMPUS'
+                     
+config exec
+       option name      SCIFI-DEPARTAMENT
+       option prog      /bin/sh
+       option args      '/usr/share/scifi/scripts/scifi-api.sh DEPARTMENT'
+
+config exec
+       option name      SCIFI-DATA_VLAN
+       option prog      /bin/sh
+       option args      '/usr/share/scifi/scripts/scifi-api.sh DATA_VLAN'
+                     
+config exec
+       option name      SCIFI-REGISTRATION_VLAN
+       option prog      /bin/sh
+       option args      '/usr/share/scifi/scripts/scifi-api.sh REGISTRATION_VLAN'
+                                         
+config exec
+       option name      SCIFI-VISITORS_VLAN
+       option prog      /bin/sh
+       option args      '/usr/share/scifi/scripts/scifi-api.sh VISITORS_VLAN'
+
+config exec
+       option name      SCIFI-DATA_RX
+       option prog      /bin/sh
+       option args      '/usr/share/scifi/scripts/scifi-api.sh DATA_RX'
+                     
+config exec
+       option name      SCIFI-DATA_TX
+       option prog      /bin/sh
+       option args      '/usr/share/scifi/scripts/scifi-api.sh DATA_TX'
+                                         
+config exec
+       option name      SCIFI-REGISTRATION_RX
+       option prog      /bin/sh
+       option args      '/usr/share/scifi/scripts/scifi-api.sh REGISTRATION_RX'
+                                                              
+config exec
+       option name      SCIFI-REGISTRATION_TX
+       option prog      /bin/sh
+       option args      '/usr/share/scifi/scripts/scifi-api.sh REGISTRATION_TX'
+
+config exec
+       option name      SCIFI-VISITORS_RX
+       option prog      /bin/sh
+       option args      '/usr/share/scifi/scripts/scifi-api.sh VISITORS_RX'
+                                                              
+config exec
+       option name      SCIFI-VISITORS_TX
+       option prog      /bin/sh
+       option args      '/usr/share/scifi/scripts/scifi-api.sh VISITORS_TX'
+
+config exec
+       option name      SCIFI-WLOCAL_RX
+       option prog      /bin/sh
+       option args      '/usr/share/scifi/scripts/scifi-api.sh WLOCAL_RX'
+                     
+config exec
+       option name      SCIFI-WLOCAL_TX
+       option prog      /bin/sh
+       option args      '/usr/share/scifi/scripts/scifi-api.sh WLOCAL_TX'
+
+config exec
+       option name      SCIFI-CHANNEL_NUMBER
+       option prog      /bin/sh
+       option args      '/usr/share/scifi/scripts/scifi-api.sh CHANNEL'
+
+config exec
+       option name      SCIFI-POWER_LEVEL
+       option prog      /bin/sh
+       option args      '/usr/share/scifi/scripts/scifi-api.sh POWER'
+
