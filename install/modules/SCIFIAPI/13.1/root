@@ -1,4 +1,0 @@
-05 04 * * * /bin/ash /usr/share/scifi/scripts/restart_wifi.sh
-*/6 * * * * /bin/ash /usr/share/scifi/scripts/vlan_check.sh &> /dev/null
-*/5 * * * * /bin/ash /usr/share/scifi/scripts/ping_snmp.sh
-15 04 * * * /etc/init.d/snmpd restart
