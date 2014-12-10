@@ -109,7 +109,7 @@ WLOCAL_TX) ifconfig wlan0-3 | grep "TX bytes" | awk -F ":" '{print $3}' | awk '{
 CHANNEL) uci show wireless | grep channel | awk -F= '{print $2}'
 	;;
 # Call #31
-POWER) iwlist txpower | grep -m 1 wlan0 -A2 | grep Current | awk '{print $2}' | sed 's/Tx-Power=//g'
+POWER) iwlist txpower 2> /dev/null | grep -m 1 wlan0 -A2 | grep Current | awk '{print $2}' | sed 's/Tx-Power=//g'
 
                                                                                 
 *) echo "not found"
