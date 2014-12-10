@@ -110,7 +110,7 @@ CHANNEL) uci show wireless | grep channel | awk -F= '{print $2}'
 	;;
 # Call #31
 POWER) iwlist txpower 2> /dev/null | grep -m 1 wlan0 -A2 | grep Current | awk '{print $2}' | sed 's/Tx-Power=//g'
-
+	;;
                                                                                 
 *) echo "not found"
    ;;
