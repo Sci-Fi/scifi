@@ -22,6 +22,3 @@ while [ $i -lt 10 ];
                 done
         let i=i+1
         done
-
-
-
