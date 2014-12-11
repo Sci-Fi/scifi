@@ -5,7 +5,7 @@
 # Luiz Magalhaes
 # schara (at) telecom.uff.br
 # set -xv
-
+logger 'SCIFI - Watchdog will restart snmpd'
 /etc/init.d/snmpd restart
 sleep 10
 i=0
