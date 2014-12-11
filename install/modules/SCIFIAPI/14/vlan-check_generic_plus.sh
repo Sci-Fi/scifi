@@ -36,11 +36,14 @@ pinglan=$(ping -I br-lan -w10 172.17.0.1 |  grep loss | awk '{print $4;exit}')
 	ifconfig br-204 192.168.$majorplus.$minor_ip netmask 255.255.128.0
 	ping204=$(ping -I br-204 -w10 192.168.128.1 |  grep loss | awk '{print $4}')
 	ifconfig br-204 0.0.0.0
-
-	ifconfig $BRDATA $IPPREFIX$major_ip.$minor_ip netmask 255.255.0.0
-	pingDATA=$(ping -I $BRDATA -w10 $IPGW | grep loss | awk '{print $4}')
-	ifconfig $BRDATA 0.0.0.0
-
+	
+	if [ "$BRDATA" != "br-lan" ]; then
+		ifconfig $BRDATA $IPPREFIX$major_ip.$minor_ip netmask 255.255.0.0
+		pingDATA=$(ping -I $BRDATA -w10 $IPGW | grep loss | awk '{print $4}')
+		ifconfig $BRDATA 0.0.0.0
+	else
+		pingDATA=$pinglan
+	fi
 
 # if it is equal to 1, wifi will be reset
 	wifiup=0
