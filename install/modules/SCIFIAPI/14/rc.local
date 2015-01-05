@@ -1,0 +1,25 @@
+# Put your custom commands here that should be executed once
+# the system init finished. By default this file does nothing.
+
+# inicialização do snmpd
+sh /usr/share/scifi/scripts/init_snmpd.sh &
+
+#inicialização das vlans
+vconfig add eth1 203
+ifconfig vlan203 up
+
+vconfig add eth1 204
+ifconfig vlan204 up
+
+vconfig add eth1 205
+ifconfig vlan205 up
+
+
+# initializing files used by vlan check
+echo "0" > /tmp/statuslan
+echo "0" > /tmp/statuswlan0
+echo "0" > /tmp/statuswlan0-1
+echo "0" > /tmp/statuswlan0-2
+echo "0" > /tmp/zero_users.txt
+
+exit 0
