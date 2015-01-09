@@ -46,7 +46,7 @@ case "$SSHDAUTH" in
 		ALLOWAUTH="AllowGroups "$SSHDGROUP
 		;;
 	[uU])
-		ALLOWAUTH="AllowUsers "$SSHDUSERSP
+		ALLOWAUTH="AllowUsers "$SSHDUSERS
 		;;
 esac
 sed -i s/ALLOWAUTH/"$ALLOWAUTH"/g /etc/ssh/sshd_config
