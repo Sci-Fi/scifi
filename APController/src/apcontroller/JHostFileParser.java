@@ -283,7 +283,7 @@ public class JHostFileParser
                 if(nInfoCount == 4)
                 {
 		    // only add if not EDUROAM, cadastro or visitantes
-		    if ((! strESSID.equals("eduroam")) && (! strESSID.equals("CadastroWifiUFF")) && (! strESSID.equals("VisitantesUFF")))
+		    if ( (! strESSID.equals("CadastroWifiUFF")) && (! strESSID.equals("VisitantesUFF")) && (! ( strESSID.startsWith("ap") && strESSID.length() == 6 && strESSID.substring(2,6).matches("^\\d{4}$") )))
 			{
 
 			    listCell.add(new JCellInfo(strMAC, nChannel, dSignal, nQuality, strESSID));
